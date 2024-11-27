@@ -1,6 +1,18 @@
 from requests import get
 from bs4 import BeautifulSoup
 
+def reset_file():
+    file = open("Web-Scraping\scrape.txt", "w")
+    file.write("")
+    file.close()
+
+def write_to_file(text: list):
+    file = open("Web-Scraping\scrape.txt", "a")
+    for data in text:
+        file.write(str(data))
+    file.write("\n")
+    file.close()
+
 def remove_tags(HTML: str):
     list_HTML = list(HTML)
     output_string = []
@@ -44,9 +56,9 @@ def get_headers(soup, header_array):
     for header_type in headers:
         for index in range(0, len(header_type)):
             header_type[index] = remove_escapes(remove_tags(str(header_type[index])))
-    return headers
+    write_to_file(headers)
 
-def get_all_images(soup):
+def get_images(soup):
     image_objects = soup.find_all("img")
     images = []
     for image in image_objects:
@@ -59,12 +71,22 @@ def get_all_images(soup):
                 images.append([image['alt'], srcset[0]])
             except:
                 pass
-    file = open("Web-Scraping\images.txt", "w")
-    for image in images:
-        file.write(str(image))
-    file.close
+    write_to_file(images)
 
-# print(get_headers( get_website("https://www.imperial.ac.uk/news/255517/phase-collaboration-sustainable-futures-between-imperial/"), ["h1", "h2", "h3", "h4", "h5", "h6"] ) )
+def get_text(soup):
+    paragraphs = soup.find_all("p")
+    for index in range(0, len(paragraphs)):
+        paragraphs[index] = remove_escapes(remove_tags(str(paragraphs[index])))
+    write_to_file(paragraphs)
+
+def scrape_website(URL: str):
+    reset_file()
+    soup = get_website(URL)
+    get_images(soup)
+    get_headers(soup, ["h1", "h2", "h3", "h4", "h5", "h6"])
+    get_text(soup)
+
+scrape_website("https://www.imperial.ac.uk/news/255517/phase-collaboration-sustainable-futures-between-imperial/")
 
 # https://www.imperial.ac.uk/news/255517/phase-collaboration-sustainable-futures-between-imperial/
 

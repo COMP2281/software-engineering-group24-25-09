@@ -6,10 +6,13 @@ def reset_file():
     file.write("")
     file.close()
 
-def write_to_file(text: list):
+def write_to_file(text: list, multiple_lines = False):
     file = open("Web-Scraping\scrape.txt", "a")
     for data in text:
-        file.write(str(data))
+        if str(data) != "":
+            file.write(str(data))
+            if multiple_lines:
+                file.write("\n")
     file.write("\n")
     file.close()
 
@@ -77,7 +80,7 @@ def get_text(soup):
     paragraphs = soup.find_all("p")
     for index in range(0, len(paragraphs)):
         paragraphs[index] = remove_escapes(remove_tags(str(paragraphs[index])))
-    write_to_file(paragraphs)
+    write_to_file(paragraphs, True)
 
 def scrape_website(URL: str):
     reset_file()

@@ -132,8 +132,11 @@ def scrape_input(input_filename: str, output_folder: str):
     index = 0
     file = open(input_filename, "r")
     for URL in file:
-        URL = remove_escapes(URL)
-        scrape_website(URL, str(str(output_folder) + "\\" + str(index) + ".txt"))
+        try:
+            URL = remove_escapes(URL)
+            scrape_website(URL, str(str(output_folder) + "\\" + str(index) + ".txt"))
+        except:
+            pass
         index += 1
     file.close()
 

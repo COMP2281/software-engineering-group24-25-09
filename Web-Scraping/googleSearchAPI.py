@@ -1,6 +1,7 @@
 import json
 import os
 import time
+from dotenv import load_dotenv
 
 from googleapiclient.discovery import build
 
@@ -15,11 +16,10 @@ def update_query_counter(prev_time: time, calls_remaining: int):
     return
 
 
-# getting the API key, held on Rosie's computer, directed to by the enviornment variable
-api_key_file_path = os.getenv("GOOGLE_API_KEY")
-api_key_file = open(api_key_file_path, "r")
-api_key = api_key_file.read()
-my_cse_id = "12a15c6009e82483b"
+# loading environment variables for API
+load_dotenv()
+api_key = os.getenv("GOOGLE_API_KEY")
+cse_id = os.getenv("GOOGLE_CSE_ID")
 
 # ensuring daily 100 query limit is not exceeded
 prev_calls_file = open(
@@ -75,7 +75,7 @@ def use_google_api(prev_time: time, calls_remaining: int):
     else:
         calls_remaining -= 1
         results = google_search(
-            '"IBM" "University" article UK Ireland', api_key, my_cse_id, num=10
+            '"IBM" "University" article UK Ireland', api_key, cse_id, num=10
         )
         update_query_counter(prev_time, calls_remaining)
         return results

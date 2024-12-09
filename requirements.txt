@@ -3,3 +3,4 @@ bs4~=0.0.2
 beautifulsoup4~=4.12.3
 ollama~=0.4.2
 google-api-python-client~=2.154.0
+python-dotenv~=1.0.1

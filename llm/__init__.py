@@ -1,6 +1,7 @@
 import subprocess
-
 import ollama
+
+from prompt import Prompt
 
 
 class LLM:
@@ -26,3 +27,11 @@ class LLM:
         self.model_name = model_name
         self.client = ollama.Client(host=self.url)
         self.start_ollama()
+
+    def _generate(self, prompt):
+        return self.client.generate(
+            model=self.model_name, system=prompt.instruction, prompt=prompt.prompt
+        ).response
+
+    def summarise(self, source):
+        return self._generate(Prompt.summarise(source))

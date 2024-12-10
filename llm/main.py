@@ -23,3 +23,6 @@ def get_env():
 if __name__ == "__main__":
     ollama_url, ollama_model_name = get_env()
     llm = LLM(ollama_url, ollama_model_name)
+    file = open("../Web-Scraping/Output/0.txt", "r")
+    print(llm.summarise(file.read()))
+    file.close()

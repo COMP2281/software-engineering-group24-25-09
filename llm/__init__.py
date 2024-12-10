@@ -28,10 +28,10 @@ class LLM:
         self.client = ollama.Client(host=self.url)
         self.start_ollama()
 
-    def _generate(self, prompt):
+    def _generate(self, prompt: Prompt):
         return self.client.generate(
             model=self.model_name, system=prompt.instruction, prompt=prompt.prompt
         ).response
 
-    def summarise(self, source):
+    def summarise(self, source: str):
         return self._generate(Prompt.summarise(source))

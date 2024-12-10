@@ -7,8 +7,8 @@ from llm import LLM
 
 
 # https://stackoverflow.com/a/15799706
-def URL(scheme, netloc, url="", path="", query="", fragment=""):
-    return urlunparse((scheme, netloc, url, path, query, fragment))
+def URL(scheme: str, netloc: str, url="", path="", query="", fragment=""):
+    return str(urlunparse((scheme, netloc, url, path, query, fragment)))
 
 
 def get_env():

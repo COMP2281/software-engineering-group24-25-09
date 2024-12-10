@@ -1,10 +1,10 @@
 class Prompt:
-    def __init__(self, instruction, prompt):
+    def __init__(self, instruction: str, prompt: str):
         self.instruction = instruction
         self.prompt = prompt
 
     @staticmethod
-    def summarise(source):
+    def summarise(source: str):
         return Prompt(
             """You are generating bullet points for a presentation slide about IBM educational outreach.
             You will receive the content from a web page in the following format:

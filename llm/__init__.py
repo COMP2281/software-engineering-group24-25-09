@@ -1,10 +1,11 @@
 import ollama
 
-model_name = "llama3.2:1b"
 
-test_prompt = "hello"
+class LLM:
+    def start_ollama(self):
+        pass
 
-response = ollama.chat(model_name, [{"role": "user", "content": test_prompt}])
-response_text = response["message"]["content"]
-
-print(response_text)
+    def __init__(self, url: str, model_name):
+        self.url = url
+        self.model_name = model_name
+        self.start_ollama()

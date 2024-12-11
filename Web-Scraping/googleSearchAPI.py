@@ -31,8 +31,6 @@ if time_elapsed >= 86400:
     update_query_counter(current_time, 100)
 
 
-
-
 #code sourced from 1st answer on StackOverflow by user mbdevpl on the page https://stackoverflow.com/questions/37083058/programmatically-searching-google-in-python-using-custom-search
 def google_search(search_term, api_key, cse_id, **kwargs):
     service = build("customsearch", "v1", developerKey=api_key)

@@ -1,5 +1,7 @@
 from requests import get
+from copy import deepcopy
 from bs4 import BeautifulSoup
+
 
 def reset_file(filename: str):
     """
@@ -79,25 +81,22 @@ def get_headers(filename: str, soup: str, header_array: list = ["h1", "h2", "h3"
             header_type[index] = remove_escapes(remove_tags(str(header_type[index])))
     write_to_file(filename, headers)
 
-def get_images(filename: str, soup: str):
+
+def find_and_strip_images(soup: BeautifulSoup):
     """
-    :param filename: Name of file to write to.
+    Finds all images in the soup, clears the children, keeps only alt, src, and srcset attributes, and returns a list of references.
     :param soup: BeautifulSoup HTML Output.
-    :returns (Written to File): 2D Array of Images from given HTML; index 0:alt text, index 1:src.
+    :returns: List of BeatifulSoup image tags.
     """
-    image_objects = soup.find_all("img")
     images = []
-    for image in image_objects:
-        try:
-            images.append([image['alt'], image['src']])
-        except:
-            try:
-                srcset = image['srcset']
-                srcset = srcset.split(" ")
-                images.append([image['alt'], srcset[0]])
-            except:
-                pass
-    write_to_file(filename, images)
+    for image in soup.find_all("img"):
+        image.clear()
+        for attribute in list(image.attrs.keys()):
+            if attribute not in ("alt", "src", "srcset"):
+                del image[attribute]
+        images.append(deepcopy(image))
+    return images
+
 
 def get_text(filename: str, soup: str):
     """

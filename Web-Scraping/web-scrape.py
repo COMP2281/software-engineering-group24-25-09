@@ -66,20 +66,22 @@ def get_website(URL: str):
     except:
         pass #No Internet
 
-def get_headers(filename: str, soup: str, header_array: list = ["h1", "h2", "h3", "h4", "h5", "h6"]):
+
+def find_headings(
+    soup: BeautifulSoup, include_headings: tuple = ("h1", "h2", "h3", "h4", "h5", "h6")
+):
     """
-    :param filename: Name of file to write to.
-    :param soup: BeautifulSoup HTML Output.
-    :param header_array: List of all header styles to be scraped.
-    :returns (Written to File): 2D Array of Headers from given HTML, h[index-1].
+    :param soup: BeautifulSoup webpage
+    :param include_headings: List of heading styles to find
+    :returns List of BeautifulSoup heading tags
     """
-    headers = []
-    for header_type in header_array:
-        headers.append(soup.find_all(header_type))
-    for header_type in headers:
-        for index in range(0, len(header_type)):
-            header_type[index] = remove_escapes(remove_tags(str(header_type[index])))
-    write_to_file(filename, headers)
+    headings = []
+    for heading in soup.find_all(include_headings):
+        for attribute in list(heading.attrs.keys()):
+            if attribute not in ("class", "id"):
+                del heading[attribute]
+        headings.append(deepcopy(heading))
+    return headings
 
 
 def find_and_strip_images(soup: BeautifulSoup):

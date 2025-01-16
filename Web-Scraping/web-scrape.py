@@ -130,15 +130,12 @@ def scrape_input(input_filename: str, output_folder: str):
     :param output_folder: Folder to output .txt output files to.
     :returns (Written to Folder): Iterates through a .txt list of URLs and Scrapes data from each.
     """
-    index = 0
     file = open(input_filename, "r")
-    for URL in file:
+    for index, URL in enumerate(file):
         try:
-            URL = remove_escapes(URL)
             scrape_website(URL, str(str(output_folder) + "\\" + str(index) + ".txt"))
         except:
             pass
-        index += 1
     file.close()
 
 scrape_input("Web-Scraping\input.txt", "Web-Scraping\Output")

@@ -1,4 +1,5 @@
 from requests import get
+from requests.exceptions import RequestException
 from copy import deepcopy
 from bs4 import BeautifulSoup
 

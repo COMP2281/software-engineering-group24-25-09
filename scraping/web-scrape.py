@@ -65,16 +65,21 @@ def remove_control_characters(text: str):
     translator = str.maketrans("", "", control_characters_string)
     return text.translate(translator)
 
-def get_website(URL: str):
+
+def get_page_soup(url: str):
     """
-    :param URL: The URL of the website to be scraped.
-    :returns: BeautifulSoup html parsed text.
+    Get web page as element with control characters and comments removed.
+    :param url: URL of page to get.
+    :return: Element.
+    :rtype: BeautifulSoup
     """
     try:
-        return BeautifulSoup((get(URL)).text, "html.parser")
-    except:
-        pass #No Internet
+        html = get(url).text
+    except RequestException as e:
+        raise Exception(f"Failed to get {url}:\n{e}")
 
+    html = remove_control_characters(html)
+    return BeautifulSoup(html, "html.parser")
 
 def find_headings(
     soup: BeautifulSoup, include_headings: tuple = ("h1", "h2", "h3", "h4", "h5", "h6")

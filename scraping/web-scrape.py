@@ -48,12 +48,13 @@ def remove_tags(HTML: str):
 
 def remove_control_characters(text: str):
     """
-    Remove control characters x01 to x1f, excluding whitespace characters
-    TODO: determine if function is necessary; there are many more control characters to consider
+    Remove control characters x01 to x1f, excluding whitespace characters.
+    TODO: determine if function is necessary; there are many more control characters to consider.
         https://en.wikipedia.org/wiki/List_of_Unicode_characters
         https://stackoverflow.com/a/19016117
-    :param text: String containing control characters
-    :returns: String with all control characters removed
+    :param text: String containing control characters.
+    :return: String with control characters removed.
+    :rtype: str
 
     Credit: https://stackoverflow.com/questions/8115261/how-to-remove-all-the-escape-sequences-from-a-list-of-strings
     """

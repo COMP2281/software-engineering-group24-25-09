@@ -45,15 +45,20 @@ def remove_tags(HTML: str):
             collect = True
     return "".join(output_string)
 
-def remove_escapes(text :str):
+
+def remove_control_characters(text: str):
     """
-    :param text: String with escape characters.
-    :returns: String with all escape characters removed.
-    
+    Remove ASCII control characters x01 to x1f, excluding whitespace characters
+    :param text: String containing control characters
+    :returns: String with all control characters removed
+
     Credit: https://stackoverflow.com/questions/8115261/how-to-remove-all-the-escape-sequences-from-a-list-of-strings
     """
-    escapes = "".join([chr(char) for char in range(1,32)])
-    translator = str.maketrans("", "", escapes)
+    control_characters = set([chr(char) for char in range(1, 32)])
+    keep_control_characters = {"\t", "\n", "\r"}
+    control_characters -= keep_control_characters
+    control_characters_string = "".join(list(control_characters))
+    translator = str.maketrans("", "", control_characters_string)
     return text.translate(translator)
 
 def get_website(URL: str):

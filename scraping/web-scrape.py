@@ -55,17 +55,26 @@ def remove_elements(
         element.extract()
 
 
-def find_and_strip_images(soup: BeautifulSoup):
+def strip_element(element: BeautifulSoup, keep_attributes: tuple[str, ...]):
     """
-    Finds all images in the soup, clears the children, keeps only alt, src, and srcset attributes, and returns a list of references.
-    :param soup: BeautifulSoup HTML Output.
-    :returns: List of BeatifulSoup image tags.
+    Remove attributes from an element.
+    :param element: Element to strip.
+    :param keep_attributes: Tuple of element attributes to keep.
+    :return: Element with attributes removed.
+    :rtype: BeautifulSoup
     """
-    images = []
-    for image in soup.find_all("img"):
-        image.clear()
-        for attribute in list(image.attrs.keys()):
-            if attribute not in ("alt", "src", "srcset"):
-                del image[attribute]
-        images.append(deepcopy(image))
-    return images
+    for attribute in list(element.attrs.keys()):
+        if attribute not in keep_attributes:
+            del element[attribute]
+    return element
+
+
+def strip_image(image: BeautifulSoup):
+    """
+    Remove unnecessary attributes and all children from an image.
+    :param image: Image element.
+    :return: Stripped image element.
+    :rtype: BeautifulSoup
+    """
+    image.clear()
+    return strip_element(image, ("alt", "src", "srcset"))

@@ -39,9 +39,20 @@ def get_page_soup(url: str):
     html = remove_control_characters(html)
     return BeautifulSoup(html, "html.parser")
 
+
+def remove_elements(
+    soup: BeautifulSoup,
+    tags: tuple[str, ...],
 ):
     """
+    Remove all elements from soup with given tags.
+    :param soup: BeautifulSoup object.
+    :param tags: Tuple of element tags.
+    :return: BeautifulSoup object with elements removed.
+    :rtype: BeautifulSoup
     """
+    for element in soup.find_all(tags):
+        element.extract()
 
 
 def find_and_strip_images(soup: BeautifulSoup):

@@ -2,6 +2,7 @@ from requests import get
 from requests.exceptions import RequestException
 from copy import deepcopy
 from bs4 import BeautifulSoup
+import re
 
 
 def remove_control_characters(text: str):
@@ -78,3 +79,98 @@ def strip_image(image: BeautifulSoup):
     """
     image.clear()
     return strip_element(image, ("alt", "src", "srcset"))
+
+
+class Page:
+    def update(self):
+        """
+        Get the latest version of the page and update self.
+        """
+        page = get_page_soup(self.url)
+        body = page.find("body")
+        self.body = body
+
+    def __init__(self, url: str):
+        """
+        Set URL and update self.
+        :param url: Webpage URL.
+        """
+        self.body = None
+        self.url = url
+        self.update()
+
+    def get_content(self):
+        """
+        Get a copy of the main content from the page.
+        :return: Body element without unnecessary children.
+        :rtype: BeautifulSoup
+        """
+        content = deepcopy(self.body)
+        remove_elements(
+            content,
+            (
+                "script",
+                "style",
+                "head",
+                "meta",
+                "header",
+                "footer",
+                "noscript",
+                "footer",
+            ),
+        )
+        return content
+
+    def get_flat_content(self):
+        """
+        Get a soup containing all headings, paragraphs, and images in the main content without any nesting.
+        :return: BeautifulSoup object.
+        :rtype: BeautifulSoup
+        """
+        body = self.get_content()
+        content = BeautifulSoup()
+        for element in body.find_all(("h1", "h2", "h3", "h4", "h5", "h6", "p", "img")):
+            content.append(deepcopy(element))
+        return content
+
+    def get_markdown_content(self):
+        """
+        Get a Markdown representation of the main content.
+        :return: Main content formatted in Markdown.
+        :rtype: str
+        """
+        content = self.get_flat_content()
+
+        # replace images with ![alt text]()
+        # URLs aren't needed for the LLM
+        for image in content.find_all("img"):
+            alt_text = image.get("alt", "")
+            image.replace_with(f"\n![{alt_text}]()\n")
+
+        # prefix h1 text with #, h2 with ##, h3 with ###, etc.
+        for i in range(1, 7):
+            for h in content.find_all("h" + str(i)):
+                text = h.get_text()
+                h.replace_with(f"\n{"#" * i} {text}\n")
+
+        # ensure double newlines before and after paragraph text
+        for p in content.find_all("p"):
+            text = p.get_text()
+            p.replace_with(f"\n{text}\n")
+
+        # any repeated newlines are clipped to a maximum of 2
+        # https://regex101.com/r/cIfG7c/1
+        return re.sub(r"\n\n\n+", "\n\n", content.get_text()).strip()
+
+    def get_images(self):
+        """
+        Get a list of all images in the page.
+        :return: A list of stripped image elements.
+        :rtype: list[BeautifulSoup]
+        """
+        images = []
+        for image in self.body.find_all("img"):
+            image = deepcopy(image)
+            image = strip_image(image)
+            images.append(image)
+        return images

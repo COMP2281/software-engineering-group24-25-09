@@ -2,23 +2,6 @@ from requests import get
 from copy import deepcopy
 from bs4 import BeautifulSoup
 
-def remove_tags(HTML: str):
-    """
-    :param HTML: String input with HTML tags.
-    :returns: String with all data between '<' and '>' deleted.
-    """
-    list_HTML = list(HTML)
-    output_string = []
-    collect = True
-    for character in list_HTML:
-        if character == "<":
-            collect = False
-        if collect == True:
-            output_string.append(character)
-        if character == ">":
-            collect = True
-    return "".join(output_string)
-
 
 def remove_control_characters(text: str):
     """

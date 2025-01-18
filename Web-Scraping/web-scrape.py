@@ -48,7 +48,10 @@ def remove_tags(HTML: str):
 
 def remove_control_characters(text: str):
     """
-    Remove ASCII control characters x01 to x1f, excluding whitespace characters
+    Remove control characters x01 to x1f, excluding whitespace characters
+    TODO: determine if function is necessary; there are many more control characters to consider
+        https://en.wikipedia.org/wiki/List_of_Unicode_characters
+        https://stackoverflow.com/a/19016117
     :param text: String containing control characters
     :returns: String with all control characters removed
 

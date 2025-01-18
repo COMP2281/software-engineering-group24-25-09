@@ -39,21 +39,9 @@ def get_page_soup(url: str):
     html = remove_control_characters(html)
     return BeautifulSoup(html, "html.parser")
 
-def find_headings(
-    soup: BeautifulSoup, include_headings: tuple = ("h1", "h2", "h3", "h4", "h5", "h6")
 ):
     """
-    :param soup: BeautifulSoup webpage
-    :param include_headings: List of heading styles to find
-    :returns List of BeautifulSoup heading tags
     """
-    headings = []
-    for heading in soup.find_all(include_headings):
-        for attribute in list(heading.attrs.keys()):
-            if attribute not in ("class", "id"):
-                del heading[attribute]
-        headings.append(deepcopy(heading))
-    return headings
 
 
 def find_and_strip_images(soup: BeautifulSoup):

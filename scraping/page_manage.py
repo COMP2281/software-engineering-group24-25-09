@@ -1,25 +1,21 @@
-def reset_file(filename: str):
-    """
-    :param filename: File to be reset.
-    :returns Nothing: Resets a File by writing the empty string to it.
-    """
-    file = open(filename, "w")
-    file.write("")
-    file.close()
+import os.path
+import pickle
 
 
-def write_to_file(filename: str, text: list, multiple_lines=False):
-    """
-    :param filename: File to be written to.
-    :param text: Text to be written to file.
-    :param multiple_lines: Flag for outputting to multiple lines of the file.
-    :returns (Written to File): text
-    """
-    file = open(filename, "a")
-    for data in text:
-        if str(data) != "":
-            file.write(str(data))
-            if multiple_lines:
-                file.write("\n")
-    file.write("\n")
-    file.close()
+class PageManager:
+    def file_exists(self):
+        return os.path.isfile(self.file_path)
+
+    def load_pages(self):
+        if self.file_exists():
+            file = open(self.file_path, "rb")
+            self.pages = pickle.load(file)
+
+    def __init__(self, file_path):
+        self.file_path = file_path
+        self.pages = {}
+        self.load_pages()
+
+    def save_pages(self):
+        file = open(self.file_path, "wb")
+        pickle.dump(self.pages, file)

@@ -1,5 +1,6 @@
 import os.path
 import pickle
+from scraping.web_scrape import Page
 
 
 class PageManager:
@@ -19,3 +20,15 @@ class PageManager:
     def save_pages(self):
         file = open(self.file_path, "wb")
         pickle.dump(self.pages, file)
+
+    def add_page(self, url: str):
+        self.pages[url] = Page(url)
+        self.save_pages()
+
+    def remove_page(self, url: str):
+        del self.pages[url]
+        self.save_pages()
+
+    def update_page(self, url: str):
+        self.pages[url].update()
+        self.save_pages()

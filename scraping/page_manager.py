@@ -1,6 +1,6 @@
 import os.path
 import pickle
-from scraping.web_scrape import Page
+from scraping.page import Page
 
 
 class PageManager:

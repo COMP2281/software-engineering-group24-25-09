@@ -35,3 +35,6 @@ class LLM:
 
     def summarise(self, source: str):
         return self._generate(Prompt.summarise(source))
+
+    def employees(self, source: str):
+        return self._generate(Prompt.employees(source))

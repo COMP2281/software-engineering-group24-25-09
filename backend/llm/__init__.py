@@ -1,7 +1,7 @@
 import subprocess
 import ollama
 
-from prompt import Prompt
+from .prompt import Prompt
 
 
 class LLM:

@@ -36,3 +36,8 @@ class PageManager:
             return
         self.pages[url].update()
         self.save_pages()
+
+    def get_page(self, url: str):
+        if url not in self.pages:
+            self.add_page(url)
+        return self.pages[url]

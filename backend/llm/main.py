@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 from urllib.parse import urlunparse
 
-from llm import LLM
+from backend.llm import LLM
 
 
 # https://stackoverflow.com/a/15799706
@@ -23,6 +23,6 @@ def get_env():
 if __name__ == "__main__":
     ollama_url, ollama_model_name = get_env()
     llm = LLM(ollama_url, ollama_model_name)
-    file = open("../Web-Scraping/Output/0.txt", "r")
+    file = open("../scraping/Output/0.txt", "r")
     print(llm.summarise(file.read()))
     file.close()

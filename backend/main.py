@@ -1,13 +1,13 @@
 import os
-
+from scraping import PageManager
+from data.urls import urls
 from dotenv import load_dotenv
 from urllib.parse import urlunparse
-
 from llm import LLM
 
 
-# https://stackoverflow.com/a/15799706
 def URL(scheme: str, netloc: str, url="", path="", query="", fragment=""):
+    # https://stackoverflow.com/a/15799706
     return str(urlunparse((scheme, netloc, url, path, query, fragment)))
 
 
@@ -21,8 +21,14 @@ def get_env():
 
 
 if __name__ == "__main__":
+    page_manager = PageManager("data/pages.pickle")
+    # for url in urls:
+    #     page_manager.add_page(url)
+    print(page_manager.pages)
+
     ollama_url, ollama_model_name = get_env()
     llm = LLM(ollama_url, ollama_model_name)
-    file = open("../Web-Scraping/Output/0.txt", "r")
-    print(llm.summarise(file.read()))
-    file.close()
+    page = page_manager.get_page(
+        "https://www.imperial.ac.uk/news/255517/phase-collaboration-sustainable-futures-between-imperial/"
+    )
+    print(llm.employees(page.get_markdown_content()))

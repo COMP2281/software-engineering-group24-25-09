@@ -75,7 +75,7 @@ def use_google_api(prev_time: time, calls_remaining: int):
     else:
         calls_remaining -= 1
         results = google_search(
-            '"IBM" "University" article UK Ireland', api_key, cse_id, num=10
+            '"IBM" interacts with "University" article UK Ireland', api_key, cse_id, num=10
         )
         update_query_counter(prev_time, calls_remaining)
         return results

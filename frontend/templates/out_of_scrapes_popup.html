@@ -1,0 +1,11 @@
+<dialog id="out_of_scrapes_popup" class="modal modal-open" _="on closeModal remove .modal-open then wait for animationend then remove me">
+    <div class="modal-box p-5">
+        <form method="dialog" class="modal-backdrop">
+            <button class="cursor-default" _="on click trigger closeModal"></button>
+        </form>
+        <button class="btn btn-circle btn-ghost btn-sm right-2 top-2" _="on click trigger closeModal">✕</button>
+        <div class="h-30 p-5 w-full rounded bg-base-600 text-lg">
+            All Scraping credits have been used for today. Please try again tomorrow.
+        </div>
+    </div>
+</dialog>

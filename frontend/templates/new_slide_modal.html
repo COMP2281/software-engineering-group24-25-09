@@ -18,7 +18,14 @@
             </div>
         </div>
 
-        <button class="h-30 btn btn-ghost mt-2 w-full rounded bg-base-200 text-lg">Durham University</button>
+        <button class="h-30 btn btn-ghost mt-2 w-full rounded bg-base-200 text-lg"
+                hx-get="templates/create_new_slide.html"
+                hx-swap="outerHTML"
+                hx-trigger="click"
+                hx-target="#create_new_slide"
+                _="on click trigger closeModal">
+        Durham University
+        </button>
         <button class="h-30 btn btn-ghost mt-2 w-full rounded bg-base-200 text-lg">Bristol University</button>
         <button class="h-30 btn btn-ghost mt-2 w-full rounded bg-base-200 text-lg">Bath University</button>
         <button class="h-30 btn btn-ghost mt-2 w-full rounded bg-base-200 text-lg">Exeter University</button>
@@ -45,6 +52,14 @@
                     hx-trigger="click"
                     hx-target="#out_of_scrapes_popup"
                 >
+                <!-- trying to implement a spinning icon whilst program is scraping- not currently functional -->
+                <!-- <button
+                    class="h-50 btn btn-secondary w-full text-lg"
+                    hx-get="resources/loading_spinner.html"
+                    hx-swap="innerHTML"
+                    hx-trigger="click"
+                    hx-target="this"
+                > -->
                     <div class="w-5" hx-get="resources/plus.html" hx-swap="innerHTML" hx-target="this" hx-trigger="load"></div>
                     Scrape New Engagments
                 </button>

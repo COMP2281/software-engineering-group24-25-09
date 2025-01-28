@@ -4,6 +4,7 @@ import time
 from dotenv import load_dotenv, find_dotenv
 import pickle
 from searchPrompts import prompts
+
 load_dotenv(find_dotenv())
 # loading environment variables for API
 api_key = os.getenv("GOOGLE_API_KEY")
@@ -27,6 +28,7 @@ print(cse_id)
 #     update_query_counter(current_time, 100)
 from googleapiclient.discovery import build
 
+
 class CreditCounter:
     def __init__(self):
         self.credits = 100
@@ -41,7 +43,7 @@ class CreditCounter:
             return True
         else:
             return False
-    
+
     def update_counter(self):
         # if over a day has passed since the last time update, start the total call counter again
         current_time = time.time()
@@ -62,19 +64,20 @@ class CreditCounter:
             raise Exception("OUT OF SEARCH CREDITS (WITHIN CREDITCOUNTER)")
         return
 
+
 class Search:
     def __init__(self, api_key: str, cse_id: str, data_path: str):
         self.api_key = api_key
         self.cse_id = cse_id
-        self.file_path = data_path + "counter.pickle"
+        self.file_path = os.path.join(data_path, "counter.pickle")
         self.counter = None
         self.load_counter()
         self.save_counter()
-        
+
     # checks if counter file exists, boolean response
     def file_exists(self):
         return os.path.isfile(self.file_path)
-    
+
     # loads in pickle counter file
     def load_counter(self):
         if self.file_exists():
@@ -87,13 +90,13 @@ class Search:
     # saves pickeled file counter
     def save_counter(self):
         file = open(self.file_path, "wb+")
-        pickle.dump({"counter":self.counter}, file)
+        pickle.dump({"counter": self.counter}, file)
         return
-    
+
     def google_search(self):
         if self.counter.num_credits_remaining() < len(prompts):
             raise Exception("OUT OF CREDITS FOR EVERY PROMPT (WITHIN SEARCH)")
-        
+
         results_JSON = []
         for prompt in prompts:
             if not self.counter.credits_remaining():
@@ -101,7 +104,6 @@ class Search:
             results_JSON.append(self.use_google_api(prompt))
         
         print(results_JSON)
-
 
     def use_google_api(self, prompt: str):
         self.counter.decrement_credit_counter()
@@ -127,7 +129,7 @@ class Search:
         return URLs
 
     # writing URLs to file for processing. one URL per line
-    #write_to_file(r"Web-Scraping\APICallManagment\URLs.txt", URLs, True)
+    # write_to_file(r"Web-Scraping\APICallManagment\URLs.txt", URLs, True)
 
     def write_to_file(filename: str, text: list, multiple_lines=False):
         """
@@ -152,7 +154,7 @@ class Search:
             json.dump(data, json_file, indent=4)
 
 
-#FOR TESTING WITHOUT USING CREDITS
+# FOR TESTING WITHOUT USING CREDITS
 # def use_test_api_results():
 #     file_path = "Web-Scraping\APICallManagment\APIcallReturns.json"
 #     with open(file_path, "r") as json_file:
@@ -160,6 +162,5 @@ class Search:
 #     return results
 
 
-search = Search(api_key, cse_id, "../data/")
-print(search.counter.credits)
-#search.google_search()
+search = Search(api_key, cse_id, "../data")
+# search.google_search()

@@ -91,7 +91,6 @@ class Search:
         return
     
     def google_search(self):
-        print("in here")
         if self.counter.num_credits_remaining() < len(prompts):
             raise Exception("OUT OF CREDITS FOR EVERY PROMPT (WITHIN SEARCH)")
         
@@ -105,6 +104,7 @@ class Search:
 
 
     def use_google_api(self, prompt: str):
+        self.counter.decrement_credit_counter()
         service = build("customsearch", "v1", developerKey=self.api_key)
         res = service.cse().list(q=prompt, cx=self.cse_id, num=10).execute()
         return res["items"]

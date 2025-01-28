@@ -1,13 +1,16 @@
 import json
 import os
 import time
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 import pickle
-#load_dotenv()
-# # loading environment variables for API
-# self.api_key = os.getenv("GOOGLE_API_KEY")
-# self.cse_id = os.getenv("GOOGLE_CSE_ID")
+from searchPrompts import prompts
+load_dotenv(find_dotenv())
+# loading environment variables for API
+api_key = os.getenv("GOOGLE_API_KEY")
+cse_id = os.getenv("GOOGLE_CSE_ID")
 
+print(api_key)
+print(cse_id)
 # ensuring daily 100 query limit is not exceeded
 # prev_calls_file = open(
 #     "Web-Scraping\APICallManagment\GoogleSearchQueryCounter.txt", "r"
@@ -29,6 +32,8 @@ class CreditCounter:
         self.credits = 100
         self.time = time.time()
 
+    def num_credits_remaining(self):
+        return self.credits
 
     def credits_remaining(self):
         self.update_counter()
@@ -54,7 +59,7 @@ class CreditCounter:
         if self.credits_remaining():
             self.credits -= 1
         else:
-            raise Exception("OUT OF SEARCH CREDITS")
+            raise Exception("OUT OF SEARCH CREDITS (WITHIN CREDITCOUNTER)")
         return
 
 class Search:
@@ -62,7 +67,9 @@ class Search:
         self.api_key = api_key
         self.cse_id = cse_id
         self.file_path = data_path + "counter.pickle"
+        self.counter = None
         self.load_counter()
+        self.save_counter()
         
     # checks if counter file exists, boolean response
     def file_exists(self):
@@ -72,71 +79,35 @@ class Search:
     def load_counter(self):
         if self.file_exists():
             file = open(self.file_path, "rb")
-            self.counter = pickle.load(file)
+            self.counter = pickle.load(file)["counter"]
         else:
             self.counter = CreditCounter()
         return
 
     # saves pickeled file counter
     def save_counter(self):
-        file = open(self.file_path, "wb")
-        pickle.dump(self.counter, file)
-        return
-
-    # updating the query counter
-    def update_query_counter(prev_time: time, calls_remaining: int):
-        prev_calls_file = open(
-            "Web-Scraping\APICallManagment\GoogleSearchQueryCounter.txt", "w"
-        )
-        prev_calls_file.writelines([str(prev_time), "\n", str(calls_remaining)])
-        prev_calls_file.close()
+        file = open(self.file_path, "wb+")
+        pickle.dump({"counter":self.counter}, file)
         return
     
+    def google_search(self):
+        print("in here")
+        if self.counter.num_credits_remaining() < len(prompts):
+            raise Exception("OUT OF CREDITS FOR EVERY PROMPT (WITHIN SEARCH)")
+        
+        results_JSON = []
+        for prompt in prompts:
+            if not self.counter.credits_remaining():
+                raise Exception("OUT OF CREDIT COUNTER (WITHIN SEARCH)")
+            results_JSON.append(self.use_google_api(prompt))
+        
+        print(results_JSON)
 
 
-    # code sourced from 1st answer on StackOverflow by user mbdevpl on the page https://stackoverflow.com/questions/37083058/programmatically-searching-google-in-python-using-custom-search
-    def google_search(search_term, api_key, cse_id, **kwargs):
-        service = build("customsearch", "v1", developerKey=api_key)
-        res = service.cse().list(q=search_term, cx=cse_id, **kwargs).execute()
+    def use_google_api(self, prompt: str):
+        service = build("customsearch", "v1", developerKey=self.api_key)
+        res = service.cse().list(q=prompt, cx=self.cse_id, num=10).execute()
         return res["items"]
-
-
-    def write_to_file(filename: str, text: list, multiple_lines=False):
-        """
-        :param filename: File to be written to.
-        :param text: Text to be written to file.
-        :param multiple_lines: Flag for outputting to multiple lines of the file.
-        :returns (Written to File): text
-        """
-        file = open(filename, "a")
-        for data in text:
-            if str(data) != "":
-                file.write(str(data))
-                if multiple_lines:
-                    file.write("\n")
-        file.write("\n")
-        file.close()
-
-
-    def use_test_api_results():
-        file_path = "Web-Scraping\APICallManagment\APIcallReturns.json"
-        with open(file_path, "r") as json_file:
-            results = json.load(json_file)
-        return results
-
-
-    def use_google_api(prev_time: time, calls_remaining: int):
-        if calls_remaining <= 0:
-            print("no remaining calls- using test data")
-            return use_test_api_results()
-        else:
-            calls_remaining -= 1
-            results = google_search(
-                '"IBM" interacts with "University" article UK Ireland', api_key, cse_id, num=10
-            )
-            update_query_counter(prev_time, calls_remaining)
-            return results
-
 
     def extract_URLs_from_JSON(json_data):
         # extracting URLs from the returned JSON of found sites
@@ -155,15 +126,40 @@ class Search:
             URLs.append(result["link"])
         return URLs
 
-
-    results = use_google_api(prev_time, calls_remaining)
-    URLs = extract_URLs_from_JSON(results)
     # writing URLs to file for processing. one URL per line
-    write_to_file(r"Web-Scraping\APICallManagment\URLs.txt", URLs, True)
+    #write_to_file(r"Web-Scraping\APICallManagment\URLs.txt", URLs, True)
 
+    def write_to_file(filename: str, text: list, multiple_lines=False):
+        """
+        :param filename: File to be written to.
+        :param text: Text to be written to file.
+        :param multiple_lines: Flag for outputting to multiple lines of the file.
+        :returns (Written to File): text
+        """
+        file = open(filename, "a")
+        for data in text:
+            if str(data) != "":
+                file.write(str(data))
+                if multiple_lines:
+                    file.write("\n")
+        file.write("\n")
+        file.close()
 
     # saving raw json returns to a file
     def save_raw_JSON_return(file_path: str, data: dict):
         # file_path = "Web-Scraping\APICallManagment\APIcallReturns.json"
         with open(file_path, "w") as json_file:
             json.dump(data, json_file, indent=4)
+
+
+#FOR TESTING WITHOUT USING CREDITS
+# def use_test_api_results():
+#     file_path = "Web-Scraping\APICallManagment\APIcallReturns.json"
+#     with open(file_path, "r") as json_file:
+#         results = json.load(json_file)
+#     return results
+
+
+search = Search(api_key, cse_id, "../data/")
+print(search.counter.credits)
+#search.google_search()

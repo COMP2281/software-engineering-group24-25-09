@@ -2,6 +2,7 @@ import json
 import os
 import time
 from dotenv import load_dotenv
+import pickle
 #load_dotenv()
 # # loading environment variables for API
 # self.api_key = os.getenv("GOOGLE_API_KEY")
@@ -57,9 +58,30 @@ class CreditCounter:
         return
 
 class Search:
-    def __init__(self, api_key: str, cse_id: str):
+    def __init__(self, api_key: str, cse_id: str, data_path: str):
         self.api_key = api_key
         self.cse_id = cse_id
+        self.file_path = data_path + "counter.pickle"
+        self.load_counter()
+        
+    # checks if counter file exists, boolean response
+    def file_exists(self):
+        return os.path.isfile(self.file_path)
+    
+    # loads in pickle counter file
+    def load_counter(self):
+        if self.file_exists():
+            file = open(self.file_path, "rb")
+            self.counter = pickle.load(file)
+        else:
+            self.counter = CreditCounter()
+        return
+
+    # saves pickeled file counter
+    def save_counter(self):
+        file = open(self.file_path, "wb")
+        pickle.dump(self.counter, file)
+        return
 
     # updating the query counter
     def update_query_counter(prev_time: time, calls_remaining: int):

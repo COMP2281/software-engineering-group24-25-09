@@ -45,21 +45,21 @@
         <!-- scrape for new engagements button -->
         <div class="sticky bottom-2">
             <div class="m-0 flex inline-flex h-8 w-full bg-base-300 p-0">
-                <button
+                <!-- <button
                     class="h-50 btn btn-secondary w-full text-lg"
                     hx-get="templates/out_of_scrapes_popup.html"
                     hx-swap="outerHTML"
                     hx-trigger="click"
                     hx-target="#out_of_scrapes_popup"
-                >
+                > -->
                 <!-- trying to implement a spinning icon whilst program is scraping- not currently functional -->
-                <!-- <button
+                <button
                     class="h-50 btn btn-secondary w-full text-lg"
                     hx-get="resources/loading_spinner.html"
                     hx-swap="innerHTML"
                     hx-trigger="click"
                     hx-target="this"
-                > -->
+                >
                     <div class="w-5" hx-get="resources/plus.html" hx-swap="innerHTML" hx-target="this" hx-trigger="load"></div>
                     Scrape New Engagments
                 </button>

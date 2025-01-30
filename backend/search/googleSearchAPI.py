@@ -78,7 +78,7 @@ class Search:
     # loads in pickle counter file
     def load_counter(self):
         if self.file_exists():
-            file = open(self.file_path, "rb")
+            file = open(self.file_path, "rb+")
             self.counter = pickle.load(file)["counter"]
         else:
             self.counter = CreditCounter()
@@ -90,67 +90,43 @@ class Search:
         pickle.dump({"counter":self.counter}, file)
         return
     
+    # will go through the promps provided, queries the google api for each query, returning 10
+    # URLS each time is messy JSON
+    # then calls the private get URLs method to extract these URLs and return them as a list
     def google_search(self):
+        # ensure every prompt can be queried or else report out of credits
         if self.counter.num_credits_remaining() < len(prompts):
             raise Exception("OUT OF CREDITS FOR EVERY PROMPT (WITHIN SEARCH)")
         
         results_JSON = []
         for prompt in prompts:
+            # double check if there are enough credits remaining or not
             if not self.counter.credits_remaining():
                 raise Exception("OUT OF CREDIT COUNTER (WITHIN SEARCH)")
+            # add the returned json information for result given by the prompt to the array
             results_JSON.append(self.use_google_api(prompt))
         
-        print(results_JSON)
+        URLs = self.extract_URLs_from_JSON(results_JSON)
+        print(URLs)
+        return URLs
 
 
     def use_google_api(self, prompt: str):
+        # edit the counter for the outgoing api request
         self.counter.decrement_credit_counter()
+        self.save_counter()
+        #call google custom search api
         service = build("customsearch", "v1", developerKey=self.api_key)
         res = service.cse().list(q=prompt, cx=self.cse_id, num=10).execute()
+        #return the item section of the json response (removes irrelevent headers)
         return res["items"]
 
-    def extract_URLs_from_JSON(json_data):
+    def extract_URLs_from_JSON(self,json_data):
         # extracting URLs from the returned JSON of found sites
         URLs = []
         for result in json_data:
-            metatags = result["pagemap"]["metatags"]
-            try:
-                location = metatags[0]["geo.country"]
-            except:
-                location = False
-            # google returns location eg. GB, US- could be used to narrow down sites?
-            if location:
-                print(location)
-            else:
-                print("no location given ")
             URLs.append(result["link"])
         return URLs
-
-    # writing URLs to file for processing. one URL per line
-    #write_to_file(r"Web-Scraping\APICallManagment\URLs.txt", URLs, True)
-
-    def write_to_file(filename: str, text: list, multiple_lines=False):
-        """
-        :param filename: File to be written to.
-        :param text: Text to be written to file.
-        :param multiple_lines: Flag for outputting to multiple lines of the file.
-        :returns (Written to File): text
-        """
-        file = open(filename, "a")
-        for data in text:
-            if str(data) != "":
-                file.write(str(data))
-                if multiple_lines:
-                    file.write("\n")
-        file.write("\n")
-        file.close()
-
-    # saving raw json returns to a file
-    def save_raw_JSON_return(file_path: str, data: dict):
-        # file_path = "Web-Scraping\APICallManagment\APIcallReturns.json"
-        with open(file_path, "w") as json_file:
-            json.dump(data, json_file, indent=4)
-
 
 #FOR TESTING WITHOUT USING CREDITS
 # def use_test_api_results():

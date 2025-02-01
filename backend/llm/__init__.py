@@ -1,4 +1,5 @@
 import subprocess
+import httpx
 import ollama
 
 from .prompt import Prompt
@@ -6,10 +7,17 @@ from .prompt import Prompt
 
 class LLM:
     def ollama_running(self):
+        """
+        Check if Ollama is running.
+        :return: True if Ollama is running, otherwise False.
+        :rtype: bool
+        """
+        # try to run Ollama list command
         try:
             self.client.list()
             return True
-        except:
+        # if it can't connect, return False
+        except httpx.ConnectError:
             return False
 
     def _start_ollama(self):

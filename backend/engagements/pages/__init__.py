@@ -12,8 +12,8 @@ class PageManager:
             file = open(self.file_path, "rb")
             self.pages = pickle.load(file)
 
-    def __init__(self, file_path):
-        self.file_path = file_path
+    def __init__(self, data_path):
+        self.file_path = os.path.join(data_path, "pages.pickle")
         self.pages = {}
         self.load_pages()
 

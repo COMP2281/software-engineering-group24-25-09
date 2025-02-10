@@ -1,6 +1,6 @@
 import os
-from scraping import PageManager
-from data.urls import urls
+from backend.data.urls import urls
+from engagements import EngagementManager
 from dotenv import load_dotenv
 from urllib.parse import urlunparse
 from llm import LLM
@@ -21,14 +21,14 @@ def get_env():
 
 
 if __name__ == "__main__":
-    page_manager = PageManager("data/pages.pickle")
-    # for url in urls:
-    #     page_manager.add_page(url)
-    print(page_manager.pages)
+    engagement_manager = EngagementManager("./data")
+    for url in urls:
+        engagement_manager.page_manager.add_page(url)
+    print(engagement_manager.page_manager.pages)
 
     ollama_url, ollama_model_name = get_env()
     llm = LLM(ollama_url, ollama_model_name)
-    page = page_manager.get_page(
+    page = engagement_manager.page_manager.get_page(
         "https://www.imperial.ac.uk/news/255517/phase-collaboration-sustainable-futures-between-imperial/"
     )
     print(llm.employees(page.get_markdown_content()))

@@ -1,7 +1,17 @@
 import os
 import pickle
+import re
+
 from .engagement import Engagement
 from .pages import PageManager
+
+
+def title_to_slug(title: str):
+    title = title.strip().lower()
+    # space with underscores
+    title = re.sub(r" +", "_", title)
+    # keep only alphanumeric and _ characters
+    return re.sub("[^a-z0-9_]", "", title)
 
 
 class EngagementManager:

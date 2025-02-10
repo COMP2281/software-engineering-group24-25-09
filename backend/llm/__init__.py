@@ -49,7 +49,9 @@ class LLM:
         return sentences
 
     def employees(self, page: Page):
-        return self._generate(Prompt.employees(page.get_markdown_content()))
+        response = self._generate(Prompt.employees(page.get_markdown_content()))
+        employees = re.split(r"\n+", response)
+        return employees
 
     def title(self, page: Page):
         return self._generate(Prompt.title(page.get_markdown_content()))

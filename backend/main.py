@@ -24,11 +24,11 @@ if __name__ == "__main__":
     engagement_manager = EngagementManager("./data")
     for url in urls:
         engagement_manager.page_manager.add_page(url)
-    print(engagement_manager.page_manager.pages)
+    print(len(engagement_manager.page_manager.pages), "pages loaded")
 
     ollama_url, ollama_model_name = get_env()
     llm = LLM(ollama_url, ollama_model_name)
     page = engagement_manager.page_manager.get_page(
         "https://www.imperial.ac.uk/news/255517/phase-collaboration-sustainable-futures-between-imperial/"
     )
-    print(llm.summarise(page))
+    print(llm.employees(page))

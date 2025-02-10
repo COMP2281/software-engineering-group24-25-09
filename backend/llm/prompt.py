@@ -20,7 +20,7 @@ class Prompt:
         return Prompt(
             """You are finding IBM employees involved in educational outreach.
             You will receive the content from a web page. It may contain irrelevant information outside of the main article.
-            Please list each IBM employee involved.
+            Please list the name of each IBM employee involved.
             Write each on a new line.
             Do not confirm this message or say anything else.
             Avoid any formatting or indentation.""",

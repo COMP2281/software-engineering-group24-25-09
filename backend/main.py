@@ -31,4 +31,4 @@ if __name__ == "__main__":
     page = engagement_manager.page_manager.get_page(
         "https://www.imperial.ac.uk/news/255517/phase-collaboration-sustainable-futures-between-imperial/"
     )
-    print(llm.title(page.get_markdown_content()))
+    print(llm.title(page))

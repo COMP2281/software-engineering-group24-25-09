@@ -3,6 +3,7 @@ import httpx
 import ollama
 
 from .prompt import Prompt
+from backend.engagements.pages import Page
 
 
 class LLM:
@@ -41,11 +42,11 @@ class LLM:
             model=self.model_name, system=prompt.instruction, prompt=prompt.prompt
         ).response
 
-    def summarise(self, source: str):
-        return self._generate(Prompt.summarise(source))
+    def summarise(self, page: Page):
+        return self._generate(Prompt.summarise(page.get_markdown_content()))
 
-    def employees(self, source: str):
-        return self._generate(Prompt.employees(source))
+    def employees(self, page: Page):
+        return self._generate(Prompt.employees(page.get_markdown_content()))
 
-    def title(self, source: str):
-        return self._generate(Prompt.title(source))
+    def title(self, page: Page):
+        return self._generate(Prompt.title(page.get_markdown_content()))

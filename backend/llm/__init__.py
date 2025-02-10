@@ -1,3 +1,4 @@
+import re
 import subprocess
 import httpx
 import ollama
@@ -43,7 +44,9 @@ class LLM:
         ).response
 
     def summarise(self, page: Page):
-        return self._generate(Prompt.summarise(page.get_markdown_content()))
+        response = self._generate(Prompt.summarise(page.get_markdown_content()))
+        sentences = re.split(r"\n+", response)
+        return sentences
 
     def employees(self, page: Page):
         return self._generate(Prompt.employees(page.get_markdown_content()))

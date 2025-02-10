@@ -46,3 +46,6 @@ class LLM:
 
     def employees(self, source: str):
         return self._generate(Prompt.employees(source))
+
+    def title(self, source: str):
+        return self._generate(Prompt.title(source))

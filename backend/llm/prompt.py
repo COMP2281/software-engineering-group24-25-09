@@ -4,7 +4,7 @@ class Prompt:
         self.prompt = prompt
 
     @staticmethod
-    def summarise(source: str):
+    def summarise(source: str):  # explicit word count
         return Prompt(
             """You are finding how IBM have been involved in educational outreach.
             You will receive the content from a web page. It may contain irrelevant information outside of the main article.
@@ -24,5 +24,14 @@ class Prompt:
             Write each on a new line.
             Do not confirm this message or say anything else.
             Avoid any formatting or indentation.""",
+            source,
+        )
+
+    @staticmethod
+    def title(source: str):
+        return Prompt(
+            """You will receive the content from a web page. It may contain irrelevant information outside of the main article.
+            Please write a short title that describes the content.
+            Do not confirm this message or say anything else.""",
             source,
         )

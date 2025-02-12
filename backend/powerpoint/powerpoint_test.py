@@ -15,35 +15,19 @@
 
 from pptx import Presentation
 from pptx.util import Inches
+import os
+import random
+TEMPLATES = os.getenv("TEMPLATES", "templates") # Gets the path to the files
+TEMPLATE_LIST = os.listdir(TEMPLATES) # Gets the files in the location
 
-# Creation of slides
-def create_slide(name, titleName, content, picture_path):
-    prs = Presentation()
-    title_slide_layout = prs.slide_layouts[7]  # Choose an appropriate layout
-    slide = prs.slides.add_slide(title_slide_layout)
+# From Existing temples create a slide
+def create_slide(export_name, title_name, content, picture):
+    selected_item = random.choice(TEMPLATE_LIST)
 
-    # Add Title
-    title = slide.shapes.title
-    if title:
-        title.text = titleName
 
-    # Add Content
-    if len(slide.placeholders) > 1:
-        subtitle = slide.placeholders[1]
-        subtitle.text = content
-
-    # Add Picture
-    left = Inches(2)  # X position
-    top = Inches(2)   # Y position
-    width = Inches(4)  # Optional: Set width (height auto-adjusts)
-
-    try:
-        slide.shapes.add_picture(picture_path, left, top, width=width)
-    except FileNotFoundError:
-        print(f"Image file '{picture_path}' not found!")
-
-    prs.save(name)
-    print(f"Presentation saved as {name}")
+# Group the slides together
+def export_powerpoint():
+    pass
 
 # PowerPoint creation
 create_slide("test.pptx", "Test", "Content would be here Why bullet points", "test.png")

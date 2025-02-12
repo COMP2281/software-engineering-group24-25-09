@@ -1,4 +1,4 @@
-# Notes on Engagement Tracker UI
+# Notes on Engagement Tracker UI (Frontend)
 
 "Content" will be the preview of each slides we made.
 
@@ -10,13 +10,13 @@ If you click on the moon, it turns into a sun and light mode is enabled! Click t
 
 ### New Slide button
 
-Clicking on "New Slide" gets you a window allowing you to select something. Each of these selections will be names of engagments with the date!
+Clicking on "New Slide" gets you a window allowing you to select something. Each of these selections will be names of engagements with the date!
 
 My assignment: add a filter to search by date. And let the search bar work so we can search for searchable engagements that match for things that we want to search and also search for things that are close to being searched.
 
 For example, the engagement title may be ["IBM engagment with Durham Uni", "2025-01-21"]. We need to extract the equivalent of "2025-01-21" and calculate the difference between the given date and the engagements. 
 
-We could also allow the end-user to search for a month or year of engagements. Let's highlight exact dates, and then get non-exact dates under a "didn't find what you were looking for? try these" section.
+We could also allow the end-user to search for a month or year of engagements. Let's highlight exact dates, and then get non-exact dates under a "Didn't find what you were looking for? Try these" section.
 
 ### Timings
 

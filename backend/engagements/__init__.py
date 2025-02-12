@@ -25,3 +25,19 @@ class EngagementManager:
     def save_engagements(self):
         file = open(self.file_path, "wb")
         pickle.dump(self.engagement_data_objects, file)
+
+    def wrap_engagement_data(self, data: EngagementData) -> Engagement:
+        return Engagement(self, data)
+
+    def get_engagement_data(self, slug):
+        return self.engagement_data_objects[slug]
+
+    def get_engagement(self, slug: str) -> Engagement:
+        engagement_data = self.get_engagement_data(slug)
+        return self.wrap_engagement_data(engagement_data)
+
+    def get_engagements(self):
+        engagements = {}
+        for slug in self.engagement_data_objects:
+            engagements[slug] = self.get_engagement(slug)
+        return engagements

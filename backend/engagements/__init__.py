@@ -41,3 +41,10 @@ class EngagementManager:
         for slug in self.engagement_data_objects:
             engagements[slug] = self.get_engagement(slug)
         return engagements
+
+    def add_engagement_data(self, engagement_data: EngagementData) -> None:
+        self.engagement_data_objects[engagement_data.get_slug()] = engagement_data
+        self.save_engagements()
+
+    def add_engagement(self, engagement: Engagement) -> None:
+        self.add_engagement_data(engagement.get_data())

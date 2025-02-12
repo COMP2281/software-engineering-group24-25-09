@@ -1,5 +1,6 @@
 import re
-from backend.engagements.pages import Page, PageManager
+from backend.engagements import EngagementManager
+from backend.engagements.pages import Page
 from .llm import LLM
 
 
@@ -30,13 +31,14 @@ class EngagementData:
 
 
 class Engagement:
-    def __init__(self, llm, page_manager: PageManager, data: EngagementData | Page):
-        self.llm = llm
-        self.page_manager = page_manager
+    def __init__(
+        self, engagement_manager: EngagementManager, data: EngagementData | Page
+    ):
+        self.engagement_manager = engagement_manager
         if isinstance(data, EngagementData):
             self.data = data
         elif isinstance(data, Page):
-            self.data = EngagementData(llm, data)
+            self.data = EngagementData(self.engagement_manager.llm, data)
 
     def get_slug(self):
         return self.get_slug()

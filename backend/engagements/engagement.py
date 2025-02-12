@@ -49,3 +49,6 @@ class Engagement:
     def get_data(self):
         return self.data
 
+    def add_page_url(self, url: str):
+        self.data.add_page_url(url)
+        self.engagement_manager.save_engagements()

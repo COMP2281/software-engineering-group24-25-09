@@ -33,21 +33,26 @@ def create_slide(export_name, title_name, text, content):
 
     for shape in slide.placeholders:
         print('%d %s' % (shape.placeholder_format.idx, shape.name))
-        phf = shape.placeholder_format
-        type = str(phf.type).split(' (')[0]
-        print(type)
+        shape_format = shape.placeholder_format
+        shape_type = str(shape_format.type).split(' (')[0]
+        shape_index = shape.placeholder_format.idx
+        placeholder = slide.placeholders[shape_index]
 
         # Change title 
-        if type == "TITLE":
+        if shape_type == "TITLE":
             print("TITLE FOUND")
+            placeholder.text = title_name
+
 
         # Change text
-        if type == "BODY":
-            print("TEXT BOX FOUND")        
+        if shape_type == "BODY":
+            print("TEXT BOX FOUND")
+            placeholder.text = text     
 
         # Change content
-        if type == "OBJECT":
+        if shape_type == "OBJECT":
             print("CONTENT BOX FOUND")
+            
 
 
     # Save the changed slide

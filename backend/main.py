@@ -3,7 +3,7 @@ from backend.data.urls import urls
 from engagements import EngagementManager
 from dotenv import load_dotenv
 from urllib.parse import urlunparse
-from llm import LLM
+from backend.engagements.llm import LLM
 
 
 def URL(scheme: str, netloc: str, url="", path="", query="", fragment=""):

@@ -44,13 +44,11 @@ def get_page_soup(url: str):
 def remove_elements(
     soup: BeautifulSoup,
     tags: tuple[str, ...],
-):
+) -> None:
     """
-    Remove all elements from soup with given tags.
+    Remove all elements in-place from soup with given tags.
     :param soup: BeautifulSoup object.
     :param tags: Tuple of element tags.
-    :return: BeautifulSoup object with elements removed.
-    :rtype: BeautifulSoup
     """
     for element in soup.find_all(tags):
         element.extract()

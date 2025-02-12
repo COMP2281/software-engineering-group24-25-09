@@ -21,8 +21,39 @@ TEMPLATES = os.getenv("TEMPLATES", "templates") # Gets the path to the files
 TEMPLATE_LIST = os.listdir(TEMPLATES) # Gets the files in the location
 
 # From Existing temples create a slide
-def create_slide(export_name, title_name, content, picture):
+def create_slide(export_name, title_name, text, content):
+    # Select a random template created
     selected_item = random.choice(TEMPLATE_LIST)
+
+    # Open that slide
+    os.chdir("templates")
+    prs = Presentation(selected_item)
+    slide = prs.slides[0]
+    os.chdir("..")
+
+    for shape in slide.placeholders:
+        print('%d %s' % (shape.placeholder_format.idx, shape.name))
+        phf = shape.placeholder_format
+        type = str(phf.type).split(' (')[0]
+        print(type)
+
+        # Change title 
+        if type == "TITLE":
+            print("TITLE FOUND")
+
+        # Change text
+        if type == "BODY":
+            print("TEXT BOX FOUND")        
+
+        # Change content
+        if type == "OBJECT":
+            print("CONTENT BOX FOUND")
+
+
+    # Save the changed slide
+    os.chdir("created_slides")
+    prs.save('new-file-name.pptx')
+    os.chdir("..")
 
 
 # Group the slides together

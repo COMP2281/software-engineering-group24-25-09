@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 import re
 
 
-def remove_control_characters(text: str):
+def remove_control_characters(text: str) -> str:
     """
     Remove control characters x01 to x1f, excluding whitespace characters.
     TODO: determine if function is necessary; there are many more control characters to consider.
@@ -13,7 +13,6 @@ def remove_control_characters(text: str):
         https://stackoverflow.com/a/19016117
     :param text: String containing control characters.
     :return: String with control characters removed.
-    :rtype: str
 
     Credit: https://stackoverflow.com/questions/8115261/how-to-remove-all-the-escape-sequences-from-a-list-of-strings
     """
@@ -25,12 +24,11 @@ def remove_control_characters(text: str):
     return text.translate(translator)
 
 
-def get_page_soup(url: str):
+def get_page_soup(url: str) -> BeautifulSoup:
     """
     Get web page as element with control characters and comments removed.
     :param url: URL of page to get.
     :return: Element.
-    :rtype: BeautifulSoup
     """
     try:
         html = get(url).text
@@ -54,13 +52,14 @@ def remove_elements(
         element.extract()
 
 
-def strip_element(element: BeautifulSoup, keep_attributes: tuple[str, ...]):
+def strip_element(
+    element: BeautifulSoup, keep_attributes: tuple[str, ...]
+) -> BeautifulSoup:
     """
     Remove attributes from an element.
     :param element: Element to strip.
     :param keep_attributes: Tuple of element attributes to keep.
     :return: Element with attributes removed.
-    :rtype: BeautifulSoup
     """
     for attribute in list(element.attrs.keys()):
         if attribute not in keep_attributes:
@@ -68,19 +67,18 @@ def strip_element(element: BeautifulSoup, keep_attributes: tuple[str, ...]):
     return element
 
 
-def strip_image(image: BeautifulSoup):
+def strip_image(image: BeautifulSoup) -> BeautifulSoup:
     """
     Remove unnecessary attributes and all children from an image.
     :param image: Image element.
     :return: Stripped image element.
-    :rtype: BeautifulSoup
     """
     image.clear()
     return strip_element(image, ("alt", "src", "srcset"))
 
 
 class Page:
-    def update(self):
+    def update(self) -> None:
         """
         Get the latest version of the page and update self.
         """
@@ -88,7 +86,7 @@ class Page:
         body = page.find("body")
         self.body = body
 
-    def __init__(self, url: str):
+    def __init__(self, url: str) -> None:
         """
         Set URL and update self.
         :param url: Webpage URL.
@@ -104,11 +102,10 @@ class Page:
         """
         return self.url
 
-    def get_content(self):
+    def get_content(self) -> BeautifulSoup:
         """
         Get a copy of the main content from the page.
         :return: Body element without unnecessary children.
-        :rtype: BeautifulSoup
         """
         content = deepcopy(self.body)
         remove_elements(
@@ -126,11 +123,10 @@ class Page:
         )
         return content
 
-    def get_flat_content(self):
+    def get_flat_content(self) -> BeautifulSoup:
         """
         Get a soup containing all headings, paragraphs, and images in the main content without any nesting.
         :return: BeautifulSoup object.
-        :rtype: BeautifulSoup
         """
         body = self.get_content()
         content = BeautifulSoup()
@@ -138,11 +134,10 @@ class Page:
             content.append(deepcopy(element))
         return content
 
-    def get_markdown_content(self):
+    def get_markdown_content(self) -> str:
         """
         Get a Markdown representation of the main content.
         :return: Main content formatted in Markdown.
-        :rtype: str
         """
         content = self.get_flat_content()
 
@@ -167,11 +162,10 @@ class Page:
         # https://regex101.com/r/cIfG7c/1
         return re.sub(r"\n\n\n+", "\n\n", content.get_text()).strip()
 
-    def get_images(self):
+    def get_images(self) -> list[BeautifulSoup]:
         """
         Get a list of all images in the page.
         :return: A list of stripped image elements.
-        :rtype: list[BeautifulSoup]
         """
         images = []
         for image in self.body.find_all("img"):

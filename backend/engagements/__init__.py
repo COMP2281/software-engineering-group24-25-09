@@ -42,9 +42,17 @@ class EngagementManager:
             engagements[slug] = self.get_engagement(slug)
         return engagements
 
+    def get_page(self, url: str) -> Page:
+        return self.page_manager.get_page(url)
+
     def add_engagement_data(self, engagement_data: EngagementData) -> None:
         self.engagement_data_objects[engagement_data.get_slug()] = engagement_data
         self.save_engagements()
 
     def add_engagement(self, engagement: Engagement) -> None:
         self.add_engagement_data(engagement.get_data())
+
+    def create_engagement_from_url(self, url):
+        engagement = Engagement(self, self.get_page(url))
+        self.add_engagement(engagement)
+        return engagement

@@ -21,3 +21,7 @@ class EngagementManager:
         self.llm = llm
         self.engagement_data_objects = {}
         self.load_engagements()
+
+    def save_engagements(self):
+        file = open(self.file_path, "wb")
+        pickle.dump(self.engagement_data_objects, file)

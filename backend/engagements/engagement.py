@@ -16,6 +16,12 @@ class EngagementData:
         self.source_urls = {page.get_url()}
         self.slug = title_to_slug(llm.title(page))
 
+    def get_slug(self):
+        return self.slug
+
+    def get_source_urls(self):
+        return self.source_urls
+
     def add_page_url(self, url):
         self.source_urls.add(url)
 
@@ -33,7 +39,11 @@ class Engagement:
             self.data = EngagementData(llm, data)
 
     def get_slug(self):
-        return self.data.slug
+        return self.get_slug()
 
     def get_source_urls(self):
-        return self.data.source_urls
+        return self.get_source_urls()
+
+    def get_data(self):
+        return self.data
+

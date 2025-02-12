@@ -99,6 +99,13 @@ class Page:
         self.url = url
         self.update()
 
+    def get_url(self) -> str:
+        """
+        Get page URL.
+        :return: Page URL.
+        """
+        return self.url
+
     def get_content(self):
         """
         Get a copy of the main content from the page.

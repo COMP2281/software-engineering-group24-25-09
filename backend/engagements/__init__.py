@@ -13,10 +13,11 @@ class EngagementManager:
     def load_engagements(self):
         if self.file_exists():
             file = open(self.file_path, "rb")
-            self.engagements = pickle.load(file)
+            self.engagement_data_objects = pickle.load(file)
 
-    def __init__(self, data_path):
+    def __init__(self, llm: LLM, data_path):
         self.file_path = os.path.join(data_path, "engagements.pickle")
         self.page_manager = PageManager(data_path)
-        self.engagements = {}
+        self.llm = llm
+        self.engagement_data_objects = {}
         self.load_engagements()

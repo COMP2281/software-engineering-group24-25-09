@@ -51,5 +51,5 @@ class Engagement:
         Add a new source URL to the engagement.
         :param url: Source URL.
         """
-        self.data.add_page_url(url)
+        self.data.add_source_url(url)
         self.engagement_manager.save_engagements()

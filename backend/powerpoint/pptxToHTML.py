@@ -28,6 +28,8 @@ def second_option():
 from spire.presentation import *
 from spire.presentation.common import *
 
+#SMALLEST WATERMARK
+#STILL VERY SLOW
 def third_option():
     # pip install Spire.Presentation
     # also owned by someone and behind a paywall

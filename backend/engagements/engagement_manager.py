@@ -79,8 +79,15 @@ class EngagementManager:
         """
         self.data_manager.add_engagement_data(engagement.get_data())
 
-    def create_engagement_from_url(self, url):
-        # TODO: check if engagement already exists
-        engagement = Engagement(self.data_manager, self.llm, self.get_page(url))
+    def create_engagement_from_url(self, url: str) -> Engagement | None:
+        """
+        Create and save an engagement from the URL if it does not already exist.
+        :param url: URL to a source.
+        :return: Engagement if created, None otherwise.
+        """
+        if url in self.get_all_source_urls():
+            return None
+        page = self.get_page(url)
+        engagement = Engagement(self.data_manager, self.llm, page)
         self.add_engagement(engagement)
         return engagement

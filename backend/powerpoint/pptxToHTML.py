@@ -23,3 +23,17 @@ def second_option():
     # youtube video here: https://www.youtube.com/watch?v=WaKJAOTLCQw
     # ignore, this is for c sharp . smh smh
     return
+
+
+from spire.presentation import *
+from spire.presentation.common import *
+
+def third_option():
+    # pip install Spire.Presentation
+    # also owned by someone and behind a paywall
+    pres = Presentation()
+    pres.LoadFromFile(r'C:\Users\rosie\OneDrive\Documents\2nd Year\Software Engineering\Here is a Title.pptx')
+    pres.SaveToFile("backend\powerpoint\created_slides\SpirePPTXToHTML.html", FileFormat.Html)
+    return
+
+third_option()

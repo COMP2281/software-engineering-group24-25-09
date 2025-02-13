@@ -1,23 +1,25 @@
-# Could implement adding your own slides to the application
-# Has to be on powerpoints from 2007 onwards
-# So the powerpoints in terms of what John sent up were in this order in terms of the layouts on powerpoint
-# Pick a colour that will be set as the background for all the slides can be done but creating a shape and just filling the backgrounf with it 
-# 1. Title only (Could be the engagment title)
-# 2. Title slide with text could be info about the engagments
-# 3. Caption and image
-# 4. Lots of caption with images but sometimes a title slide.
+# CREATE SLIDE:
+# Still not there yet
+# Requires more robust ways of getting the actual content
+# I don't know how images are being passed into the function I currently have it so it is taking in the root
 
-# Flow of user
-# 1. Choose an engagment
-# 2. Make a single slide
-# 3. Collect which slides I want to use in slide show
-# 4. Export full powerpoint
+# MERGE SLIDE:
+# Pretty much done 
+# Although the function does make all the other slides the same themes as the first one 
+# which is true for powerpoint anyways as you can't have different themes on each slide
+# This however could create a situation where one layout does not look well with another theme
+
+# How to use CURRENTLY!
+# create_slide(export_name(.pptx), title, text box, path to image<- might change)
+
+# merge_presenation([list of slide names(.pptx)], export file name(.pptx))
+
+
 
 from pptx import Presentation
 import win32com.client
-import comtypes.client
 import os
-import random
+import random # This is used for the slide theme(COULD LINK TO FRONTEND AND ALLOW USER TO CHOOSE THEME)
 TEMPLATES = os.getenv("TEMPLATES", "templates") # Gets the path to the files
 TEMPLATE_LIST = os.listdir(TEMPLATES) # Gets the files in the location
 
@@ -80,5 +82,4 @@ create_slide("test3.pptx", "Test", "Content would be here Why bullet points", "t
 
 
 merge_presentations(["test2.pptx", "test.pptx", "test3.pptx"],"FINAL.pptx")
-
 

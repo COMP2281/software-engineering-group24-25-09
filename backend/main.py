@@ -2,7 +2,7 @@ import os
 from backend.data.urls import urls
 from backend.engagements.llm import LLM
 from engagements import EngagementManager
-from dotenv import load_dotenv
+from dotenv import load_dotenv, find_dotenv
 from urllib.parse import urlunparse
 
 
@@ -12,7 +12,7 @@ def URL(scheme: str, netloc: str, url="", path="", query="", fragment=""):
 
 
 def get_env():
-    load_dotenv()
+    load_dotenv(find_dotenv())
     ollama_url = URL(
         scheme="http", netloc=f"{os.getenv("OLLAMA_HOST")}:{os.getenv("OLLAMA_PORT")}"
     )

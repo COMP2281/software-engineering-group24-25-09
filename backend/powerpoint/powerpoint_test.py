@@ -15,6 +15,7 @@
 
 from pptx import Presentation
 import win32com.client
+import comtypes.client
 import os
 import random
 TEMPLATES = os.getenv("TEMPLATES", "templates") # Gets the path to the files
@@ -40,19 +41,19 @@ def create_slide(export_name, title_name, text, content):
         print(shape_type)
         # Change title 
         if shape_type == "TITLE":
-            print("TITLE FOUND")
             placeholder.text = title_name
-
 
         # Change text
         elif shape_type == "BODY":
-            print("TEXT BOX FOUND")
             placeholder.text = text     
 
         # Change content
         elif shape_type == "PICTURE":
-            print("CONTENT BOX FOUND")
+            # Will probs need to change this in the final version but can stay for tests
+            # I'm talking about using the os to get places rather than actual roots
+            os.chdir("images")
             placeholder.insert_picture(content)
+            os.chdir("..")
 
     
     # Save the changed slide
@@ -74,11 +75,10 @@ def merge_presentations(presentations, path):
   prs.Close()
 
 
-        
-
 # PowerPoint creation
 create_slide("test3.pptx", "Test", "Content would be here Why bullet points", "test.png")
 
 
 merge_presentations(["test2.pptx", "test.pptx", "test3.pptx"],"FINAL.pptx")
+
 

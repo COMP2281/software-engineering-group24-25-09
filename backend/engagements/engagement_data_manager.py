@@ -14,7 +14,7 @@ class EngagementDataManager:
 
     def load_engagements(self) -> None:
         """
-        Load engagements from file if it exists.
+        Load engagements from the file if it exists.
         """
         if self.file_exists():
             file = open(self.file_path, "rb")
@@ -30,19 +30,40 @@ class EngagementDataManager:
         self.data = {}
         self.load_engagements()
 
-    def save_engagements(self):
+    def save_engagements(self) -> None:
+        """
+        Save engagements to the file.
+        A new file is created if none exists.
+        """
         file = open(self.file_path, "wb")
         pickle.dump(self.data, file)
 
-    def get_slugs(self):
+    def get_slugs(self) -> list[str]:
+        """
+        Get slugs for all engagements.
+        :return: List of slugs.
+        """
         return list(self.data.keys())
 
-    def get_engagement_data(self, slug):
+    def get_engagement_data(self, slug: str) -> EngagementData:
+        """
+        Get the data from the engagement identified by the slug.
+        :param slug: Slug identifying the engagement.
+        :return: EngagementData for the engagement.
+        """
         return self.data[slug]
 
     def get_page_manager(self) -> PageManager:
+        """
+        Get the PageManager instance.
+        :return: PageManager instance.
+        """
         return self.page_manager
 
     def add_engagement_data(self, engagement_data: EngagementData) -> None:
+        """
+        Add engagement data to the manager and save it to the file.
+        :param engagement_data: EngagementData.
+        """
         self.data[engagement_data.get_slug()] = engagement_data
         self.save_engagements()

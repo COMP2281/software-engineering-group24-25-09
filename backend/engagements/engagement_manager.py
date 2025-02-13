@@ -65,6 +65,13 @@ class EngagementManager:
         """
         return self.get_page_manager().get_page(url)
 
+    def get_all_source_urls(self) -> set[str]:
+        """
+        Get a set of all sources URLs.
+        :return: Set of source URLs.
+        """
+        return self.data_manager.get_all_source_urls()
+
     def add_engagement(self, engagement: Engagement) -> None:
         """
         Save an engagement to the data file.

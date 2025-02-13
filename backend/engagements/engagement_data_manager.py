@@ -1,6 +1,6 @@
 import os
 import pickle
-from backend.engagements.pages import PageManager
+from backend.engagements.pages import PageManager, Page
 from backend.engagements.engagement_data import EngagementData
 
 
@@ -59,6 +59,13 @@ class EngagementDataManager:
         :return: PageManager instance.
         """
         return self.page_manager
+
+    def get_all_source_urls(self) -> set[str]:
+        """
+        Get a set of all sources URLs.
+        :return: Set of source URLs.
+        """
+        return self.page_manager.get_all_page_urls()
 
     def add_engagement_data(self, engagement_data: EngagementData) -> None:
         """

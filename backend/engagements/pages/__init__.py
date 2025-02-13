@@ -41,3 +41,6 @@ class PageManager:
         if url not in self.pages:
             self.add_page(url)
         return self.pages[url]
+
+    def get_all_page_urls(self) -> set[str]:
+        return set(self.pages.keys())

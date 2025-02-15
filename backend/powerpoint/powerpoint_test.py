@@ -1,4 +1,5 @@
 # CREATE SLIDE:
+# When making the slide templates YOU MUST MAKE the main text body is on the left of the person text body
 # Still not there yet
 # Requires more robust ways of getting the actual content
 # I don't know how images are being passed into the function I currently have it so it is taking in the root
@@ -14,9 +15,10 @@
 
 # merge_presenation([list of slide names(.pptx)], export file name(.pptx))
 
-
+# Next steps with be edit slide function for updating use then should be done. :)
 
 from pptx import Presentation
+from pptx.util import Inches
 import win32com.client
 import os
 import random # This is used for the slide theme(COULD LINK TO FRONTEND AND ALLOW USER TO CHOOSE THEME)
@@ -24,10 +26,11 @@ TEMPLATES = os.getenv("TEMPLATES", "templates") # Gets the path to the files
 TEMPLATE_LIST = os.listdir(TEMPLATES) # Gets the files in the location
 
 # From Existing temples create a slide
-def create_slide(export_name, title_name, text, content):
+def create_slide(export_name, title_name, text, person, content):
+    text_use = True # This is used to track if the main text is placed into the slide yet
     # Select a random template created
     selected_item = random.choice(TEMPLATE_LIST)
-
+    selected_item = "template1.pptx"
     # Open that slide
     os.chdir("templates")
     prs = Presentation(selected_item)
@@ -47,13 +50,19 @@ def create_slide(export_name, title_name, text, content):
 
         # Change text
         elif shape_type == "BODY":
-            placeholder.text = text     
+            if text_use:
+                placeholder.text = text
+                text_use = False     
+            else:
+                placeholder.text = person
 
         # Change content
         elif shape_type == "PICTURE":
             # Will probs need to change this in the final version but can stay for tests
             # I'm talking about using the os to get places rather than actual roots
             os.chdir("images")
+            placeholder.left = Inches(5)
+            placeholder.top = Inches(5)
             placeholder.insert_picture(content)
             os.chdir("..")
 
@@ -78,8 +87,8 @@ def merge_presentations(presentations, path):
 
 
 # PowerPoint creation
-create_slide("test3.pptx", "Test", "Content would be here Why bullet points", "test.png")
+create_slide("test3.pptx", "Test", "Content would be here Why bullet points", "Johnny Mac", "test.png")
 
 
-merge_presentations(["test2.pptx", "test.pptx", "test3.pptx"],"FINAL.pptx")
+# merge_presentations(["test2.pptx", "test.pptx", "test3.pptx"],"FINAL.pptx")
 

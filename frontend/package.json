@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron . --enable-ozone --ozone-platform-hint=auto --enable-features=WaylandWindowDecorations"
   },
   "author": "",
   "license": "ISC",
@@ -21,6 +22,7 @@
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "connect": "^3.7.0",
+    "electron": "^34.2.0",
     "express": "^4.21.1",
     "heroicons": "^2.2.0",
     "serve-static": "^1.16.2"

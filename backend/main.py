@@ -23,8 +23,10 @@ def get_llm_config() -> tuple[str, str]:
         ),
         os.getenv("OLLAMA_MODEL"),
     )
-    ollama_model_name = os.getenv("OLLAMA_MODEL")
-    return ollama_url, ollama_model_name
+
+
+def get_search_config() -> tuple[str, str]:
+    return os.getenv("GOOGLE_API_KEY"), os.getenv("GOOGLE_CSE_ID")
 
 
 if __name__ == "__main__":
@@ -32,6 +34,8 @@ if __name__ == "__main__":
     ollama_url, ollama_model_name = get_llm_config()
     llm = LLM(ollama_url, ollama_model_name)
     engagement_manager = EngagementManager(llm, "./data")
+
+    api_key, cse_id = get_search_config()
 
     print(engagement_manager.get_engagements())
     for url in urls:

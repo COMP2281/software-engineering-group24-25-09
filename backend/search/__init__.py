@@ -1,20 +1,8 @@
 import json
 import os
-from dotenv import load_dotenv, find_dotenv
 import pickle
-from searchPrompts import prompts
+from prompts import prompts
 from googleapiclient.discovery import build
-from .creditCounter import CreditCounter
-
-load_dotenv(find_dotenv())
-# loading environment variables for API
-api_key = os.getenv("GOOGLE_API_KEY")
-cse_id = os.getenv("GOOGLE_CSE_ID")
-
-print(api_key)
-print(cse_id)
-
-
 class SearchManager:
     def NoAPITest(self):
         # For testing without using credits

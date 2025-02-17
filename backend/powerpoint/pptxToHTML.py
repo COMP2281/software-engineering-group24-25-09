@@ -34,8 +34,8 @@ def third_option():
     # pip install Spire.Presentation
     # also owned by someone and behind a paywall
     pres = Presentation()
-    pres.LoadFromFile(r'C:\Users\rosie\OneDrive\Documents\2nd Year\Software Engineering\Here is a Title.pptx')
-    pres.SaveToFile("backend\powerpoint\created_slides\SpirePPTXToHTML.html", FileFormat.Html)
+    pres.LoadFromFile(r'backend\powerpoint\templates\template1Final.pptx')
+    pres.SaveToFile(r'backend\powerpoint\templates\FinalHTMLTemplate.html', FileFormat.Html)
     return
 
 third_option()

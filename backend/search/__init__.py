@@ -7,41 +7,38 @@ from .credit_counter import CreditCounter
 
 
 class Search:
+    def counter_file_exists(self) -> bool:
+        """
+        Check if counter file exists.
+        :return: True if file exists, False otherwise.
+        """
+        return os.path.isfile(self.counter_file_path)
+
+    def load_counter(self) -> None:
+        """
+        Load credit counter from file.
+        """
+        if self.counter_file_exists():
+            file = open(self.counter_file_path, "rb")
+            self.counter = pickle.load(file)["counter"]
+        else:
+            self.counter = CreditCounter()
+
+    def save_counter(self) -> None:
+        """
+        Save credit counter to file.
+        """
+        file = open(self.counter_file_path, "wb")
+        pickle.dump({"counter": self.counter}, file)
+
     def __init__(self, api_key: str, cse_id: str, data_path: str):
         self.api_key = api_key
         self.cse_id = cse_id
-        self.file_path = os.path.join(data_path, "counter.pickle")
+        self.counter_file_path = os.path.join(data_path, "counter.pickle")
         self.counter = None
         self.load_counter()
         self.save_counter()
 
-    def file_exists(self):
-        """
-        Check if counter file exists.
-        :return: True if file exists, otherwise False.
-        :rtype: bool
-        """
-        return os.path.isfile(self.file_path)
-
-    def load_counter(self):
-        """
-        Loads pickle counter file
-        """
-        if self.file_exists():
-            file = open(self.file_path, "rb+")
-            self.counter = pickle.load(file)["counter"]
-        else:
-            self.counter = CreditCounter()
-        return
-
-    def save_counter(self):
-        """
-        Saves pickled file counter
-        """
-        file = open(self.file_path, "wb+")
-        pickle.dump({"counter": self.counter}, file)
-        return
-    
     def google_search(self):
         """
         Iterates through provided prompts, querying Google API for each prompt, returning 10 URLs per request in JSON.
@@ -59,9 +56,8 @@ class Search:
                 raise Exception("OUT OF CREDIT COUNTER (WITHIN SEARCH)")
             # add the returned json information for result given by the prompt to the array
             results_JSON.append(self.use_google_api(prompt))
-        
-        print(results_JSON)
 
+        print(results_JSON)
 
     def use_google_api(self, prompt: str):
         """
@@ -73,10 +69,10 @@ class Search:
         # edit the counter for the outgoing api request
         self.counter.decrement_credit_counter()
         self.save_counter()
-        #call google custom search api
+        # call google custom search api
         service = build("customsearch", "v1", developerKey=self.api_key)
         res = service.cse().list(q=prompt, cx=self.cse_id, num=10).execute()
-        #return the item section of the json response (removes irrelevent headers)
+        # return the item section of the json response (removes irrelevent headers)
         return res["items"]
 
     def extract_URLs_from_JSON(self, json_data):

@@ -1,5 +1,15 @@
 from time import time
 
+CREDIT_LIMIT = 100
+HOUR = 60 * 60
+RESET_TIME = 24 * HOUR
+
+
+class OutOfCreditsException(Exception):
+    def __init__(self, *args):
+        super().__init__("Credit counter is out of credits", *args)
+
+
 class CreditCounter:
     def __init__(self):
         self.credits = 100

@@ -52,13 +52,13 @@ class Search:
         :rtype: JSON
         """
         # ensure every prompt can be queried or else report out of credits
-        if self.counter.num_credits_remaining() < len(prompts):
+        if self.counter.get_credits() < len(prompts):
             raise Exception("OUT OF CREDITS FOR EVERY PROMPT (WITHIN SEARCH)")
 
         results_JSON = []
         for prompt in prompts:
             # double check if there are enough credits remaining or not
-            if not self.counter.credits_remaining():
+            if not self.counter.credits_available():
                 raise Exception("OUT OF CREDIT COUNTER (WITHIN SEARCH)")
             # add the returned json information for result given by the prompt to the array
             results_JSON.append(self.use_google_api(prompt))
@@ -73,7 +73,7 @@ class Search:
         :rtype: JSON
         """
         # edit the counter for the outgoing api request
-        self.counter.decrement_credit_counter()
+        self.counter.decrement_credits()
         self.save_counter()
         # call google custom search api
         service = build("customsearch", "v1", developerKey=self.api_key)

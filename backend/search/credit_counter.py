@@ -11,36 +11,72 @@ class OutOfCreditsException(Exception):
 
 
 class CreditCounter:
-    def __init__(self):
-        self.credits = 100
+    def reset_credits(self) -> None:
+        """
+        Set credits back to the maximum.
+        """
+        self.credits = CREDIT_LIMIT
+
+    def reset_time(self) -> None:
+        """
+        Set time back to the current epoch time in seconds.
+        """
         self.time = time()
 
-    def num_credits_remaining(self):
+    def __init__(self) -> None:
+        """
+        Reset credits and time.
+        """
+        self.credits = None
+        self.time = None
+        self.reset_credits()
+        self.reset_time()
+
+    def get_credits(self) -> int:
+        """
+        Update counter and get credit count.
+        :return: Credit count.
+        """
+        self.update_counter()
         return self.credits
 
-    def credits_remaining(self):
-        self.update_counter()
-        if self.credits > 0:
-            return True
-        else:
-            return False
+    def get_elapsed_time(self) -> float:
+        """
+        Get time elapsed since last reset in seconds.
+        :return: Time elapsed.
+        """
+        current_time = time()
+        return current_time - self.time
 
-    def update_counter(self):
-        # if over a day has passed since the last time update, start the total call counter again
-        current_time = time.time()
-        time_elapsed = current_time - self.time
-        if time_elapsed >= 86400:
-            self.time = current_time
+    def credits_available(self) -> bool:
+        """
+        Check if there are credits available.
+        :return: True if available, False otherwise.
+        """
+        return self.get_credits() > 0
+
+    def reset_time_elapsed(self) -> bool:
+        """
+        Check if enough time elapsed since last reset.
+        :return: True if enough time elapsed, False otherwise.
+        """
+        return self.get_elapsed_time() >= RESET_TIME
+
+    def update_counter(self) -> None:
+        """
+        Reset credits and time if enough time has elapsed.
+        """
+        if self.reset_time_elapsed():
+            self.reset_time()
             self.reset_credits()
-        return
 
-    def reset_credits(self):
-        self.credits = 100
-        return
-
-    def decrement_credit_counter(self):
-        if self.credits_remaining():
+    def decrement_credits(self) -> None:
+        """
+        Decrement credits if there are credits available.
+        Otherwise, raise OutOfCreditsException.
+        """
+        self.update_counter()
+        if self.credits_available():
             self.credits -= 1
         else:
-            raise Exception("OUT OF SEARCH CREDITS (WITHIN CREDITCOUNTER)")
-        return
+            raise OutOfCreditsException()

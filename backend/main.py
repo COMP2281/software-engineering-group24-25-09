@@ -11,17 +11,25 @@ def URL(scheme: str, netloc: str, url="", path="", query="", fragment=""):
     return str(urlunparse((scheme, netloc, url, path, query, fragment)))
 
 
-def get_env():
+def load_config():
     load_dotenv(find_dotenv())
-    ollama_url = URL(
-        scheme="http", netloc=f"{os.getenv("OLLAMA_HOST")}:{os.getenv("OLLAMA_PORT")}"
+
+
+def get_llm_config() -> tuple[str, str]:
+    return (
+        URL(
+            scheme="http",
+            netloc=f"{os.getenv("OLLAMA_HOST")}:{os.getenv("OLLAMA_PORT")}",
+        ),
+        os.getenv("OLLAMA_MODEL"),
     )
     ollama_model_name = os.getenv("OLLAMA_MODEL")
     return ollama_url, ollama_model_name
 
 
 if __name__ == "__main__":
-    ollama_url, ollama_model_name = get_env()
+    load_config()
+    ollama_url, ollama_model_name = get_llm_config()
     llm = LLM(ollama_url, ollama_model_name)
     engagement_manager = EngagementManager(llm, "./data")
 

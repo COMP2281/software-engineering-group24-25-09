@@ -31,7 +31,13 @@ class Search:
         file = open(self.counter_file_path, "wb")
         pickle.dump({"counter": self.counter}, file)
 
-    def __init__(self, api_key: str, cse_id: str, data_path: str):
+    def __init__(self, api_key: str, cse_id: str, data_path: str) -> None:
+        """
+        Set Google Cloud credentials and load counter from file. A new counter is created if none exists.
+        :param api_key: Google Cloud API key.
+        :param cse_id: Google Cloud CSE ID.
+        :param data_path: Path to data directory.
+        """
         self.api_key = api_key
         self.cse_id = cse_id
         self.counter_file_path = os.path.join(data_path, "counter.pickle")

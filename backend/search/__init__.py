@@ -85,28 +85,3 @@ class Search:
         for result in json_data:
             URLs.append(result["link"])
         return URLs
-
-    # writing URLs to file for processing. one URL per line
-    # write_to_file(r"Web-Scraping\APICallManagment\URLs.txt", URLs, True)
-
-    def write_to_file(filename: str, text: list, multiple_lines=False):
-        """
-        :param filename: File to be written to.
-        :param text: Text to be written to file.
-        :param multiple_lines: Flag for outputting to multiple lines of the file.
-        :returns (Written to File): text
-        """
-        file = open(filename, "a")
-        for data in text:
-            if str(data) != "":
-                file.write(str(data))
-                if multiple_lines:
-                    file.write("\n")
-        file.write("\n")
-        file.close()
-
-    # saving raw json returns to a file
-    def save_raw_JSON_return(file_path: str, data: dict):
-        # file_path = "Web-Scraping\APICallManagment\APIcallReturns.json"
-        with open(file_path, "w") as json_file:
-            json.dump(data, json_file, indent=4)

@@ -3,17 +3,7 @@ import os
 import pickle
 from prompts import prompts
 from googleapiclient.discovery import build
-class SearchManager:
-    def NoAPITest(self):
-        # For testing without using credits
-        file_path = "Web-Scraping\APICallManagment\APIcallReturns.json"
-        with open(file_path, "r") as json_file:
-            results = json.load(json_file)
-        return results
-
-    def CreateSearch(self):
-        search = Search(api_key, cse_id, "../data")
-        search.google_search()
+from .credit_counter import CreditCounter
 
 
 class Search:

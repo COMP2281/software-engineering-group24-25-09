@@ -87,7 +87,7 @@ class Search:
             self.counter.decrement_credits()
             self.save_counter()
 
-    def search(self, prompt: str) -> list[URL]:
+    def search(self, prompt: str) -> set[URL]:
         """
         Search using Google API for URLs given a prompt.
         :param prompt: Prompt to search for.
@@ -95,9 +95,9 @@ class Search:
         """
         self._decrement_credits()
         response = self._query_service(prompt)
-        urls = []
+        urls = set()
         for result in response["items"]:
-            urls.append(URL(result))
+            urls.add(URL(result))
         return urls
 
     def google_search(self):

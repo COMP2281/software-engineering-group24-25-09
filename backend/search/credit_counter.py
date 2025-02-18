@@ -55,6 +55,13 @@ class CreditCounter:
         """
         return self.get_credits() > 0
 
+    def credits_available_for(self, amount: int) -> bool:
+        """
+        Check if there are enough credits available for a given amount.
+        :param amount: Amount to compare with.
+        """
+        return self.get_credits() >= amount
+
     def reset_time_elapsed(self) -> bool:
         """
         Check if enough time elapsed since last reset.

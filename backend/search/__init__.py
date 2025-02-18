@@ -1,9 +1,13 @@
-import json
 import os
 import pickle
 from prompts import prompts
 from googleapiclient.discovery import build
 from .credit_counter import CreditCounter
+
+
+class SearchException(Exception):
+    def __init__(self, message, *args):
+        super().__init__(message * args)
 
 
 class Search:

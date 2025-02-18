@@ -54,9 +54,18 @@ class Search:
 
     @property
     def service(self) -> Resource:
+        """
+        Get Google custom search service.
+        :return: Service.
+        """
         return build("customsearch", "v1", developerKey=self.api_key)
 
     def _query_service(self, prompt: str) -> SearchResponse:
+        """
+        Query Google custom search service given a prompt.
+        :param prompt: Prompt to search for.
+        :return: Search response.
+        """
         return (
             self.service.cse()
             .list(

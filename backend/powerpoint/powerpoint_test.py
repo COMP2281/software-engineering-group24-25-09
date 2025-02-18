@@ -30,7 +30,7 @@ def create_slide(export_name, title_name, text, person, content):
     text_use = True # This is used to track if the main text is placed into the slide yet
     # Select a random template created
     selected_item = random.choice(TEMPLATE_LIST)
-    selected_item = "template1.pptx"
+    selected_item = "template1Final.pptx"
     # Open that slide
     os.chdir("templates")
     prs = Presentation(selected_item)
@@ -61,9 +61,18 @@ def create_slide(export_name, title_name, text, person, content):
             # Will probs need to change this in the final version but can stay for tests
             # I'm talking about using the os to get places rather than actual roots
             os.chdir("images")
-            placeholder.left = Inches(5)
-            placeholder.top = Inches(5)
-            placeholder.insert_picture(content)
+            # Get placeholder's original position and size
+            left = placeholder.left
+            top = placeholder.top
+            width = placeholder.width
+            height = placeholder.height
+
+            # Remove placeholder before inserting image (optional)
+            sp = placeholder._element
+            sp.getparent().remove(sp)
+
+            # Insert image at the same position
+            slide.shapes.add_picture(content, left, top, width=width, height=height)
             os.chdir("..")
 
     

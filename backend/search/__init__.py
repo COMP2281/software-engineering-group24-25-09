@@ -1,8 +1,11 @@
 import os
 import pickle
-from prompts import prompts
-from googleapiclient.discovery import build
+from .prompts import prompts
+from googleapiclient.discovery import build, Resource
 from .credit_counter import CreditCounter
+from .types import SearchResponse
+
+PAGE_COUNT = 10
 
 
 class SearchException(Exception):
@@ -49,6 +52,21 @@ class Search:
         self.load_counter()
         self.save_counter()
 
+    @property
+    def service(self) -> Resource:
+        return build("customsearch", "v1", developerKey=self.api_key)
+
+    def _query_service(self, prompt: str) -> SearchResponse:
+        return (
+            self.service.cse()
+            .list(
+                q=prompt,
+                cx=self.cse_id,
+                num=PAGE_COUNT,
+            )
+            .execute()
+        )
+
     def google_search(self):
         """
         Iterates through provided prompts, querying Google API for each prompt, returning 10 URLs per request in JSON.
@@ -80,8 +98,7 @@ class Search:
         self.counter.decrement_credits()
         self.save_counter()
         # call google custom search api
-        service = build("customsearch", "v1", developerKey=self.api_key)
-        res = service.cse().list(q=prompt, cx=self.cse_id, num=10).execute()
+        res = self._query_service(prompt)
         # return the item section of the json response (removes irrelevent headers)
         return res["items"]
 

@@ -116,32 +116,6 @@ class Search:
             if not self.counter.credits_available():
                 raise Exception("OUT OF CREDIT COUNTER (WITHIN SEARCH)")
             # add the returned json information for result given by the prompt to the array
-            results_JSON.append(self.use_google_api(prompt))
+            results_JSON.append(self.search(prompt))
 
         print(results_JSON)
-
-    def use_google_api(self, prompt: str):
-        """
-        Calls the Google Search API with a given prompt.
-        :param prompt: Google search prompt to be requested
-        :return: item section of JSON response
-        :rtype: JSON
-        """
-        # edit the counter for the outgoing api request
-        self.counter.decrement_credits()
-        self.save_counter()
-        # call google custom search api
-        res = self._query_service(prompt)
-        # return the item section of the json response (removes irrelevent headers)
-        return res["items"]
-
-    def extract_URLs_from_JSON(self, json_data):
-        """
-        Extracts URLs from the returned JSON of found sites
-        :param json_data: JSON data to be converted
-        :return: list of URLs
-        """
-        URLs = []
-        for result in json_data:
-            URLs.append(result["link"])
-        return URLs

@@ -4,6 +4,7 @@ from .prompts import prompts
 from googleapiclient.discovery import build, Resource
 from .credit_counter import CreditCounter
 from .types import SearchResponse
+from .url import URL
 
 PAGE_COUNT = 10
 
@@ -75,6 +76,18 @@ class Search:
             )
             .execute()
         )
+
+    def search(self, prompt: str) -> list[URL]:
+        """
+        Search using Google API for URLs given a prompt.
+        :param prompt: Prompt to search for.
+        :return: List of URLs.
+        """
+        response = self._query_service(prompt)
+        urls = []
+        for result in response["items"]:
+            urls.append(URL(result))
+        return urls
 
     def google_search(self):
         """

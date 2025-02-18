@@ -100,22 +100,16 @@ class Search:
             urls.add(URL(result))
         return urls
 
-    def google_search(self):
+    def search_all(self, prompts: list[str]) -> set[URL]:
         """
-        Iterates through provided prompts, querying Google API for each prompt, returning 10 URLs per request in JSON.
-        :return: JSON results file, exception if out of credits.
-        :rtype: JSON
+        Search using Google API for URLs given a list of prompts.
+        Raise an exception if not enough credits for all prompts.
+        :param prompts: List of prompts.
         """
-        # ensure every prompt can be queried or else report out of credits
-        if self.counter.get_credits() < len(prompts):
-            raise Exception("OUT OF CREDITS FOR EVERY PROMPT (WITHIN SEARCH)")
+        if not self.counter.credits_available_for(len(prompts)):
+            raise SearchException("Daily search limit reached")
 
-        results_JSON = []
+        urls = set()
         for prompt in prompts:
-            # double check if there are enough credits remaining or not
-            if not self.counter.credits_available():
-                raise Exception("OUT OF CREDIT COUNTER (WITHIN SEARCH)")
-            # add the returned json information for result given by the prompt to the array
-            results_JSON.append(self.search(prompt))
-
-        print(results_JSON)
+            urls.union(self.search(prompt))
+        return urls

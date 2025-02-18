@@ -26,11 +26,11 @@ TEMPLATES = os.getenv("TEMPLATES", "templates") # Gets the path to the files
 TEMPLATE_LIST = os.listdir(TEMPLATES) # Gets the files in the location
 
 # From Existing temples create a slide
-def create_slide(export_name, title_name, text, person, content):
+def create_slide(export_name, title_name, text, person, content, template_choice):
     text_use = True # This is used to track if the main text is placed into the slide yet
     # Select a random template created
-    selected_item = random.choice(TEMPLATE_LIST)
-    selected_item = "template1Final.pptx"
+    selected_item = random.choice(TEMPLATE_LIST) # Can be used or not. This is up to how the front end functions.
+    selected_item = template_choice
     # Open that slide
     os.chdir("templates")
     prs = Presentation(selected_item)
@@ -96,7 +96,7 @@ def merge_presentations(presentations, path):
 
 
 # PowerPoint creation
-create_slide("test3.pptx", "Test", "Content would be here Why bullet points", "Johnny Mac", "test.png")
+create_slide("test3.pptx", "Test", "Content would be here Why bullet points", "Johnny Mac", "test.png", "template1Final.pptx")
 
 
 # merge_presentations(["test2.pptx", "test.pptx", "test3.pptx"],"FINAL.pptx")

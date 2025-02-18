@@ -77,12 +77,23 @@ class Search:
             .execute()
         )
 
+    def _decrement_credits(self) -> None:
+        """
+        Decrement credit counter. Raise an exception if out of credits.
+        """
+        if not self.counter.credits_available():
+            raise SearchException("Daily search limit reached")
+        else:
+            self.counter.decrement_credits()
+            self.save_counter()
+
     def search(self, prompt: str) -> list[URL]:
         """
         Search using Google API for URLs given a prompt.
         :param prompt: Prompt to search for.
         :return: List of URLs.
         """
+        self._decrement_credits()
         response = self._query_service(prompt)
         urls = []
         for result in response["items"]:

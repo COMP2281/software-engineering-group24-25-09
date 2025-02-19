@@ -18,7 +18,6 @@
 # Next steps with be edit slide function for updating use then should be done. :)
 
 from pptx import Presentation
-from pptx.util import Inches
 import win32com.client
 import os
 import random # This is used for the slide theme(COULD LINK TO FRONTEND AND ALLOW USER TO CHOOSE THEME)
@@ -94,11 +93,12 @@ def merge_presentations(presentations, path):
 
 
 # PowerPoint creation
-create_slide(r"C:\Users\samda\Uni\Year 2\Software Engineering\software-engineering-group24-25-09\backend\powerpoint\created_slides\test.pptx",
-              "Test", "Content would be here Why bullet points", ["God", "John", "Jesus"], 
-              r"C:\Users\samda\Uni\Year 2\Software Engineering\software-engineering-group24-25-09\backend\powerpoint\images\test.png", 
-              r"C:\Users\samda\Uni\Year 2\Software Engineering\software-engineering-group24-25-09\backend\powerpoint\templates\template1Final.pptx")
+# Tests
+# create_slide(r"C:\Users\samda\Uni\Year 2\Software Engineering\software-engineering-group24-25-09\backend\powerpoint\created_slides\test.pptx",
+#               "Test", "Content would be here Why bullet points", ["God", "John", "Jesus"], 
+#               r"C:\Users\samda\Uni\Year 2\Software Engineering\software-engineering-group24-25-09\backend\powerpoint\images\test.png", 
+#               r"C:\Users\samda\Uni\Year 2\Software Engineering\software-engineering-group24-25-09\backend\powerpoint\templates\template1Final.pptx")
 
 
-merge_presentations([r"C:\Users\samda\Uni\Year 2\Software Engineering\software-engineering-group24-25-09\backend\powerpoint\created_slides\test.pptx"],"FINAL.pptx")
+# merge_presentations([r"C:\Users\samda\Uni\Year 2\Software Engineering\software-engineering-group24-25-09\backend\powerpoint\created_slides\test.pptx"],"FINAL.pptx")
 

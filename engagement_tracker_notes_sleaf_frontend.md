@@ -18,12 +18,6 @@ For example, the engagement title may be ["IBM engagment with Durham Uni", "2025
 
 We could also allow the end-user to search for a month or year of engagements. Let's highlight exact dates, and then get non-exact dates under a "Didn't find what you were looking for? Try these" section.
 
-### Timings
+### Problems found
 
-Tentative start date: 25/01/29(We) AM09:00
-
-Tentative due date: 25/02/05(We) AM11:00
-
-It is one week long. We start/end on Wednesdays because that's when the lab is.
-
-
+I've noticed that the engagement tracker window can't be dragged. Is this intentional or do we want to fix it?

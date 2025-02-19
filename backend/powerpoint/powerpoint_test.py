@@ -83,7 +83,6 @@ def create_slide(export_name, title_name, text, persons, content, template_choic
 
 # Group the slides together
 def merge_presentations(presentations, path):
-  os.chdir("created_slides")
   ppt_instance = win32com.client.Dispatch('PowerPoint.Application')
   prs = ppt_instance.Presentations.open(os.path.abspath(presentations[0]), True, False, False)
 
@@ -95,8 +94,11 @@ def merge_presentations(presentations, path):
 
 
 # PowerPoint creation
-create_slide(r"C:\Users\samda\Uni\Year 2\Software Engineering\software-engineering-group24-25-09\backend\powerpoint\created_slides\test.pptx", "Test", "Content would be here Why bullet points", ["God", "John", "Jesus"], r"C:\Users\samda\Uni\Year 2\Software Engineering\software-engineering-group24-25-09\backend\powerpoint\images\test.png", r"C:\Users\samda\Uni\Year 2\Software Engineering\software-engineering-group24-25-09\backend\powerpoint\templates\template1Final.pptx")
+create_slide(r"C:\Users\samda\Uni\Year 2\Software Engineering\software-engineering-group24-25-09\backend\powerpoint\created_slides\test.pptx",
+              "Test", "Content would be here Why bullet points", ["God", "John", "Jesus"], 
+              r"C:\Users\samda\Uni\Year 2\Software Engineering\software-engineering-group24-25-09\backend\powerpoint\images\test.png", 
+              r"C:\Users\samda\Uni\Year 2\Software Engineering\software-engineering-group24-25-09\backend\powerpoint\templates\template1Final.pptx")
 
 
-# merge_presentations(["test2.pptx", "test.pptx", "test3.pptx"],"FINAL.pptx")
+merge_presentations([r"C:\Users\samda\Uni\Year 2\Software Engineering\software-engineering-group24-25-09\backend\powerpoint\created_slides\test.pptx"],"FINAL.pptx")
 

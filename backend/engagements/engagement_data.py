@@ -40,7 +40,7 @@ class EngagementData:
         """
         return self.source_urls
 
-    def add_source_url(self, url) -> None:
+    def add_source_url(self, url : str) -> None:
         """
         Add a new source URL to the engagement.
         :param url: Source URL.

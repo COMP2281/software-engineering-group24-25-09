@@ -3,7 +3,7 @@ import subprocess
 import httpx
 import ollama
 
-from .prompt import Prompt
+from .prompt import Prompt, PromptBuilder
 from backend.engagements.pages import Page
 
 
@@ -44,14 +44,14 @@ class LLM:
         ).response
 
     def summarise(self, page: Page):
-        response = self._generate(Prompt.summarise(page.get_markdown_content()))
+        response = self._generate(PromptBuilder.summarise(page.get_markdown_content()))
         sentences = re.split(r"\n+", response)
         return sentences
 
     def employees(self, page: Page):
-        response = self._generate(Prompt.employees(page.get_markdown_content()))
+        response = self._generate(PromptBuilder.employees(page.get_markdown_content()))
         employees = re.split(r"\n+", response)
         return employees
 
     def title(self, page: Page):
-        return self._generate(Prompt.title(page.get_markdown_content()))
+        return self._generate(PromptBuilder.title(page.get_markdown_content()))

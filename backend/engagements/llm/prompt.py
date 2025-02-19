@@ -1,10 +1,12 @@
 class Prompt:
-    def __init__(self, instruction: str, prompt: str):
+    def __init__(self, instruction: str, prompt: str) -> None:
         self.instruction = instruction
         self.prompt = prompt
 
+
+class PromptBuilder:
     @staticmethod
-    def summarise(source: str):  # explicit word count
+    def summarise(source: str) -> Prompt:  # explicit word count
         return Prompt(
             """You are finding how IBM have been involved in educational outreach.
             You will receive the content from a web page. It may contain irrelevant information outside of the main article.
@@ -16,7 +18,7 @@ class Prompt:
         )
 
     @staticmethod
-    def employees(source: str):
+    def employees(source: str) -> Prompt:
         return Prompt(
             """You are finding IBM employees involved in educational outreach.
             You will receive the content from a web page. It may contain irrelevant information outside of the main article.
@@ -28,7 +30,7 @@ class Prompt:
         )
 
     @staticmethod
-    def title(source: str):
+    def title(source: str) -> Prompt:
         return Prompt(
             """You will receive the content from a web page. It may contain irrelevant information outside of the main article.
             Please write a short title that describes the content.

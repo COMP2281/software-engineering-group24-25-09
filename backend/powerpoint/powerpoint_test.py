@@ -22,23 +22,21 @@ from pptx.util import Inches
 import win32com.client
 import os
 import random # This is used for the slide theme(COULD LINK TO FRONTEND AND ALLOW USER TO CHOOSE THEME)
-TEMPLATES = os.getenv("TEMPLATES", "templates") # Gets the path to the files
-TEMPLATE_LIST = os.listdir(TEMPLATES) # Gets the files in the location
+# Only a idea for random template if none is chosen:
+# TEMPLATES = os.getenv("TEMPLATES", "templates") # Gets the path to the files
+# TEMPLATE_LIST = os.listdir(TEMPLATES) # Gets the files in the location
 
 # From Existing temples create a slide
 def create_slide(export_name, title_name, text, persons, content, template_choice):
     text_use = True # This is used to track if the main text is placed into the slide yet
-    # Select a random template created
-    selected_item = random.choice(TEMPLATE_LIST) # Can be used or not. This is up to how the front end functions.
-    selected_item = template_choice
+    # A location to the slide choice is passed in, Could be made so that the file is passed in directly
+    f = open(template_choice, "rb")
+    prs = Presentation(f)
+    f.close()
     # Open that slide
-    os.chdir("templates")
-    prs = Presentation(selected_item)
     slide = prs.slides[0]
-    os.chdir("..")
 
     for shape in slide.placeholders:
-        print('%d %s' % (shape.placeholder_format.idx, shape.name))
         shape_format = shape.placeholder_format
         shape_type = str(shape_format.type).split(' (')[0]
         shape_index = shape.placeholder_format.idx
@@ -54,7 +52,7 @@ def create_slide(export_name, title_name, text, persons, content, template_choic
                 placeholder.text = text
                 text_use = False     
             # Person area
-            else:
+            elif len(persons) > 0:
                 tf = placeholder.text_frame
                 tf.text = "People involved:"
                 for person in persons:
@@ -66,28 +64,21 @@ def create_slide(export_name, title_name, text, persons, content, template_choic
 
         # Change content
         elif shape_type == "PICTURE":
-            # Will probs need to change this in the final version but can stay for tests
-            # I'm talking about using the os to get places rather than actual roots
-            os.chdir("images")
             # Get placeholder's original position and size
             left = placeholder.left
             top = placeholder.top
             width = placeholder.width
             height = placeholder.height
 
-            # Remove placeholder before inserting image (optional)
+            # Remove placeholder before inserting image 
             sp = placeholder._element
             sp.getparent().remove(sp)
 
             # Insert image at the same position
             slide.shapes.add_picture(content, left, top, width=width, height=height)
-            os.chdir("..")
 
-    
     # Save the changed slide
-    os.chdir("created_slides")
     prs.save(export_name)
-    os.chdir("..")
 
 
 # Group the slides together
@@ -104,7 +95,7 @@ def merge_presentations(presentations, path):
 
 
 # PowerPoint creation
-create_slide("test.pptx", "Test", "Content would be here Why bullet points", ["Johnny Mac", "God", "Jesus"], "test.png", "template1Final.pptx")
+create_slide(r"C:\Users\samda\Uni\Year 2\Software Engineering\software-engineering-group24-25-09\backend\powerpoint\created_slides\test.pptx", "Test", "Content would be here Why bullet points", ["God", "John", "Jesus"], r"C:\Users\samda\Uni\Year 2\Software Engineering\software-engineering-group24-25-09\backend\powerpoint\images\test.png", r"C:\Users\samda\Uni\Year 2\Software Engineering\software-engineering-group24-25-09\backend\powerpoint\templates\template1Final.pptx")
 
 
 # merge_presentations(["test2.pptx", "test.pptx", "test3.pptx"],"FINAL.pptx")

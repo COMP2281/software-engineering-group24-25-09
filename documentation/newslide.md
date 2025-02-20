@@ -14,7 +14,7 @@ If the program cannot find an engagement, then it will suggest alternatives to t
 
 Once you have found the engagement that you wish to create a slide from, you can now create a slide:
 
-<img title="" src="images\newslide_2.png" alt="" width="640">
+<img title="" src="images\newslide_2.png" alt="" width="640">[Needs to be updated]
 
 From this menu, you can edit many properties of the slide:
 
@@ -32,9 +32,9 @@ From this menu, you can edit many properties of the slide:
 
 - Images
   
-  - You can currently include up to two images to your slide.
+  - You can currently choose only one image using the radio buttons.
   
-  - In the future, we will increase the number of images that you can add, and allow uploading of your own images.
+  - In the future, we may increase the number of images that you can add, and allow uploading of your own images.
 
 - Personnel mentioned
   

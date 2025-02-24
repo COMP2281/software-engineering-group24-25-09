@@ -4,8 +4,6 @@
 
 **The search bar searches, but it doesn't search yet, because we haven't made it search for anything that needs to be searched. But we'll make it search because searching for things that need to be searched is important because some searchable data cannot be accessed without searching, and so we search for information and output the searched information.**
 
-Clicking on the IBM logo does nothing.
-
 If you click on the moon, it turns into a sun and light mode is enabled! Click the sun and it turns back into a moon and dark mode is back!
 
 ### New Slide button

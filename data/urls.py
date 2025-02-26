@@ -4,7 +4,8 @@ urls = [
     "https://www.ecs.soton.ac.uk/careers/companies/ibm",
     "https://www.southampton.ac.uk/news/2014/11/14-ibm-watson-supercomputer.page",
     "https://warwick.ac.uk/newsandevents/pressreleases/warwick_and_ibm/",
-] + [
+]
+extra_urls = [
     "https://newsroom.ibm.com/2019-10-16-IBM-Boards-the-Mayflower-Autonomous-Ship-Project",
     "https://www.computer.org/csdl/magazine/an/2024/03/10444020/1ULQWLnPM3e",
     "https://uk.linkedin.com/in/nicola-hodson-0342782",

@@ -1,11 +1,15 @@
 # Logs
+.envrc
+__pycache__
 logs
 *.log
+.direnv
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
+data/*.pickle
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json

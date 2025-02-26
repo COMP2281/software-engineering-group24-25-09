@@ -1,7 +1,8 @@
 import os
-from backend.data.urls import urls
+from backend.engagements.engagement_manager import EngagementManager
+from data.urls import urls
 from backend.engagements.llm import LLM
-from engagements import EngagementManager
+from backend.search import Search, prompts
 from dotenv import load_dotenv, find_dotenv
 from urllib.parse import urlunparse
 
@@ -36,12 +37,14 @@ if __name__ == "__main__":
     engagement_manager = EngagementManager(llm, "./data")
 
     api_key, cse_id = get_search_config()
+    search = Search(api_key, cse_id, "backend/data")
+
+    urls = search.search_all(prompts[0:1])
+
+    print(urls)
 
     print(engagement_manager.get_engagements())
     for url in urls:
-        engagement = engagement_manager.create_engagement_from_url(url)
+        engagement = engagement_manager.create_engagement_from_url(str(url))
 
     slugs = engagement_manager.get_slugs()
-    engagement = engagement_manager.get_engagement(slugs[0])
-    print(engagement.get_slug())
-    print(engagement.get_source_urls())

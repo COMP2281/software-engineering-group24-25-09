@@ -2,7 +2,7 @@ from backend.engagements.llm import LLM
 from backend.engagements.pages import Page
 from backend.engagements.engagement_data import EngagementData
 from backend.engagements.engagement_data_manager import EngagementDataManager
-
+from bs4 import BeautifulSoup
 
 class Engagement:
     def __init__(
@@ -53,3 +53,14 @@ class Engagement:
         """
         self.data.add_source_url(url)
         self.engagement_manager.save_engagements()
+
+    def get_images(self) -> list[BeautifulSoup]:
+        """
+        Get the images from all pages.
+        """
+        images = []
+        for url in self.get_source_urls():
+            images += (
+                self.engagement_manager.get_page_manager().get_page(url).get_images()
+            )
+        return images

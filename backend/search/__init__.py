@@ -1,5 +1,6 @@
 import os
 import pickle
+from .excluded_file_types import excluded_file_types
 from .prompts import prompts
 from googleapiclient.discovery import build, Resource
 from .credit_counter import CreditCounter
@@ -61,6 +62,12 @@ class Search:
         """
         return build("customsearch", "v1", developerKey=self.api_key)
 
+    @staticmethod
+    def _exclude_file_types(prompt: str) -> str:
+        for file_type in excluded_file_types:
+            prompt += f" -filetype:{file_type}"
+        return prompt
+
     def _query_service(self, prompt: str) -> SearchResponse:
         """
         Query Google custom search service given a prompt.
@@ -70,9 +77,10 @@ class Search:
         return (
             self.service.cse()
             .list(
-                q=prompt,
+                q=self._exclude_file_types(prompt),
                 cx=self.cse_id,
                 num=PAGE_COUNT,
+                fileType="html",
             )
             .execute()
         )
@@ -111,5 +119,5 @@ class Search:
 
         urls = set()
         for prompt in prompts:
-            urls.union(self.search(prompt))
+            urls = urls.union(self.search(prompt))
         return urls

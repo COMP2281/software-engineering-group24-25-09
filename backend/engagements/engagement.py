@@ -88,10 +88,9 @@ class Engagement:
     def get_images(self) -> list[BeautifulSoup]:
         """
         Get the images from all pages.
+        :return: List of images.
         """
         images = []
         for url in self.get_source_urls():
-            images += (
-                self.engagement_manager.get_page_manager().get_page(url).get_images()
-            )
+            images += self.get_page_manager().get_page(url).get_images()
         return images

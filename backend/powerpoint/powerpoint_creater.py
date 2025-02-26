@@ -1,32 +1,20 @@
-# CREATE SLIDE:
-# When making the slide templates YOU MUST MAKE the main text body is on the left of the person text body
-# Still not there yet
-# Requires more robust ways of getting the actual content
-# I don't know how images are being passed into the function I currently have it so it is taking in the root
-
-# MERGE SLIDE:
-# Pretty much done 
-# Although the function does make all the other slides the same themes as the first one 
-# which is true for powerpoint anyways as you can't have different themes on each slide
-# This however could create a situation where one layout does not look well with another theme
-
 # How to use CURRENTLY!
-# create_slide(export_name(.pptx), title, text box, path to image<- might change)
-
-# merge_presenation([list of slide names(.pptx)], export file name(.pptx))
-
-# Next steps with be edit slide function for updating use then should be done. :)
+# create_slide(export_name(.pptx) path, title, text box, path to image, template path)
+# merge_presenation([list of slide names path(.pptx)], export file name path(.pptx))
 
 from pptx import Presentation
 import win32com.client
 import os
-import random # This is used for the slide theme(COULD LINK TO FRONTEND AND ALLOW USER TO CHOOSE THEME)
+# This is used for the slide theme(COULD LINK TO FRONTEND AND ALLOW USER TO CHOOSE THEME)
+# import random 
 # Only a idea for random template if none is chosen:
 # TEMPLATES = os.getenv("TEMPLATES", "templates") # Gets the path to the files
 # TEMPLATE_LIST = os.listdir(TEMPLATES) # Gets the files in the location
 
 # From Existing temples create a slide
 def create_slide(export_name, title_name, text, persons, content, template_choice):
+    if os.path.isfile(export_name):
+        print("File already exists") # LINK ERROR MESSAGE TO FRONT END HERE
     text_use = True # This is used to track if the main text is placed into the slide yet
     # A location to the slide choice is passed in, Could be made so that the file is passed in directly
     f = open(template_choice, "rb")
@@ -59,8 +47,6 @@ def create_slide(export_name, title_name, text, persons, content, template_choic
                     p.text = "- " + person
                     p.level = 1
                 
-                
-
         # Change content
         elif shape_type == "PICTURE":
             # Get placeholder's original position and size
@@ -79,6 +65,44 @@ def create_slide(export_name, title_name, text, persons, content, template_choic
     # Save the changed slide
     prs.save(export_name)
 
+def edit_slide_text(slide_name, content, change):
+    text_use = True
+    # A location to the slide choice is passed in, Could be made so that the file is passed in directly
+    f = open(slide_name, "rb")
+    prs = Presentation(f)
+    f.close()
+    # Open that slide
+    slide = prs.slides[0]
+
+    for shape in slide.placeholders:
+        shape_format = shape.placeholder_format
+        shape_type = str(shape_format.type).split(' (')[0]
+        shape_index = shape.placeholder_format.idx
+        placeholder = slide.placeholders[shape_index]
+    
+        # Change title 
+        if shape_type == "TITLE" and change == "title":
+            placeholder.text = content
+                # Change text
+        elif shape_type == "BODY" and (change == "person" or change == "content"):
+            # Content area
+            if text_use and change == "content":
+                placeholder.text = content
+                text_use = False
+            # Person area
+            elif len(content) > 0 and change == "person" and not text_use:
+                
+                tf = placeholder.text_frame
+                tf.text = "People involved:"
+                for person in content:
+                    p = tf.add_paragraph()
+                    p.text = "- " + person
+                    p.level = 1
+            else:
+                text_use = False
+        
+    # Save the changed slide
+    prs.save(slide_name)
 
 # Group the slides together
 def merge_presentations(presentations, path):
@@ -102,3 +126,4 @@ def merge_presentations(presentations, path):
 
 # merge_presentations([r"C:\Users\samda\Uni\Year 2\Software Engineering\software-engineering-group24-25-09\backend\powerpoint\created_slides\test.pptx"],r"C:\Users\samda\Uni\Year 2\Software Engineering\software-engineering-group24-25-09\backend\powerpoint\created_slides\FINAL.pptx")
 
+edit_slide_text(r"C:\Users\samda\Uni\Year 2\Software Engineering\software-engineering-group24-25-09\backend\powerpoint\created_slides\FINAL.pptx", r"C:\Users\samda\Uni\Year 2\Software Engineering\software-engineering-group24-25-09\backend\powerpoint\images\test2.jpg", "picture")

@@ -87,7 +87,7 @@ class Engagement:
 
     def get_images(self) -> list[BeautifulSoup]:
         """
-        Get the images from all pages.
+        Get the images from all pages. Each image has the "alt" attribute and either "src" or "srcset" attribute.
         :return: List of images.
         """
         images = []

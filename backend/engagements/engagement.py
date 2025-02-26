@@ -94,3 +94,29 @@ class Engagement:
         for url in self.get_source_urls():
             images += self.get_page_manager().get_page(url).get_images()
         return images
+
+    def get_title(self) -> str:
+        """
+        Get the engagement title.
+        :return: Title.
+        """
+        return self.get_slug().replace("_", " ").capitalize()
+
+    def get_summary(self) -> list[str]:
+        """
+        Get a summary of the engagement in short sentences.
+        :return: List of sentences.
+        """
+        sentences = []
+        for page in self.get_sources():
+            sentences += self.llm.summarise(page)
+        return sentences
+
+    def get_employees(self) -> set[str]:
+        """
+        Get a list of employees involved in the engagement.
+        :return: List of employees.
+        """
+        employees = set()
+        for page in self.get_sources():
+            employees = employees.union(self.llm.employees(page))

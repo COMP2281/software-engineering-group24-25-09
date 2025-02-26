@@ -36,7 +36,8 @@ def get_page_soup(url: str) -> BeautifulSoup:
         raise Exception(f"Failed to get {url}:\n{e}")
 
     html = remove_control_characters(html)
-    return BeautifulSoup(html, "html.parser")
+    soup = BeautifulSoup(html, "html.parser")
+    return soup
 
 
 def remove_elements(

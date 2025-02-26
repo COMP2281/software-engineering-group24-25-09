@@ -2,7 +2,7 @@ from backend.engagements.llm import LLM
 from backend.engagements.pages import Page
 from backend.engagements.engagement_data import EngagementData
 from backend.engagements.engagement_data_manager import EngagementDataManager
-
+from bs4 import BeautifulSoup
 
 class Engagement:
     def __init__(

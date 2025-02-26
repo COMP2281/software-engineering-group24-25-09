@@ -14,7 +14,7 @@ import os
 # From Existing temples create a slide
 def create_slide(export_name, title_name, text, persons, content, template_choice):
     if os.path.isfile(export_name):
-        print("File already exists")
+        print("File already exists") # LINK ERROR MESSAGE TO FRONT END HERE
     text_use = True # This is used to track if the main text is placed into the slide yet
     # A location to the slide choice is passed in, Could be made so that the file is passed in directly
     f = open(template_choice, "rb")

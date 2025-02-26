@@ -120,3 +120,4 @@ class Engagement:
         employees = set()
         for page in self.get_sources():
             employees = employees.union(self.llm.employees(page))
+        return employees

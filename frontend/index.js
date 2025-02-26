@@ -9,7 +9,6 @@ const createWindow = () => {
         titleBarStyle: 'hidden',
     })
 
-    win.loadFile('index.html')
     win.loadURL('http://localhost:8080/')
 }
 // Loads up the server

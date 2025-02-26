@@ -12,7 +12,7 @@
                         <input type="text" class="flex w-full" placeholder="Durham University" />
                         <div
                             class="flex-none self-center opacity-70"
-                            hx-get="resources/search.html"
+                            hx-get="static/resources/search.html"
                             hx-swap="innerHTML"
                             hx-trigger="load"
                         ></div>
@@ -30,31 +30,18 @@
             </div>
 
             <div class="flex-1 overflow-y-scroll">
-                <button
-                    class="h-30 btn btn-ghost mt-2 w-full rounded bg-base-200 text-lg"
-                    hx-get="templates/create_new_slide.html"
-                    hx-swap="outerHTML"
-                    hx-trigger="click"
-                    hx-target="#create_new_slide"
-                    _="on click trigger closeModal"
-                >
-                    Durham University
-                </button>
-                <button class="h-30 btn btn-ghost mt-2 w-full rounded bg-base-200 text-lg">Bristol University</button>
-                <button class="h-30 btn btn-ghost mt-2 w-full rounded bg-base-200 text-lg">Bath University</button>
-                <button class="h-30 btn btn-ghost mt-2 w-full rounded bg-base-200 text-lg">Exeter University</button>
-                <button class="h-30 btn btn-ghost mt-2 w-full rounded bg-base-200 text-lg">Durham University</button>
-                <button class="h-30 btn btn-ghost mt-2 w-full rounded bg-base-200 text-lg">Bristol University</button>
-                <button class="h-30 btn btn-ghost mt-2 w-full rounded bg-base-200 text-lg">Bath University</button>
-                <button class="h-30 btn btn-ghost mt-2 w-full rounded bg-base-200 text-lg">Exeter University</button>
-                <button class="h-30 btn btn-ghost mt-2 w-full rounded bg-base-200 text-lg">Durham University</button>
-                <button class="h-30 btn btn-ghost mt-2 w-full rounded bg-base-200 text-lg">Bristol University</button>
-                <button class="h-30 btn btn-ghost mt-2 w-full rounded bg-base-200 text-lg">Bath University</button>
-                <button class="h-30 btn btn-ghost mt-2 w-full rounded bg-base-200 text-lg">Exeter University</button>
-                <button class="h-30 btn btn-ghost mt-2 w-full rounded bg-base-200 text-lg">Durham University</button>
-                <button class="h-30 btn btn-ghost mt-2 w-full rounded bg-base-200 text-lg">Bristol University</button>
-                <button class="h-30 btn btn-ghost mt-2 w-full rounded bg-base-200 text-lg">Bath University</button>
-                <button class="h-30 btn btn-ghost mt-2 w-full rounded bg-base-200 text-lg">Exeter University</button>
+                {% for slug in slugs %}
+                    <button
+                        class="h-30 btn btn-ghost mt-2 w-full rounded bg-base-200 text-lg"
+                        hx-get="templates/create_new_slide/{{ slug }}"
+                        hx-swap="outerHTML"
+                        hx-trigger="click"
+                        hx-target="#create_new_slide"
+                        _="on click trigger closeModal"
+                    >
+                    {{ slug }}
+                    </button>
+                {% endfor %}
             </div>
         </div>
 
@@ -71,12 +58,12 @@
                 <!-- trying to implement a spinning icon whilst program is scraping- not currently functional -->
                 <button
                     class="h-50 btn btn-secondary w-full text-lg"
-                    hx-get="resources/loading_spinner.html"
+                    hx-get="static/resources/loading_spinner.html"
                     hx-swap="innerHTML"
                     hx-trigger="click"
                     hx-target="this"
                 >
-                    <div class="w-5" hx-get="resources/plus.html" hx-swap="innerHTML" hx-target="this" hx-trigger="load"></div>
+                    <div class="w-5" hx-get="static/resources/plus.html" hx-swap="innerHTML" hx-target="this" hx-trigger="load"></div>
                     Scrape New Engagments
                 </button>
             </div>

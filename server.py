@@ -1,9 +1,9 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
-from backend.data.urls import urls
+from data.urls import urls
 from fastapi.templating import Jinja2Templates
-from backend.engagements import EngagementManager
+from backend.engagements.engagement_manager import EngagementManager
 from backend.engagements.llm import LLM
 from dotenv import load_dotenv, find_dotenv
 import os

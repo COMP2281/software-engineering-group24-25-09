@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
+from backend.data.urls import urls
 from fastapi.templating import Jinja2Templates
 from backend.engagements import EngagementManager
 from backend.engagements.llm import LLM
@@ -36,10 +37,12 @@ load_config()
 ollama_url, ollama_model_name = get_llm_config()
 llm = LLM(ollama_url, ollama_model_name)
 engagement_manager = EngagementManager(llm, "./data")
+for url in urls:
+    engagement_manager.create_engagement_from_url(str(url))
 
 app = FastAPI()
-app.mount("/static", StaticFiles(directory="frontend/static"), name="static")
-templates = Jinja2Templates(directory="frontend/templates")
+app.mount("/static", StaticFiles(directory="../frontend/static"), name="static")
+templates = Jinja2Templates(directory="../frontend/templates")
 
 
 @app.get("/index.html", response_class=HTMLResponse)

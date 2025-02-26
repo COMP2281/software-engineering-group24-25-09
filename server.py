@@ -4,7 +4,7 @@ from fastapi.staticfiles import StaticFiles
 from data.urls import urls
 from fastapi.templating import Jinja2Templates
 from backend.engagements.engagement_manager import EngagementManager
-from backend.engagements.llm import LLM
+from backend.engagements.llm.llm import LLM
 from dotenv import load_dotenv, find_dotenv
 import os
 from urllib.parse import urlunparse

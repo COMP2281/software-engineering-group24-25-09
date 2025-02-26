@@ -1,8 +1,9 @@
 from backend.engagements.llm import LLM
-from backend.engagements.pages import Page
+from backend.engagements.pages import Page, PageManager
 from backend.engagements.engagement_data import EngagementData
 from backend.engagements.engagement_data_manager import EngagementDataManager
 from bs4 import BeautifulSoup
+
 
 class Engagement:
     def __init__(
@@ -53,6 +54,36 @@ class Engagement:
         """
         self.data.add_source_url(url)
         self.engagement_manager.save_engagements()
+
+    def get_page_manager(self) -> PageManager:
+        """
+        Get the PageManager instance.
+        :return: PageManager instance.
+        """
+        return self.engagement_manager.get_page_manager()
+
+    def get_source(self, url: str) -> Page:
+        """
+        Get a source that belongs to the engagement.
+        :param url: Page URL.
+        :return: Page.
+        """
+        if url not in self.data.get_source_urls():
+            raise Exception(
+                f"Source URL {url} not found in Engagement {self.get_slug()}"
+            )
+        return self.get_page_manager().get_page(url)
+
+    def get_sources(self) -> list[Page]:
+        """
+        Get all sources that belong to the engagement.
+        :return: List of Pages.
+        """
+        pages = []
+        for url in self.data.get_source_urls():
+            page = self.get_source(url)
+            pages.append(page)
+        return pages
 
     def get_images(self) -> list[BeautifulSoup]:
         """

@@ -5,8 +5,9 @@ class URL:
     def __init__(self, data: SearchResult) -> None:
         self.url = data["link"]
         self.title = data["title"]
-        self.snippet = data["snippet"]
         self.domain = data["displayLink"]
+        if data["snippet"]:
+            self.snippet = data["snippet"]
 
     def __str__(self) -> str:
         return self.url

@@ -1,12 +1,15 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
+import uvicorn
 from data.urls import urls
 from fastapi.templating import Jinja2Templates
 from backend.engagements.engagement_manager import EngagementManager
 from backend.engagements.llm.llm import LLM
 from dotenv import load_dotenv, find_dotenv
 import os
+from contextlib import asynccontextmanager
+import subprocess
 from urllib.parse import urlunparse
 
 
@@ -40,18 +43,28 @@ engagement_manager = EngagementManager(llm, "./data")
 for url in urls:
     engagement_manager.create_engagement_from_url(str(url))
 
-app = FastAPI()
-app.mount("/static", StaticFiles(directory="../frontend/static"), name="static")
-templates = Jinja2Templates(directory="../frontend/templates")
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    subprocess.Popen(["npm", "start"], cwd="./frontend")
+    yield
+
+app = FastAPI(lifespan=lifespan)
+app.mount("/static", StaticFiles(directory="frontend/static"), name="static")
+templates = Jinja2Templates(directory="frontend/templates")
 
 
-@app.get("/index.html", response_class=HTMLResponse)
+@app.get("/", response_class=HTMLResponse)
 async def serve_index(request: Request):
     engagements = [
         {"slug": engagement.get_slug()}
-        for engagement in engagement_manager.get_engagements()
+        for engagement in engagement_manager.get_engagements().values()
     ]
 
     return templates.TemplateResponse(
         request=request, name="index.html", context={"engagements": engagements}
     )
+
+
+if __name__ == "__main__":
+    uvicorn.run(app)

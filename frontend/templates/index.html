@@ -25,7 +25,7 @@
 
                         <div
                             class="join-item w-10 flex-none self-center px-3 opacity-70"
-                            hx-get="resources/search.html"
+                            hx-get="static/resources/search.html"
                             hx-swap="innerHTML"
                             hx-trigger="load"
                         ></div>
@@ -33,7 +33,7 @@
 
                     <div
                         class="flex h-full w-full flex-row justify-center"
-                        hx-get="resources/group_logo.html"
+                        hx-get="static/resources/ibm_logo.html"
                         hx-swap="innerHTML"
                         hx-trigger="load"
                     ></div>
@@ -41,8 +41,8 @@
                     <div class="w-64 flex-none justify-end">
                         <label class="btn btn-ghost swap swap-rotate mx-3 h-full w-10 p-1 text-xl">
                             <input type="checkbox" name="theme-controller" value="corporate" class="theme-controller" />
-                            <div class="swap-off h-full w-full" hx-get="resources/moon.html" hx-swap="innerHTML" hx-trigger="load"></div>
-                            <div class="swap-on h-full w-full" hx-get="resources/sun.html" hx-swap="innerHTML" hx-trigger="load"></div>
+                            <div class="swap-off h-full w-full" hx-get="static/resources/moon.html" hx-swap="innerHTML" hx-trigger="load"></div>
+                            <div class="swap-on h-full w-full" hx-get="static/resources/sun.html" hx-swap="innerHTML" hx-trigger="load"></div>
                         </label>
 
                         <button
@@ -52,7 +52,7 @@
                             hx-trigger="click"
                             hx-target="#new_slide_modal"
                         >
-                            <div class="w-5" hx-get="resources/plus.html" hx-swap="innerHTML" hx-target="this" hx-trigger="load"></div>
+                            <div class="w-5" hx-get="static/resources/plus.html" hx-swap="innerHTML" hx-target="this" hx-trigger="load"></div>
                             New Slide
                         </button>
                     </div>
@@ -75,7 +75,7 @@
                             <!-- hx-swap="innerHTML" -->
                             <!-- hx-trigger="load" -->
                         >
-                        {{ engagement.slug }}
+                            {{ engagement.slug }}
                         </button>
                     </div>
                 </div>

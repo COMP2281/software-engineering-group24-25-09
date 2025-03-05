@@ -62,7 +62,7 @@
 
                         <button
                             class="btn btn-secondary flex-none px-3"
-                            hx-get="new_slide"
+                            hx-get="static/new_slide_modal.html"
                             hx-swap="outerHTML"
                             hx-trigger="click"
                             hx-target="#new_slide_modal"
@@ -86,7 +86,12 @@
             <dialog id="out_of_scrapes_popup"></dialog>
             <!-- Create new slide modal -->
             <dialog id="create_new_slide"></dialog>
-            <div id="slides" hx-get="slides" hx-swap="innerHTML" hx-target="this" hx-trigger="load"></div>
+
+            <div class="flex-1 overflow-y-scroll p-3">
+                <div class="grid h-max gap-5 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                    <div id="slides" hx-get="slides" hx-swap="innerHTML" hx-target="this" hx-trigger="load"></div>
+                </div>
+            </div>
         </div>
     </body>
 </html>

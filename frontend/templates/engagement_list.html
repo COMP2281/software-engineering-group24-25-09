@@ -1,0 +1,12 @@
+{% for slug in slugs %}
+<button
+    class="h-30 btn btn-ghost mt-2 w-full rounded bg-base-200 text-lg"
+    hx-get="templates/create_new_slide/{{ slug }}"
+    hx-swap="outerHTML"
+    hx-trigger="click"
+    hx-target="#create_new_slide"
+    _="on click trigger closeModal"
+>
+    {{ slug }}
+</button>
+{% endfor %}

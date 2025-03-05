@@ -1,5 +1,7 @@
 import { app, BrowserWindow } from 'electron'
 
+app.commandLine.appendSwitch ("disable-http-cache");
+
 const createWindow = () => {
     const win = new BrowserWindow({
         width: 800,

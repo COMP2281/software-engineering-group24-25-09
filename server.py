@@ -14,7 +14,6 @@ import os
 from contextlib import asynccontextmanager
 import subprocess
 from urllib.parse import urlunparse
-from pydantic import BaseModel
 
 
 def URL(scheme: str, netloc: str, url="", path="", query="", fragment=""):
@@ -64,31 +63,32 @@ async def read_index():
     return FileResponse("frontend/index.html")
 
 
+# @app.get("/slides", response_class=HTMLResponse)
+# async def get_slides(request: Request):
+#     engagements = [
+#         {"slug": engagement.get_slug()}
+#         for engagement in engagement_manager.get_engagements().values()
+#     ]
+#
+#     return templates.TemplateResponse(
+#         request=request,
+#         name="slide_previews.html",
+#         context={"engagements": engagements},
+#     )
+
+
+def printr(input):
+    print(input)
+    return input
+
+
 @app.get("/slides", response_class=HTMLResponse)
-async def get_slides(request: Request):
-    engagements = [
-        {"slug": engagement.get_slug()}
-        for engagement in engagement_manager.get_engagements().values()
-    ]
-
-    return templates.TemplateResponse(
-        request=request,
-        name="slide_previews.html",
-        context={"engagements": engagements},
-    )
-
-
-def print_return(inp):
-    print(inp)
-    return inp
-
-
 @app.post("/search_slides", response_class=HTMLResponse)
-async def search_slides(request: Request, search_text: Annotated[str, Form()]):
+async def search_slides(request: Request, search_text: Annotated[str, Form()] = ""):
     engagements = [
-        {"slug": engagement.get_slug()}
+        {"slug": engagement.get_title()}
         for engagement in engagement_manager.get_engagements().values()
-        if print_return(fuzz.partial_ratio(engagement.get_slug(), search_text)) > 80
+        if fuzz.partial_ratio(engagement.get_title(), search_text) > 50
         or search_text == ""
     ]
     print(search_text)
@@ -100,17 +100,24 @@ async def search_slides(request: Request, search_text: Annotated[str, Form()]):
     )
 
 
-@app.get("/new_slide", response_class=HTMLResponse)
-async def serve_engagement_list(request: Request):
-    engagement_slugs = [
-        engagement.get_slug()
+@app.get("/engagements", response_class=HTMLResponse)
+@app.post("/search_engagements", response_class=HTMLResponse)
+async def serve_engagement_list(
+    request: Request, engagement_search_text: Annotated[str, Form()] = ""
+):
+    print(engagement_search_text)
+    engagements = [
+        engagement.get_title()
         for engagement in engagement_manager.get_engagements().values()
+        if printr(fuzz.partial_ratio(engagement.get_title(), engagement_search_text))
+        > 50
+        or engagement_search_text == ""
     ]
 
     return templates.TemplateResponse(
         request=request,
-        name="new_slide_modal.html",
-        context={"slugs": engagement_slugs},
+        name="engagement_list.html",
+        context={"slugs": engagements},
     )
 
 

@@ -1,14 +1,22 @@
-{% for engagement in engagements %}
-    <div class="flex-1 overflow-y-scroll p-3">
-        <div class="grid h-max gap-5 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            <button
-                class="btn btn-ghost w-1/3 rounded bg-base-200"
-                <!-- hx-get="templates/slide_template.html" -->
-                <!-- hx-swap="innerHTML" -->
-                <!-- hx-trigger="load" -->
-            >
-                {{ engagement.slug }}
-            </button>
+<!-- {% for engagement in engagements %} -->
+<button
+    class="btn btn-ghost w-1/3 rounded bg-base-200"
+    <!-- hx-get="templates/slide_template.html" -->
+    <!-- hx-swap="innerHTML" -->
+    <!-- hx-trigger="load" -->
+>
+
+    <div background = 'static/resources/SlideBackground.jpg'>
+        <div style="display: flex;">
+            <div style = "flex: 50%;  margin: auto;  align: right;">
+                <h1 style="color:white; font-size: 3em;"> Title Basic Text </h1>
+                <p style="color:white; font-size: 1.5em;"> Main Paragraph text - defined by the AI and all that </p>
+            </div>
+
+            <div style = "flex: 50%;  margin: auto; font-size: 1.5em;">
+                <p style="color:white;"> IBM Employees </p>
+            </div>
         </div>
     </div>
-{% endfor %}
+</button>
+<!-- {% endfor %} -->

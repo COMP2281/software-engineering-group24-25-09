@@ -1,15 +1,20 @@
-<dialog
-    id="new_slide_modal"
-    class="modal modal-open overflow-hidden"
-    _="on closeModal remove .modal-open"
->
+<dialog id="new_slide_modal" class="modal modal-open overflow-hidden" _="on closeModal remove .modal-open">
     <div class="modal-box flex flex-col overflow-hidden p-1">
         <div class="flex h-full flex-col overflow-hidden">
             <div class="sticky top-0">
                 <div class="m-0 flex inline-flex h-8 w-full bg-base-100">
                     <!-- TODO: Fix clicked behaviour of search bar, fix close icon, fix padding below search bar -->
                     <label class="input input-sm input-bordered left-2 top-2 flex grow">
-                        <input type="text" class="flex w-full" placeholder="Durham University" />
+                        <input
+                            type="search"
+                            placeholder="Durham University"
+                            class="flex w-full"
+                            hx-post="/search_engagements"
+                            hx-trigger="input changed delay:500ms, search"
+                            hx-target="#engagements"
+                            name="engagement_search_text"
+                            hx-include="[name='engagement_search_text']"
+                        />
                         <div
                             class="flex-none self-center opacity-70"
                             hx-get="static/resources/search.html"
@@ -29,19 +34,8 @@
                 </div>
             </div>
 
-            <div class="flex-1 overflow-y-scroll">
-                {% for slug in slugs %}
-                    <button
-                        class="h-30 btn btn-ghost mt-2 w-full rounded bg-base-200 text-lg"
-                        hx-get="templates/create_new_slide/{{ slug }}"
-                        hx-swap="outerHTML"
-                        hx-trigger="click"
-                        hx-target="#create_new_slide"
-                        _="on click trigger closeModal"
-                    >
-                    {{ slug }}
-                    </button>
-                {% endfor %}
+            <div class="flex-1 overflow-y-scroll" id="engagements">
+                <div hx-get="engagements" hx-swap="outerHTML" hx-trigger="load" hx-target="this"></div>
             </div>
         </div>
 

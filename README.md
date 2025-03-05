@@ -5,33 +5,45 @@
 ## Dependencies
 
 1. Install Ollama from [https://ollama.com/download/windows](https://ollama.com/download/windows).
-2. Install the latest version of Python 3.13 from [https://www.python.org/downloads/](https://www.python.org/downloads/).
-   1. Select "Add python.exe to PATH".
-      ![image7.png](README/image7.png)
-   2. You may need to restart your device for this to take effect.
+2. Install the latest version of Python 3.13
+   from [https://www.python.org/downloads/](https://www.python.org/downloads/).
+    1. Select "Add python.exe to PATH".
+
+       <img src="README/image7.png" width="400" alt=""/>
+    2. You may need to restart your device for this to take effect.
 3. Install the latest version of Node.js from [https://nodejs.org/en/download](https://nodejs.org/en/download).
 
 ## Setting up a Google Cloud project
 
-1. Create a Google account at [https://accounts.google.com/](https://accounts.google.com/)  
-2. Go to [https://console.cloud.google.com/](https://console.cloud.google.com/projectselector2/home/dashboard?inv=1&invt=AbrKPg&supportedpurview=project), click “Create project” enter a project name and click “Create”  
-   ![](README/image3.png)
-3. Click “Go to APIs overview”  
-   ![](README/image2.png)
-4. Click “Credentials”  
-   ![](README/image1.png)
-5. Click “CREATE CREDENTIALS”, select “API key”, and note down your key  
-   ![](README/image6.png)
-6. Go to [https://cse.google.com/all](https://cse.google.com/all), click “Add”, and create a new search engine. Make sure to select “Search the entire web”.  
-   ![](README/image5.png)
-7. Copy the custom search engine ID from the code snippet where `cx=your_cse_id` and note it down.  
-   ![](README/image4.png)
+1. Create a Google account at [https://accounts.google.com/](https://accounts.google.com/).
+2. Go
+   to [https://console.cloud.google.com/](https://console.cloud.google.com/projectselector2/home/dashboard?inv=1&invt=AbrKPg&supportedpurview=project),
+   click "Create project" enter a project name and click "Create".
+
+   <img src="README/image3.png" width="400" alt=""/>
+3. Click "Go to APIs overview".
+
+   <img src="README/image2.png" width="400" alt=""/>
+4. Click "Credentials".
+
+   <img src="README/image1.png" width="400" alt=""/>
+5. Click "CREATE CREDENTIALS", select "API key", and note down your key.
+
+   <img src="README/image6.png" width="400" alt=""/>
+6. Go to [https://cse.google.com/all](https://cse.google.com/all), click "Add", and create a new search engine. Make
+   sure to select "Search the entire web".
+
+   <img src="README/image5.png" width="400" alt=""/>
+7. Copy the custom search engine ID from the code snippet where `cx=your_cse_id` and note it down.
+
+   <img src="README/image4.png" width="400" alt=""/>
 
 ## Setting up the app
 
-1. Clone the app repository from [https://github.com/COMP2281/software-engineering-group24-25-09](https://github.com/COMP2281/software-engineering-group24-25-09).
+1. Clone the app repository
+   from [https://github.com/COMP2281/software-engineering-group24-25-09](https://github.com/COMP2281/software-engineering-group24-25-09).
 2. Enter the app directory and run `setup.bat`.
-   1. You will be prompted to enter your Google API credentials.
+    1. You will be prompted to enter your Google API credentials.
 
 ## Running the app
 

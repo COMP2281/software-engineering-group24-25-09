@@ -9,7 +9,7 @@
    from [https://www.python.org/downloads/](https://www.python.org/downloads/).
     1. Select "Add python.exe to PATH".
 
-       <img src="README/image7.png" width="400" alt=""/>
+       <img src="README/python_path.png" width="400" alt=""/>
     2. You may need to restart your device for this to take effect.
 3. Install the latest version of Node.js from [https://nodejs.org/en/download](https://nodejs.org/en/download).
 
@@ -20,23 +20,23 @@
    to [https://console.cloud.google.com/](https://console.cloud.google.com/projectselector2/home/dashboard?inv=1&invt=AbrKPg&supportedpurview=project),
    click "Create project" enter a project name and click "Create".
 
-   <img src="README/image3.png" width="400" alt=""/>
+   <img src="README/google_create_project.png" width="400" alt=""/>
 3. Click "Go to APIs overview".
 
-   <img src="README/image2.png" width="400" alt=""/>
+   <img src="README/google_apis_overview.png" width="400" alt=""/>
 4. Click "Credentials".
 
-   <img src="README/image1.png" width="400" alt=""/>
+   <img src="README/google_credentials.png" width="400" alt=""/>
 5. Click "CREATE CREDENTIALS", select "API key", and note down your key.
 
-   <img src="README/image6.png" width="400" alt=""/>
+   <img src="README/google_create_credentials.png" width="400" alt=""/>
 6. Go to [https://cse.google.com/all](https://cse.google.com/all), click "Add", and create a new search engine. Make
    sure to select "Search the entire web".
 
-   <img src="README/image5.png" width="400" alt=""/>
+   <img src="README/google_create_search_engine.png" width="400" alt=""/>
 7. Copy the custom search engine ID from the code snippet where `cx=your_cse_id` and note it down.
 
-   <img src="README/image4.png" width="400" alt=""/>
+   <img src="README/google_cse_id.png" width="400" alt=""/>
 
 ## Setting up the app
 

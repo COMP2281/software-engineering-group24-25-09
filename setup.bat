@@ -60,24 +60,28 @@ echo Running Python from: %PYTHONPATH%
 "%PYTHONPATH%" --version
 
 :: Create a virtual environment
+echo Creating virtual environment
 "%PYTHONPATH%" -m venv .venv
 call .venv\Scripts\activate
 
 :: Install Python dependencies
+echo Installing Python dependencies
 pip install -r requirements.txt
 
 :: Install Llama model
+echo Installing Llama model
 ollama pull llama3.1:8b
 
-:: Install Node.js dependenceis
+:: Install Node.js dependencies
+echo Installing Node.js dependencies
 pushd frontend
 call npm install
 popd
 
 :: Generate config file
+echo Generating config file
 copy example.env .env
 python config.py
-
 
 echo Start the application with start.bat
 pause

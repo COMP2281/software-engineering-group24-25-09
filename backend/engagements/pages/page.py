@@ -79,6 +79,14 @@ def strip_image(image: BeautifulSoup) -> BeautifulSoup:
 
 
 class Page:
+    @property
+    def body(self) -> BeautifulSoup:
+        return BeautifulSoup(self._body, "html.parser")
+
+    @body.setter
+    def body(self, body: BeautifulSoup) -> None:
+        self._body = str(body)
+
     def update(self) -> None:
         """
         Get the latest version of the page and update self.
@@ -92,7 +100,7 @@ class Page:
         Set URL and update self.
         :param url: Webpage URL.
         """
-        self.body = None
+        self._body = None
         self.url = url
         self.update()
 

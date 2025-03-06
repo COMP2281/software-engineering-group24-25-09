@@ -35,10 +35,10 @@ if __name__ == "__main__":
     load_config()
     ollama_url, ollama_model_name = get_llm_config()
     llm = LLM(ollama_url, ollama_model_name)
-    engagement_manager = EngagementManager(llm, "./data")
+    engagement_manager = EngagementManager(llm, "data")
 
     api_key, cse_id = get_search_config()
-    search = Search(api_key, cse_id, "backend/data")
+    search = Search(api_key, cse_id, "data")
 
     urls = search.search_all(prompts[0:1])
 
@@ -49,3 +49,4 @@ if __name__ == "__main__":
         engagement = engagement_manager.create_engagement_from_url(str(url))
 
     slugs = engagement_manager.get_slugs()
+    print(slugs)

@@ -49,7 +49,7 @@ for url in urls:
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    subprocess.Popen(["npm", "start"], cwd="./frontend")
+    subprocess.Popen(["npm", "start"], cwd="./frontend", shell=True)
     yield
 
 

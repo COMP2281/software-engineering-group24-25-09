@@ -1,6 +1,5 @@
-import os
-import pickle
 from googleapiclient.discovery import build, Resource
+from backend.saver import Saver
 from backend.search.credit_counter import CreditCounter
 from backend.search.excluded_file_types import excluded_file_types
 from backend.search.types import SearchResponse
@@ -15,30 +14,30 @@ class SearchException(Exception):
         super().__init__(message * args)
 
 
-class Search:
-    def counter_file_exists(self) -> bool:
+class Search(Saver):
+    @property
+    def counter(self) -> CreditCounter | None:
         """
-        Check if counter file exists.
-        :return: True if file exists, False otherwise.
+        Get the credit counter if it exists.
+        :return: Credit counter if it exists, None otherwise.
         """
-        return os.path.isfile(self.counter_file_path)
+        return self.data.get("counter")
 
-    def load_counter(self) -> None:
+    @counter.setter
+    def counter(self, counter: CreditCounter) -> None:
         """
-        Load credit counter from file.
+        Set the credit counter to a new instance.
+        :param counter: CreditCounter instance.
         """
-        if self.counter_file_exists():
-            file = open(self.counter_file_path, "rb")
-            self.counter = pickle.load(file)["counter"]
-        else:
+        self.data["counter"] = counter
+        self.save_data()
+
+    def create_counter(self) -> None:
+        """
+        Create a new credit counter if none exists.
+        """
+        if self.counter is None:
             self.counter = CreditCounter()
-
-    def save_counter(self) -> None:
-        """
-        Save credit counter to file.
-        """
-        file = open(self.counter_file_path, "wb")
-        pickle.dump({"counter": self.counter}, file)
 
     def __init__(self, api_key: str, cse_id: str, data_path: str) -> None:
         """
@@ -47,12 +46,10 @@ class Search:
         :param cse_id: Google Cloud CSE ID.
         :param data_path: Path to data directory.
         """
+        super().__init__(data_path, "counter")
         self.api_key = api_key
         self.cse_id = cse_id
-        self.counter_file_path = os.path.join(data_path, "counter.pickle")
-        self.counter = None
-        self.load_counter()
-        self.save_counter()
+        self.create_counter()
 
     @property
     def service(self) -> Resource:
@@ -93,7 +90,7 @@ class Search:
             raise SearchException("Daily search limit reached")
         else:
             self.counter.decrement_credits()
-            self.save_counter()
+            self.save_data()
 
     def search(self, prompt: str) -> set[URL]:
         """

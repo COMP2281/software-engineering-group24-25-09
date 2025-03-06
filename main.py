@@ -2,15 +2,9 @@ import os
 from backend.engagements.engagement_manager import EngagementManager
 from backend.search.prompts import prompts
 from backend.search.search import Search
-from data.urls import urls
 from backend.engagements.llm import LLM
 from dotenv import load_dotenv, find_dotenv
-from urllib.parse import urlunparse
-
-
-def URL(scheme: str, netloc: str, url="", path="", query="", fragment=""):
-    # https://stackoverflow.com/a/15799706
-    return str(urlunparse((scheme, netloc, url, path, query, fragment)))
+from backend.web import build_url
 
 
 def load_config():
@@ -19,7 +13,7 @@ def load_config():
 
 def get_llm_config() -> tuple[str, str]:
     return (
-        URL(
+        build_url(
             scheme="http",
             netloc=f"{os.getenv("OLLAMA_HOST")}:{os.getenv("OLLAMA_PORT")}",
         ),

@@ -13,12 +13,7 @@ from dotenv import load_dotenv, find_dotenv
 import os
 from contextlib import asynccontextmanager
 import subprocess
-from urllib.parse import urlunparse
-
-
-def URL(scheme: str, netloc: str, url="", path="", query="", fragment=""):
-    # https://stackoverflow.com/a/15799706
-    return str(urlunparse((scheme, netloc, url, path, query, fragment)))
+from backend.web import build_url
 
 
 def load_config():
@@ -27,7 +22,7 @@ def load_config():
 
 def get_llm_config() -> tuple[str, str]:
     return (
-        URL(
+        build_url(
             scheme="http",
             netloc=f'{os.getenv("OLLAMA_HOST")}:{os.getenv("OLLAMA_PORT")}',
         ),

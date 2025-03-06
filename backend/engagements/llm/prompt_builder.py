@@ -3,7 +3,7 @@ from backend.engagements.llm.prompt import Prompt
 
 class PromptBuilder:
     @staticmethod
-    def summarise(source: str) -> Prompt:  # explicit word count
+    def summarise(source: str) -> Prompt:
         return Prompt(
             """You are finding how IBM have been involved in educational outreach.
             You will receive the content from a web page. It may contain irrelevant information outside of the main article.
@@ -30,7 +30,7 @@ class PromptBuilder:
     def title(source: str) -> Prompt:
         return Prompt(
             """You will receive the content from a web page. It may contain irrelevant information outside of the main article.
-            Please write a short title that describes the content.
+            Please write a short title of maximum 15 words that describes the content.
             Do not confirm this message or say anything else.""",
             source,
         )

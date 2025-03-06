@@ -1,7 +1,8 @@
 from backend.engagements.llm import LLM
-from backend.engagements.pages import Page, PageManager
 from backend.engagements.engagement_data import EngagementData
 from backend.engagements.engagement_data_manager import EngagementDataManager
+from backend.engagements.pages.page import Page
+from backend.engagements.pages.page_manager import PageManager
 from bs4 import BeautifulSoup
 
 

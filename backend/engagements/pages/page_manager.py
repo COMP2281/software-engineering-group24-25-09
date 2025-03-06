@@ -1,6 +1,6 @@
 import os.path
 import pickle
-from .page import Page
+from backend.engagements.pages.page import Page
 
 
 class PageManager:

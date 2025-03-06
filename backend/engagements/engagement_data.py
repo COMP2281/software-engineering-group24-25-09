@@ -1,6 +1,6 @@
 import re
 from backend.engagements.llm import LLM
-from backend.engagements.pages import Page
+from backend.engagements.pages.page import Page
 
 
 class EngagementData:
@@ -40,7 +40,7 @@ class EngagementData:
         """
         return self.source_urls
 
-    def add_source_url(self, url : str) -> None:
+    def add_source_url(self, url: str) -> None:
         """
         Add a new source URL to the engagement.
         :param url: Source URL.

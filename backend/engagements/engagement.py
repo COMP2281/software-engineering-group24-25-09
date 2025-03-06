@@ -19,7 +19,7 @@ class Engagement:
         :param llm: LLM instance.
         :param data: EngagementData or Page to start new EngagementData.
         """
-        self.engagement_manager = engagement_data_manager
+        self.engagement_data_manager = engagement_data_manager
         self.llm = llm
         if isinstance(data, EngagementData):
             self.data = data
@@ -53,14 +53,14 @@ class Engagement:
         :param url: Source URL.
         """
         self.data.add_source_url(url)
-        self.engagement_manager.save_engagements()
+        self.engagement_data_manager.save_data()
 
     def get_page_manager(self) -> PageManager:
         """
         Get the PageManager instance.
         :return: PageManager instance.
         """
-        return self.engagement_manager.get_page_manager()
+        return self.engagement_data_manager.get_page_manager()
 
     def get_source(self, url: str) -> Page:
         """

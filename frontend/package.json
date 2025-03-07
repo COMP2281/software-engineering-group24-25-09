@@ -26,6 +26,8 @@
     "electron": "^34.2.0",
     "express": "^4.21.1",
     "heroicons": "^2.2.0",
+    "portfinder": "^1.0.33",
+    "request-promise": "^4.2.6",
     "serve-static": "^1.16.2"
   }
 }

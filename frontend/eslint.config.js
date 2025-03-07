@@ -7,6 +7,7 @@ export default [
     {
         files: ['**/*.html'],
         plugins: { html },
+        rules: { 'no-console': 'off' },
     },
     eslintConfigPrettier,
 ]

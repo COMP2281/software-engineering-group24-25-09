@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Request, Form
+import sys
 from rapidfuzz import fuzz
 from typing import Annotated
 from starlette.responses import FileResponse
@@ -16,12 +17,7 @@ from backend.engagements.engagement_manager import (
 from backend.engagements.llm.llm import LLM
 from backend.config import (
     get_llm_config,
-    get_search_config,
-    get_engagement_manager_config,
 )
-from contextlib import asynccontextmanager
-import subprocess
-
 
 ollama_url, ollama_model_name = get_llm_config()
 llm = LLM(ollama_url, ollama_model_name)
@@ -35,14 +31,7 @@ for url in urls:
     except GetPageException as e:
         print(e)
 
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    subprocess.Popen(["npm", "start"], cwd="./frontend", shell=True)
-    yield
-
-
-app = FastAPI(lifespan=lifespan)
+app = FastAPI()
 app.mount("/static", StaticFiles(directory="frontend/static"), name="static")
 templates = Jinja2Templates(directory="frontend/templates")
 
@@ -111,4 +100,4 @@ async def serve_engagement_list(
 
 
 if __name__ == "__main__":
-    uvicorn.run(app)
+    uvicorn.run(app, port=int(sys.argv[1]))

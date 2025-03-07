@@ -5,41 +5,35 @@ from starlette.responses import FileResponse
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 import uvicorn
+from backend.engagements.pages.page import GetPageException
+from backend.search.url import URL
 from data.urls import urls
 from fastapi.templating import Jinja2Templates
-from backend.engagements.engagement_manager import EngagementManager
+from backend.engagements.engagement_manager import (
+    EngagementManager,
+    CannotCrawlException,
+)
 from backend.engagements.llm.llm import LLM
-from dotenv import load_dotenv, find_dotenv
-import os
+from backend.config import (
+    get_llm_config,
+    get_search_config,
+    get_engagement_manager_config,
+)
 from contextlib import asynccontextmanager
 import subprocess
-from backend.web import build_url
 
 
-def load_config():
-    load_dotenv(find_dotenv())
-
-
-def get_llm_config() -> tuple[str, str]:
-    return (
-        build_url(
-            scheme="http",
-            netloc=f'{os.getenv("OLLAMA_HOST")}:{os.getenv("OLLAMA_PORT")}',
-        ),
-        os.getenv("OLLAMA_MODEL"),
-    )
-
-
-def get_search_config() -> tuple[str, str]:
-    return os.getenv("GOOGLE_API_KEY"), os.getenv("GOOGLE_CSE_ID")
-
-
-load_config()
 ollama_url, ollama_model_name = get_llm_config()
 llm = LLM(ollama_url, ollama_model_name)
 engagement_manager = EngagementManager(llm, "./data")
 for url in urls:
-    engagement_manager.create_engagement_from_url(str(url))
+    print(f"Adding {url}")
+    try:
+        engagement_manager.create_engagement_from_url(URL(url))
+    except CannotCrawlException as e:
+        print(e)
+    except GetPageException as e:
+        print(e)
 
 
 @asynccontextmanager

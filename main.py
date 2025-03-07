@@ -3,6 +3,11 @@ from backend.config import (
     get_search_config,
     get_engagement_manager_config,
 )
+from backend.engagements.engagement_manager import (
+    EngagementManager,
+    CannotCrawlException,
+)
+from backend.engagements.pages.page import GetPageException
 from backend.search.prompts import prompts
 from backend.search.search import Search
 from backend.engagements.llm import LLM
@@ -19,11 +24,17 @@ if __name__ == "__main__":
 
     urls = search.search_all(prompts[0:1])
 
-    print(urls)
+    for url in urls:
+        print(url, url.can_crawl())
 
     print(engagement_manager.get_engagements())
     for url in urls:
-        engagement = engagement_manager.create_engagement_from_url(str(url))
+        try:
+            engagement_manager.create_engagement_from_url(url)
+        except CannotCrawlException as e:
+            print(e)
+        except GetPageException as e:
+            print(e)
 
     slugs = engagement_manager.get_slugs()
     print(slugs)

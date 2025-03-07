@@ -4,7 +4,6 @@ from backend.search.credit_counter import CreditCounter
 from backend.search.excluded_file_types import excluded_file_types
 from backend.search.types import SearchResponse
 from backend.search.url import URL
-from backend.search.prompts import prompts
 
 PAGE_COUNT = 10
 
@@ -102,7 +101,7 @@ class Search(Saver):
         response = self._query_service(prompt)
         urls = set()
         for result in response["items"]:
-            urls.add(URL(result))
+            urls.add(URL(result["link"]))
         return urls
 
     def search_all(self, prompts: list[str]) -> set[URL]:

@@ -1,6 +1,7 @@
+from urllib.parse import urlparse
+
 from requests import RequestException
 from backend.web import build_url, USER_AGENT, get
-from backend.search.types import SearchResult
 from urllib.robotparser import RobotFileParser
 
 
@@ -10,12 +11,9 @@ class NoRobotsFileException(Exception):
 
 
 class URL:
-    def __init__(self, data: SearchResult) -> None:
-        self.url = data["link"]
-        self.title = data["title"]
-        self.domain = data["displayLink"]
-        if data["snippet"]:
-            self.snippet = data["snippet"]
+    def __init__(self, url: str) -> None:
+        self.url = url
+        self.domain = urlparse(self.url).netloc
 
     def __str__(self) -> str:
         return self.url

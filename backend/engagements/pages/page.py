@@ -5,6 +5,16 @@ from backend.web import get
 import re
 
 
+class GetPageException(Exception):
+    def __init__(
+        self, url: str, *args, request_exception: RequestException | None = None
+    ):
+        message = f"Failed to get {url}"
+        if request_exception:
+            message += f": {request_exception}"
+        super().__init__(message, *args)
+
+
 def remove_control_characters(text: str) -> str:
     """
     Remove control characters x01 to x1f, excluding whitespace characters.
@@ -31,11 +41,13 @@ def get_page_soup(url: str) -> BeautifulSoup:
     :return: Element.
     """
     try:
-        html = get(url).text
+        response = get(url)
     except RequestException as e:
-        raise Exception(f"Failed to get {url}:\n{e}")
+        raise GetPageException(url, request_exception=e)
+    if not response.ok:
+        raise GetPageException(url)
 
-    html = remove_control_characters(html)
+    html = remove_control_characters(response.text)
     soup = BeautifulSoup(html, "html.parser")
     return soup
 

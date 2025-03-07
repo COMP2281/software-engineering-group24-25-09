@@ -1,8 +1,7 @@
-import re
-from requests.exceptions import RequestException
-from backend.web import get, build_url, USER_AGENT
+from requests import RequestException
+from backend.web import build_url, USER_AGENT, get
 from backend.search.types import SearchResult
-from urllib.parse import urlparse
+from urllib.robotparser import RobotFileParser
 
 
 class NoRobotsFileException(Exception):
@@ -31,53 +30,23 @@ class URL:
             return False
 
     @property
-    def path(self) -> str:
-        return urlparse(self.url).path
+    def robots_file_url(self) -> str:
+        return build_url(scheme="https", netloc=self.domain, path="robots.txt")
 
-    def get_raw_robots_rules(self) -> str:
+    def get_robots_lines(self) -> list[str]:
         try:
-            url = build_url(scheme="https", netloc=self.domain, path="robots.txt")
-            response = get(url)
-            if not response.ok or not response.headers.get("Content-Type").startswith(
-                "text/plain"
-            ):
-                raise NoRobotsFileException()
+            response = get(self.robots_file_url)
         except RequestException:
             raise NoRobotsFileException()
-        return response.text
-
-    def get_robots_rules(self) -> list[list[str]]:
-        raw_robots_rules = self.get_raw_robots_rules().strip().lower()
-        # https://regex101.com/r/AuB3vK/2
-        robots_rules = re.findall(
-            r"user-agent:[\s\S]*?(?=\s*user-agent:|$)", raw_robots_rules
-        )
-        # https://regex101.com/r/6NpoBA/1
-        return [re.split(r"\s*\r?\n\s*", rule) for rule in robots_rules]
+        if not response.ok:
+            raise NoRobotsFileException()
+        return response.text.splitlines()
 
     def can_crawl(self) -> bool:
+        robot_parser = RobotFileParser()
         try:
-            robots_rules = self.get_robots_rules()
+            lines = self.get_robots_lines()
         except NoRobotsFileException:
-            return False
-        print(self.url)
-        print(robots_rules)
-        allow = True
-        for block in robots_rules:
-            if not block.pop(0).endswith(("*", USER_AGENT.lower())):
-                continue
-            for rule in block:
-                parsed_rule = rule.split(":", 1)
-                if len(parsed_rule) != 2:
-                    continue
-                directive, path = parsed_rule
-                path = urlparse(path).path
-                if not path.endswith("/") and self.path != path:
-                    continue
-                if not self.path.startswith(path):
-                    continue
-                if directive == "allow":
-                    allow = True
-                elif directive == "disallow":
-                    allow = False
-        return allow
+            return True
+        robot_parser.parse(lines)
+        return robot_parser.can_fetch(USER_AGENT, self.url)

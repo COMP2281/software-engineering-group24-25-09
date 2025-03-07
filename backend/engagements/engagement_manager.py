@@ -4,10 +4,16 @@ from backend.engagements.engagement import Engagement
 from backend.engagements.engagement_data_manager import EngagementDataManager
 from backend.engagements.pages.page import Page
 from backend.engagements.pages.page_manager import PageManager
+from backend.search.url import URL
+
+
+class CannotCrawlException(Exception):
+    def __init__(self, *args):
+        super().__init__("Crawling this URL is disallowed", *args)
 
 
 class EngagementManager:
-    def __init__(self, llm: LLM, data_path) -> None:
+    def __init__(self, llm: LLM, data_path, ignore_robots_file=False) -> None:
         """
         Set reference to LLM instance and instantiate EngagementDataManager.
         :param llm: LLM instance.
@@ -15,6 +21,7 @@ class EngagementManager:
         """
         self.llm = llm
         self.data_manager = EngagementDataManager(data_path)
+        self.ignore_robots_file = ignore_robots_file
 
     def get_slugs(self) -> list[str]:
         """
@@ -80,15 +87,17 @@ class EngagementManager:
         """
         self.data_manager.add_engagement_data(engagement.get_data())
 
-    def create_engagement_from_url(self, url: str) -> Engagement | None:
+    def create_engagement_from_url(self, url: URL) -> Engagement | None:
         """
         Create and save an engagement from the URL if it does not already exist.
         :param url: URL to a source.
         :return: Engagement if created, None otherwise.
         """
+        if not self.ignore_robots_file and not url.can_crawl():
+            raise CannotCrawlException()
         if url in self.get_all_source_urls():
             return None
-        page = self.get_page(url)
+        page = self.get_page(str(url))
         engagement = Engagement(self.data_manager, self.llm, page)
         self.add_engagement(engagement)
         return engagement

@@ -12,7 +12,7 @@ if exist "%PYTHONPATH%" (
     for /f "tokens=2 delims= " %%a in ('"%PYTHONPATH%" --version 2^>^&1') do (
         set "PYTHONVERSION=%%a"
     )
-    :: Check if verison is correct
+    :: Check if version is correct
     if "!PYTHONVERSION:~0,4!"=="3.13" (
         goto :found
     )
@@ -24,7 +24,7 @@ for /f "delims=" %%p in ('where python') do (
     for /f "tokens=2 delims= " %%a in ('"%%p" --version 2^>^&1') do (
         set "PYTHONVERSION=%%a"
     )
-    :: Check if verison is correct
+    :: Check if version is correct
     if "!PYTHONVERSION:~0,4!"=="3.13" (
         set "PYTHONPATH=%%p"
         goto :found
@@ -40,7 +40,7 @@ if exist "%PYTHONPATH%" (
     for /f "tokens=2 delims= " %%a in ('"%PYTHONPATH%" --version 2^>^&1') do (
         set "PYTHONVERSION=%%a"
     )
-    :: Check if verison is correct
+    :: Check if version is correct
     if "!PYTHONVERSION:~0,4!"=="3.13" (
         goto :found
     ) else (
@@ -50,7 +50,7 @@ if exist "%PYTHONPATH%" (
     echo %PYTHONPATH% not found
 )
 
-:: Exit if Python not found
+:: Exit if Python not found (error code 1)
 pause
 exit /b 1
 

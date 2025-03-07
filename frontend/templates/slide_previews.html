@@ -1,22 +1,24 @@
-<!-- {% for engagement in engagements %} -->
-<button
-    class="btn btn-ghost w-1/3 rounded bg-base-200"
-    <!-- hx-get="templates/slide_template.html" -->
-    <!-- hx-swap="innerHTML" -->
-    <!-- hx-trigger="load" -->
->
+{% for engagement in engagements %}
+<button class="btn btn-ghost aspect-video h-full w-full rounded bg-[url(/static/SlideBackground.jpg)] bg-cover border-0 m-0 p-0">
+    <svg class="h-full w-full object-cover" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+        <text x="4%" y="14%" font-size="500%" fill="white" font-family="Arial">{{ engagement.title }}</text>
 
-    <div background = 'static/resources/SlideBackground.jpg'>
-        <div style="display: flex;">
-            <div style = "flex: 50%;  margin: auto;  align: right;">
-                <h1 style="color:white; font-size: 3em;"> Title Basic Text </h1>
-                <p style="color:white; font-size: 1.5em;"> Main Paragraph text - defined by the AI and all that </p>
-            </div>
+        <!-- Subtitle Text -->
+        <text x="4%" y="21%" font-size="200%" fill="white" font-family="Arial">Content would be here Why bullet points</text>
 
-            <div style = "flex: 50%;  margin: auto; font-size: 1.5em;">
-                <p style="color:white;"> IBM Employees </p>
-            </div>
-        </div>
-    </div>
+        <!-- Floating Dice Images -->
+        <!-- <image href="dice1.png" x="70%" y="21%" width="8%" height="8%" /> -->
+        <!-- <image href="dice2.png" x="74%" y="27%" width="8%" height="8%" /> -->
+        <!-- <image href="dice3.png" x="78%" y="33%" width="8%" height="8%" /> -->
+
+        <!-- People Involved Section -->
+        <text x="74%" y="55%" font-size="220%" fill="white" font-family="Arial">People involved:</text>
+        <text x="76%" y="60%" font-size="220%" fill="white" font-family="Arial">- God</text>
+        <text x="76%" y="65%" font-size="220%" fill="white" font-family="Arial">- John</text>
+        <text x="76%" y="70%" font-size="220%" fill="white" font-family="Arial">- Jesus</text>
+
+        <!-- IBM Logo -->
+        <!-- <image href="ibm_logo.png" x="86%" y="90%" width="10%" height="5%"/> -->
+    </svg>
 </button>
-<!-- {% endfor %} -->
+{% endfor %}

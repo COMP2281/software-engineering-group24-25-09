@@ -958,6 +958,11 @@ html {
   }
 }
 
+.form-control {
+  display: flex;
+  flex-direction: column;
+}
+
 .label {
   display: flex;
   -webkit-user-select: none;
@@ -1499,6 +1504,12 @@ html {
   outline-offset: 2px;
 }
 
+.mockup-phone .display {
+  overflow: hidden;
+  border-radius: 40px;
+  margin-top: -25px;
+}
+
 .mockup-browser .mockup-browser-toolbar .input {
   position: relative;
   margin-left: auto;
@@ -1914,20 +1925,16 @@ html {
   display: flex;
 }
 
-.inline-flex {
-  display: inline-flex;
-}
-
 .grid {
   display: grid;
 }
 
-.h-12 {
-  height: 3rem;
+.aspect-video {
+  aspect-ratio: 16 / 9;
 }
 
-.h-8 {
-  height: 2rem;
+.h-12 {
+  height: 3rem;
 }
 
 .h-full {
@@ -1945,10 +1952,6 @@ html {
 
 .w-0 {
   width: 0px;
-}
-
-.w-1\/3 {
-  width: 33.333333%;
 }
 
 .w-10 {
@@ -2051,11 +2054,6 @@ html {
   border-width: 0px;
 }
 
-.bg-base-100 {
-  --tw-bg-opacity: 1;
-  background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity, 1)));
-}
-
 .bg-base-200 {
   --tw-bg-opacity: 1;
   background-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-bg-opacity, 1)));
@@ -2064,6 +2062,36 @@ html {
 .bg-base-300 {
   --tw-bg-opacity: 1;
   background-color: var(--fallback-b3,oklch(var(--b3)/var(--tw-bg-opacity, 1)));
+}
+
+.bg-\[url\(\/img\/mountains\.jpg\)\] {
+  background-image: url(/img/mountains.jpg);
+}
+
+.bg-\[url\(\/static\/mountains\.jpg\)\] {
+  background-image: url(/static/mountains.jpg);
+}
+
+.bg-\[url\(\/static\/\.jpg\)\] {
+  background-image: url(/static/.jpg);
+}
+
+.bg-\[url\(\/static\/SlideBackground\.jpg\)\] {
+  background-image: url(/static/SlideBackground.jpg);
+}
+
+.bg-cover {
+  background-size: cover;
+}
+
+.object-contain {
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
+.object-cover {
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .p-0 {
@@ -2096,12 +2124,12 @@ html {
   padding-bottom: 0.75rem;
 }
 
-.pl-1 {
-  padding-left: 0.25rem;
+.text-left {
+  text-align: left;
 }
 
-.pt-3 {
-  padding-top: 0.75rem;
+.text-right {
+  text-align: right;
 }
 
 .text-2xl {
@@ -2127,6 +2155,11 @@ html {
 .text-gray-500 {
   --tw-text-opacity: 1;
   color: rgb(107 114 128 / var(--tw-text-opacity, 1));
+}
+
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1));
 }
 
 .opacity-70 {

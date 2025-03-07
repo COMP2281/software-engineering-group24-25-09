@@ -88,9 +88,13 @@
             <dialog id="create_new_slide"></dialog>
 
             <div class="flex-1 overflow-y-scroll p-3">
-                <div class="grid h-max gap-5 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-                    <div id="slides" hx-get="slides" hx-swap="innerHTML" hx-target="this" hx-trigger="load"></div>
-                </div>
+                <div
+                    class="grid h-max gap-5 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+                    id="slides"
+                    hx-get="slides"
+                    hx-swap="innerHTML"
+                    hx-trigger="load"
+                ></div>
             </div>
         </div>
     </body>

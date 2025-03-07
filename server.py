@@ -22,14 +22,14 @@ from backend.config import (
 ollama_url, ollama_model_name = get_llm_config()
 llm = LLM(ollama_url, ollama_model_name)
 engagement_manager = EngagementManager(llm, "./data")
-for url in urls:
-    print(f"Adding {url}")
-    try:
-        engagement_manager.create_engagement_from_url(URL(url))
-    except CannotCrawlException as e:
-        print(e)
-    except GetPageException as e:
-        print(e)
+# for url in urls:
+#     print(f"Adding {url}")
+#     try:
+#         engagement_manager.create_engagement_from_url(URL(url))
+#     except CannotCrawlException as e:
+#         print(e)
+#     except GetPageException as e:
+#         print(e)
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="frontend/static"), name="static")
@@ -39,6 +39,38 @@ templates = Jinja2Templates(directory="frontend/templates")
 @app.get("/")
 async def read_index():
     return FileResponse("frontend/index.html")
+
+
+def fuzzy_search(query, dataset, keys, limit=None, threshold=0.6):
+    if query == "":
+        return dataset
+
+    if not limit:
+        limit = len(query)
+
+    results = []
+
+    highest_score = 0
+    for item in dataset:
+        best_key_score = 0
+        best_key = None
+
+        for key in keys:
+            if key in item and isinstance(item[key], str):
+                score = fuzz.partial_ratio(query, item[key])
+                if score > best_key_score:
+                    best_key_score = score
+                    best_key = key
+
+        results.append((item, best_key_score, best_key))
+
+        if best_key_score >= highest_score:
+            highest_score = best_key_score
+
+    results = [x for x in results if x[1] > threshold * highest_score]
+    results.sort(key=lambda x: x[1], reverse=True)
+
+    return [item[0] for item in results[:limit]]
 
 
 # @app.get("/slides", response_class=HTMLResponse)
@@ -64,17 +96,16 @@ def printr(input):
 @app.post("/search_slides", response_class=HTMLResponse)
 async def search_slides(request: Request, search_text: Annotated[str, Form()] = ""):
     engagements = [
-        {"slug": engagement.get_title()}
+        {"title": engagement.get_title()}
         for engagement in engagement_manager.get_engagements().values()
-        if fuzz.partial_ratio(engagement.get_title(), search_text) > 50
-        or search_text == ""
     ]
-    print(search_text)
+
+    searched = fuzzy_search(search_text, engagements, keys=["title"])
 
     return templates.TemplateResponse(
         request=request,
         name="slide_previews.html",
-        context={"engagements": engagements},
+        context={"engagements": searched},
     )
 
 
@@ -87,15 +118,14 @@ async def serve_engagement_list(
     engagements = [
         engagement.get_title()
         for engagement in engagement_manager.get_engagements().values()
-        if printr(fuzz.partial_ratio(engagement.get_title(), engagement_search_text))
-        > 50
-        or engagement_search_text == ""
     ]
+
+    searched = fuzzy_search(engagement_search_text, engagements, keys=["title"])
 
     return templates.TemplateResponse(
         request=request,
         name="engagement_list.html",
-        context={"slugs": engagements},
+        context={"slugs": searched},
     )
 
 

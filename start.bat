@@ -1,3 +1,4 @@
 call .venv\Scripts\activate
-python server.py >> app.log 2>&1
+cd frontend
+npm start >> ../app.log 2>&1
 pause

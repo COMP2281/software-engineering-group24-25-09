@@ -94,9 +94,10 @@ class EngagementManager:
         """
         if not self.ignore_robots_file and not url.can_crawl():
             raise CannotCrawlException()
+        url = str(url)
         if url in self.get_all_source_urls():
             return None
-        page = self.get_page(str(url))
+        page = self.get_page(url)
         engagement = Engagement(self.data_manager, self.llm, page)
         self.add_engagement(engagement)
         return engagement

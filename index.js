@@ -29,10 +29,6 @@ function spawnPy(dir, port) {
         spawnPyUnix(dir, port)
     })
 
-    subpy.on('exit', function () {
-        spawnPyUnix(dir, port)
-    })
-
     return subpy
 }
 

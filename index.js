@@ -23,7 +23,7 @@ function spawnPyWindows(dir, port) {
 }
 
 function spawnPy(dir, port) {
-    const subpy = spawnPyWindows(dir, ['server.py', dir + '/frontend', port], {})
+    const subpy = spawnPyWindows(dir, port)
 
     subpy.on('error', function () {
         spawnPyUnix(dir, port)

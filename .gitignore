@@ -9,7 +9,7 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 .pnpm-debug.log*
-data/*.pickle
+**/*.pickle
 config.py
 
 # Diagnostic reports (https://nodejs.org/api/report.html)

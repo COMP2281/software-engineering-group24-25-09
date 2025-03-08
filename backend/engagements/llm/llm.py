@@ -1,6 +1,5 @@
 import re
 import subprocess
-import httpx
 import ollama
 from engagements.llm.prompt import Prompt
 from engagements.llm.prompt_builder import PromptBuilder
@@ -20,7 +19,7 @@ class LLM:
             self.client.list()
             return True
         # if it can't connect, return False
-        except httpx.ConnectError:
+        except ConnectionError:
             return False
 
     def _start_ollama(self) -> None:

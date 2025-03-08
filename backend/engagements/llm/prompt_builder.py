@@ -1,4 +1,4 @@
-from backend.engagements.llm.prompt import Prompt
+from engagements.llm.prompt import Prompt
 
 
 class PromptBuilder:

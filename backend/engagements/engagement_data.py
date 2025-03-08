@@ -1,6 +1,6 @@
 import re
-from backend.engagements.llm import LLM
-from backend.engagements.pages.page import Page
+from engagements.llm import LLM
+from engagements.pages import Page
 
 
 class EngagementData:

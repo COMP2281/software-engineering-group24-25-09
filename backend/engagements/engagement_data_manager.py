@@ -1,6 +1,6 @@
-from backend.engagements.engagement_data import EngagementData
-from backend.engagements.pages.page_manager import PageManager
-from backend.saver import Saver
+from engagements.engagement_data import EngagementData
+from engagements.pages import PageManager
+from engagements.saver import Saver
 
 
 class EngagementDataManager(Saver):

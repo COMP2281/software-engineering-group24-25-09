@@ -6,15 +6,15 @@ from starlette.responses import FileResponse
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 import uvicorn
-from backend.engagements.pages.page import GetPageException
-from backend.search.url import URL
 from data.urls import urls
 from fastapi.templating import Jinja2Templates
-from backend.engagements.engagement_manager import (
+from engagements import (
+    LLM,
+    URL,
     EngagementManager,
+    GetPageException,
     CannotCrawlException,
 )
-from backend.engagements.llm.llm import LLM
 from config import ollama_host, ollama_port, ollama_model
 
 frontend_dir = sys.argv[1]

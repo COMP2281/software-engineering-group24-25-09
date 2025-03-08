@@ -2,10 +2,10 @@ import re
 import subprocess
 import httpx
 import ollama
-from backend.engagements.llm.prompt import Prompt
-from backend.engagements.llm.prompt_builder import PromptBuilder
-from backend.engagements.pages.page import Page
-from backend.web import build_url
+from engagements.llm.prompt import Prompt
+from engagements.llm.prompt_builder import PromptBuilder
+from engagements.pages import Page
+from engagements.web import build_url
 
 
 class LLM:

@@ -1,10 +1,9 @@
-from backend.engagements.llm import LLM
-from backend.engagements.engagement_data import EngagementData
-from backend.engagements.engagement import Engagement
-from backend.engagements.engagement_data_manager import EngagementDataManager
-from backend.engagements.pages.page import Page
-from backend.engagements.pages.page_manager import PageManager
-from backend.search.url import URL
+from engagements.llm import LLM
+from engagements.engagement_data import EngagementData
+from engagements.engagement import Engagement
+from engagements.engagement_data_manager import EngagementDataManager
+from engagements.pages import Page, PageManager
+from engagements.search import URL
 
 
 class CannotCrawlException(Exception):

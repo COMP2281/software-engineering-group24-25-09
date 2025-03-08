@@ -1,7 +1,6 @@
 from urllib.parse import urlparse
-
 from requests import RequestException
-from backend.web import build_url, USER_AGENT, get
+from engagements.web import build_url, USER_AGENT, get
 from urllib.robotparser import RobotFileParser
 
 

@@ -1,7 +1,7 @@
 from requests.exceptions import RequestException
 from copy import deepcopy
 from bs4 import BeautifulSoup
-from backend.web import get
+from engagements.web import get
 import re
 
 

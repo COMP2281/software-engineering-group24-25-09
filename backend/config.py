@@ -1,29 +1,13 @@
-import os
-from dotenv import load_dotenv, find_dotenv
-from backend.web import build_url
-
-
-def load_config():
-    load_dotenv(find_dotenv())
-
-
-def get_llm_config() -> tuple[str, str]:
-    return (
-        build_url(
-            scheme="http",
-            netloc=f"{os.getenv("OLLAMA_HOST")}:{os.getenv("OLLAMA_PORT")}",
-        ),
-        os.getenv("OLLAMA_MODEL"),
-    )
-
-
-def get_search_config() -> tuple[str, str]:
-    return os.getenv("GOOGLE_API_KEY"), os.getenv("GOOGLE_CSE_ID")
-
-
-def get_engagement_manager_config() -> bool:
-    ignore_robots_file = os.getenv("IGNORE_ROBOTS_FILE")
-    return True if ignore_robots_file == "True" else False
-
-
-load_config()
+# google api credentials
+google_api_key="your-key-goes-here"
+google_cse_id="your-id-goes-here"
+# ollama configuration
+ollama_host="localhost"
+ollama_port=11434
+ollama_model="llama3.1:8b"
+# openai credentials
+openai_secret="your-secret-goes-here"
+# robots.txt files define which web pages the app can view.
+# if you wish to ignore these rules then set this to True.
+# we do not endorse this. do this at your own discretion.
+ignore_robots_files=False

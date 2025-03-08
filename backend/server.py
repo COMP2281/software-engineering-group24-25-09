@@ -15,12 +15,11 @@ from backend.engagements.engagement_manager import (
     CannotCrawlException,
 )
 from backend.engagements.llm.llm import LLM
-from backend.config import (
-    get_llm_config,
-)
+from config import ollama_host, ollama_port, ollama_model
 
-ollama_url, ollama_model_name = get_llm_config()
-llm = LLM(ollama_url, ollama_model_name)
+frontend_dir = sys.argv[1]
+
+llm = LLM(ollama_host, ollama_port, ollama_model)
 engagement_manager = EngagementManager(llm, "./data")
 # for url in urls:
 #     print(f"Adding {url}")
@@ -32,13 +31,13 @@ engagement_manager = EngagementManager(llm, "./data")
 #         print(e)
 
 app = FastAPI()
-app.mount("/static", StaticFiles(directory="frontend/static"), name="static")
-templates = Jinja2Templates(directory="frontend/templates")
+app.mount("/static", StaticFiles(directory=frontend_dir + "/static"), name="static")
+templates = Jinja2Templates(directory=frontend_dir + "/templates")
 
 
 @app.get("/")
 async def read_index():
-    return FileResponse("frontend/index.html")
+    return FileResponse(frontend_dir + "/index.html")
 
 
 def fuzzy_search(query, dataset, keys, limit=None, threshold=0.6):
@@ -130,4 +129,4 @@ async def serve_engagement_list(
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, port=int(sys.argv[1]))
+    uvicorn.run(app, port=int(sys.argv[2]))

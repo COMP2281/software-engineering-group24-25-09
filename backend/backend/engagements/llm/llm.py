@@ -5,6 +5,7 @@ import ollama
 from backend.engagements.llm.prompt import Prompt
 from backend.engagements.llm.prompt_builder import PromptBuilder
 from backend.engagements.pages.page import Page
+from backend.web import build_url
 
 
 class LLM:
@@ -31,8 +32,8 @@ class LLM:
         else:
             self._start_ollama()
 
-    def __init__(self, url: str, model_name: str) -> None:
-        self.url = url
+    def __init__(self, host: str, port: int, model_name: str) -> None:
+        self.url = build_url(scheme="http", netloc=f"{host}:{port}")
         self.model_name = model_name
         self.client = ollama.Client(host=self.url)
         self.start_ollama()

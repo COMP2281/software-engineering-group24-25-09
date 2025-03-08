@@ -21,14 +21,14 @@ frontend_dir = sys.argv[1]
 
 llm = LLM(ollama_host, ollama_port, ollama_model)
 engagement_manager = EngagementManager(llm, "./data")
-# for url in urls:
-#     print(f"Adding {url}")
-#     try:
-#         engagement_manager.create_engagement_from_url(URL(url))
-#     except CannotCrawlException as e:
-#         print(e)
-#     except GetPageException as e:
-#         print(e)
+for url in urls:
+    print(f"Adding {url}")
+    try:
+        engagement_manager.create_engagement_from_url(URL(url))
+    except CannotCrawlException as e:
+        print(e)
+    except GetPageException as e:
+        print(e)
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory=frontend_dir + "/static"), name="static")

@@ -100,7 +100,7 @@ class Engagement:
         Get the engagement title.
         :return: Title.
         """
-        return self.get_slug().replace("_", " ").capitalize()
+        return self.data.get_title()
 
     def get_summary(self) -> list[str]:
         """

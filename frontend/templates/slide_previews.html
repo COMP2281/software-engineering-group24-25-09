@@ -1,7 +1,7 @@
-{% for engagement in engagements %}
+{% for slide in slides %}
 <button class="btn btn-ghost aspect-video h-full w-full rounded bg-[url(/static/SlideBackground.jpg)] bg-cover border-0 m-0 p-0">
     <svg class="h-full w-full object-cover" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-        <text x="4%" y="14%" font-size="500%" fill="white" font-family="Arial">{{ engagement.title }}</text>
+        <text x="4%" y="14%" font-size="500%" fill="white" font-family="Arial">{{ slide.title }}</text>
 
         <!-- Subtitle Text -->
         <text x="4%" y="21%" font-size="200%" fill="white" font-family="Arial">Content would be here Why bullet points</text>

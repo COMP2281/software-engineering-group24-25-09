@@ -7,7 +7,6 @@
         <link href="./static/tailwind/output.css" rel="stylesheet" />
         <!-- <link href="./resources/customCSS.css" rel="stylesheet" /> -->
         <script src="https://unpkg.com/htmx.org@2.0.3"></script>
-        <script src="https://unpkg.com/hyperscript.org@0.9.13"></script>
         <!-- <link rel="stylesheet" href="./test.css" /> -->
     </head>
 
@@ -63,7 +62,7 @@
                         <button
                             class="btn btn-secondary flex-none px-3"
                             hx-get="static/new_slide_modal.html"
-                            hx-swap="outerHTML"
+                            hx-swap="innerHTML"
                             hx-trigger="click"
                             hx-target="#new_slide_modal"
                         >
@@ -81,7 +80,7 @@
             </header>
 
             <!-- Listing engagements modal -->
-            <dialog id="new_slide_modal"></dialog>
+            <section id="new_slide_modal"></section>
             <!-- For when out of scrapes button appears -->
             <dialog id="out_of_scrapes_popup"></dialog>
             <!-- Create new slide modal -->

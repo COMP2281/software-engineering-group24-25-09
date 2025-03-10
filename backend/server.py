@@ -30,6 +30,15 @@ for url in urls:
     except GetPageException as e:
         print(e)
 
+
+slides = []
+
+
+class SlideData:
+    def __init__(self, title):
+        self.title = title
+
+
 app = FastAPI()
 app.mount("/static", StaticFiles(directory=frontend_dir + "/static"), name="static")
 templates = Jinja2Templates(directory=frontend_dir + "/templates")
@@ -94,17 +103,15 @@ def printr(input):
 @app.get("/slides", response_class=HTMLResponse)
 @app.post("/search_slides", response_class=HTMLResponse)
 async def search_slides(request: Request, search_text: Annotated[str, Form()] = ""):
-    engagements = [
-        {"title": engagement.get_title()}
-        for engagement in engagement_manager.get_engagements().values()
-    ]
-
-    searched = fuzzy_search(search_text, engagements, keys=["title"])
+    slide_dicts = [dict((name, getattr(slide, name)) for name in dir(slide) if not name.startswith('__')) for slide in slides]
+    print(slide_dicts)
+    searched = fuzzy_search(search_text, slide_dicts, keys=["title"])
+    print(searched)
 
     return templates.TemplateResponse(
         request=request,
         name="slide_previews.html",
-        context={"engagements": searched},
+        context={"slides": searched},
     )
 
 
@@ -115,7 +122,7 @@ async def serve_engagement_list(
 ):
     print(engagement_search_text)
     engagements = [
-        engagement.get_title()
+        {"title": engagement.get_title(), "slug": engagement.get_slug()}
         for engagement in engagement_manager.get_engagements().values()
     ]
 
@@ -124,8 +131,20 @@ async def serve_engagement_list(
     return templates.TemplateResponse(
         request=request,
         name="engagement_list.html",
-        context={"slugs": searched},
+        context={"engagements": searched},
     )
+
+
+@app.get("/new_engagement/{slug}", response_class=HTMLResponse)
+async def create_engagement(request: Request, slug: str):
+    slides.append(SlideData(engagement_manager.get_engagement(slug).get_title()))
+    slide_dicts = [dict((name, getattr(slide, name)) for name in dir(slide) if not name.startswith('__')) for slide in slides]
+    return templates.TemplateResponse(
+        request=request,
+        name="slide_previews.html",
+        context={"slides": slide_dicts},
+    )
+    return search_slides(request, "")
 
 
 if __name__ == "__main__":

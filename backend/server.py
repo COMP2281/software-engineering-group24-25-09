@@ -32,6 +32,7 @@ for url in urls:
 
 
 slides = []
+selectedSlideIndices = []
 selectionCount = 1
 
 
@@ -41,6 +42,13 @@ class SlideData:
         self.title = title
         self.selected = selectionCount
         selectionCount += 1
+
+    def asDict(self):
+        return dict(
+            (name, getattr(self, name))
+            for name in dir(self)
+            if not name.startswith("__")
+        )
 
 
 app = FastAPI()
@@ -85,20 +93,6 @@ def fuzzy_search(query, dataset, keys, limit=None, threshold=0.6):
     return [item[0] for item in results[:limit]]
 
 
-# @app.get("/slides", response_class=HTMLResponse)
-# async def get_slides(request: Request):
-#     engagements = [
-#         {"slug": engagement.get_slug()}
-#         for engagement in engagement_manager.get_engagements().values()
-#     ]
-#
-#     return templates.TemplateResponse(
-#         request=request,
-#         name="slide_previews.html",
-#         context={"engagements": engagements},
-#     )
-
-
 def printr(input):
     print(input)
     return input
@@ -107,14 +101,12 @@ def printr(input):
 @app.get("/slides", response_class=HTMLResponse)
 @app.post("/search_slides", response_class=HTMLResponse)
 async def search_slides(request: Request, search_text: Annotated[str, Form()] = ""):
-    slide_dicts = [
-        dict(
-            (name, getattr(slide, name))
-            for name in dir(slide)
-            if not name.startswith("__")
+    slide_dicts = [slide.asDict() for slide in slides]
+    for i, slide in enumerate(slide_dicts):
+        slide["selected"] = (
+            selectedSlideIndices.index(i) if i in selectedSlideIndices else False
         )
-        for slide in slides
-    ]
+    print(selectedSlideIndices)
     print(slide_dicts)
     searched = fuzzy_search(search_text, slide_dicts, keys=["title"])
     print(searched)
@@ -146,23 +138,17 @@ async def serve_engagement_list(
     )
 
 
-@app.get("/new_engagement/{slug}", response_class=HTMLResponse)
+@app.post("/new_engagement/{slug}")
 async def create_engagement(request: Request, slug: str):
     slides.append(SlideData(engagement_manager.get_engagement(slug).get_title()))
-    slide_dicts = [
-        dict(
-            (name, getattr(slide, name))
-            for name in dir(slide)
-            if not name.startswith("__")
-        )
-        for slide in slides
-    ]
-    return templates.TemplateResponse(
-        request=request,
-        name="slide_previews.html",
-        context={"slides": slide_dicts},
-    )
-    return search_slides(request, "")
+
+
+@app.post("/select_slide/{index}")
+async def select_slide(request: Request, index: int):
+    if index in selectedSlideIndices:
+        selectedSlideIndices.remove(index)
+    else:
+        selectedSlideIndices.append(index)
 
 
 if __name__ == "__main__":

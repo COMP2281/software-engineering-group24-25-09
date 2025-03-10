@@ -1,10 +1,8 @@
 {% for engagement in engagements %}
 <button
-    class="h-30 btn btn-ghost mt-2 w-full rounded bg-base-200 text-lg engagement delete-modal"
-    hx-get="new_engagement/{{ engagement.slug }}"
-    hx-swap="innerHTML"
-    hx-target="#slides"
-    hx-trigger="click"
+    class="h-30 btn btn-ghost mt-2 w-full rounded bg-base-200 text-lg engagement delete-modal reload-slides"
+    hx-post="new_engagement/{{ engagement.slug }}"
+    hx-swap="none"
 >
     {{ engagement.title }}
 </button>

@@ -1,10 +1,14 @@
 {% for slide in slides %}
 <button
-    class="btn btn-ghost {% if slide.selected is not false %} ring-secondary {% endif %} relative m-0 aspect-video h-full w-full rounded border-0 bg-[url(/static/SlideBackground.jpg)] bg-cover ring-2"
+    class="btn btn-ghost {% if slide.selected is not false %} ring-secondary ring-2 {% endif %} relative m-0 aspect-video h-full w-full rounded border-0 bg-[url(/static/SlideBackground.jpg)] bg-cover reload-slides"
+    hx-post="select_slide/{{ loop.index0 }}"
+    hx-swap="none"
 >
     {% if slide.selected is not false %}
-    <div class="bg-secondary text-secondary-content absolute left-0 top-0 flex justify-center items-center h-7 p-0 w-7 pb-1 pr-1 rounded-br">
-        {{ slide.selected }}
+    <div
+        class="bg-secondary text-secondary-content absolute left-0 top-0 flex h-7 w-7 items-center justify-center rounded-br p-0 pb-1 pr-1"
+    >
+        {{ slide.selected + 1 }}
     </div>
     {% endif %}
     <svg class="h-full w-full object-cover" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">

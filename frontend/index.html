@@ -14,8 +14,8 @@
         <div class="flex h-screen flex-col overflow-hidden">
             <!-- Navbar Div -->
             <header class="sticky top-0 flex-col">
-                <div class="navbar h-12 w-full bg-base-300 p-3 drop-shadow">
-                    <div class="join w-64 flex-none justify-start bg-base-200">
+                <div class="navbar bg-base-300 h-12 w-full p-3 drop-shadow">
+                    <div class="join bg-base-200 w-64 flex-none justify-start">
                         <input
                             type="search"
                             placeholder="Durham University"
@@ -90,10 +90,11 @@
                 <div
                     class="grid h-max gap-5 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
                     id="slides"
-                    hx-get="slides"
+                    hx-get="/slides"
                     hx-swap="innerHTML"
-                    hx-trigger="load"
+                    hx-trigger="click[event.target.matches('.reload-slides')] from:body, click, load"
                 ></div>
+                <!-- The above is a shitty gross hack and I don't know why doing it properly doesn't work -->
             </div>
         </div>
     </body>

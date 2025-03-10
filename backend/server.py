@@ -32,11 +32,15 @@ for url in urls:
 
 
 slides = []
+selectionCount = 1
 
 
 class SlideData:
     def __init__(self, title):
+        global selectionCount
         self.title = title
+        self.selected = selectionCount
+        selectionCount += 1
 
 
 app = FastAPI()
@@ -103,7 +107,14 @@ def printr(input):
 @app.get("/slides", response_class=HTMLResponse)
 @app.post("/search_slides", response_class=HTMLResponse)
 async def search_slides(request: Request, search_text: Annotated[str, Form()] = ""):
-    slide_dicts = [dict((name, getattr(slide, name)) for name in dir(slide) if not name.startswith('__')) for slide in slides]
+    slide_dicts = [
+        dict(
+            (name, getattr(slide, name))
+            for name in dir(slide)
+            if not name.startswith("__")
+        )
+        for slide in slides
+    ]
     print(slide_dicts)
     searched = fuzzy_search(search_text, slide_dicts, keys=["title"])
     print(searched)
@@ -138,7 +149,14 @@ async def serve_engagement_list(
 @app.get("/new_engagement/{slug}", response_class=HTMLResponse)
 async def create_engagement(request: Request, slug: str):
     slides.append(SlideData(engagement_manager.get_engagement(slug).get_title()))
-    slide_dicts = [dict((name, getattr(slide, name)) for name in dir(slide) if not name.startswith('__')) for slide in slides]
+    slide_dicts = [
+        dict(
+            (name, getattr(slide, name))
+            for name in dir(slide)
+            if not name.startswith("__")
+        )
+        for slide in slides
+    ]
     return templates.TemplateResponse(
         request=request,
         name="slide_previews.html",

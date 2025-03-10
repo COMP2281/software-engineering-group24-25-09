@@ -1,8 +1,18 @@
-from requests import get
 from requests.exceptions import RequestException
 from copy import deepcopy
 from bs4 import BeautifulSoup
+from engagements.web import get
 import re
+
+
+class GetPageException(Exception):
+    def __init__(
+        self, url: str, *args, request_exception: RequestException | None = None
+    ):
+        message = f"Failed to get {url}"
+        if request_exception:
+            message += f": {request_exception}"
+        super().__init__(message, *args)
 
 
 def remove_control_characters(text: str) -> str:
@@ -31,12 +41,15 @@ def get_page_soup(url: str) -> BeautifulSoup:
     :return: Element.
     """
     try:
-        html = get(url).text
+        response = get(url)
     except RequestException as e:
-        raise Exception(f"Failed to get {url}:\n{e}")
+        raise GetPageException(url, request_exception=e)
+    if not response.ok:
+        raise GetPageException(url)
 
-    html = remove_control_characters(html)
-    return BeautifulSoup(html, "html.parser")
+    html = remove_control_characters(response.text)
+    soup = BeautifulSoup(html, "html.parser")
+    return soup
 
 
 def remove_elements(
@@ -78,6 +91,14 @@ def strip_image(image: BeautifulSoup) -> BeautifulSoup:
 
 
 class Page:
+    @property
+    def body(self) -> BeautifulSoup:
+        return BeautifulSoup(self._body, "html.parser")
+
+    @body.setter
+    def body(self, body: BeautifulSoup) -> None:
+        self._body = str(body)
+
     def update(self) -> None:
         """
         Get the latest version of the page and update self.
@@ -91,7 +112,7 @@ class Page:
         Set URL and update self.
         :param url: Webpage URL.
         """
-        self.body = None
+        self._body = None
         self.url = url
         self.update()
 

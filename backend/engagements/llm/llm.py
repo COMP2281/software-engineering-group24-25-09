@@ -1,11 +1,10 @@
 import re
 import subprocess
-import httpx
 import ollama
-
-from backend.engagements.llm.prompt import Prompt
-from backend.engagements.llm.prompt_builder import PromptBuilder
-from backend.engagements.pages import Page
+from engagements.llm.prompt import Prompt
+from engagements.llm.prompt_builder import PromptBuilder
+from engagements.pages import Page
+from engagements.web import build_url
 
 
 class LLM:
@@ -20,7 +19,7 @@ class LLM:
             self.client.list()
             return True
         # if it can't connect, return False
-        except httpx.ConnectError:
+        except ConnectionError:
             return False
 
     def _start_ollama(self) -> None:
@@ -32,8 +31,8 @@ class LLM:
         else:
             self._start_ollama()
 
-    def __init__(self, url: str, model_name: str) -> None:
-        self.url = url
+    def __init__(self, host: str, port: int, model_name: str) -> None:
+        self.url = build_url(scheme="http", netloc=f"{host}:{port}")
         self.model_name = model_name
         self.client = ollama.Client(host=self.url)
         self.start_ollama()

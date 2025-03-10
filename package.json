@@ -1,0 +1,32 @@
+{
+  "name": "softeng",
+  "type": "module",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron . --enable-ozone --ozone-platform-hint=auto --enable-features=WaylandWindowDecorations"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "daisyui": "^4.12.14",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-html": "^8.1.2",
+    "eslint-plugin-prettier": "^5.2.1",
+    "prettier": "^3.3.3",
+    "prettier-plugin-tailwindcss": "^0.6.9",
+    "tailwindcss": "^3.4.17"
+  },
+  "dependencies": {
+    "@heroicons/react": "^2.2.0",
+    "connect": "^3.7.0",
+    "electron": "^34.2.0",
+    "express": "^4.21.1",
+    "heroicons": "^2.2.0",
+    "node-fetch": "^3.3.2",
+    "portfinder": "^1.0.33",
+    "serve-static": "^1.16.2"
+  }
+}

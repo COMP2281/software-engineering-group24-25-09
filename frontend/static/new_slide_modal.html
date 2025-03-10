@@ -1,0 +1,75 @@
+<div
+    class="modal modal-open overflow-hidden"
+    id="modal_content"
+    hx-get=""
+    hx-swap="delete"
+    hx-trigger="click[event.target.matches('.delete-modal')]"
+>
+    <div class="modal-box flex flex-col overflow-hidden p-1">
+        <div class="flex h-full flex-col overflow-hidden">
+            <div class="sticky top-0">
+                <div class="bg-base-100 m-0 flex inline-flex h-8 w-full">
+                    <!-- TODO: Fix clicked behaviour of search bar, fix close icon, fix padding below search bar -->
+                    <label class="input input-sm input-bordered left-2 top-2 flex grow">
+                        <input
+                            type="search"
+                            placeholder="Durham University"
+                            class="flex w-full"
+                            hx-post="/search_engagements"
+                            hx-trigger="input changed delay:500ms, search"
+                            hx-target="#engagements"
+                            name="engagement_search_text"
+                            hx-include="[name='engagement_search_text']"
+                        />
+                        <div
+                            class="flex-none self-center opacity-70"
+                            hx-get="static/resources/search.html"
+                            hx-swap="innerHTML"
+                            hx-trigger="load"
+                        ></div>
+                    </label>
+
+                    <form method="dialog" class="flex-none justify-end p-0 pl-1">
+                        <button
+                            class="btn btn-circle btn-ghost btn-sm top-2 inline-block place-items-center border-0 p-0 delete-modal"
+                        >
+                            x
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="flex-1 overflow-y-scroll" id="engagements">
+                <div hx-get="engagements" hx-swap="outerHTML" hx-trigger="load" hx-target="this"></div>
+            </div>
+        </div>
+
+        <!-- scrape for new engagements button -->
+        <div class="sticky bottom-2 pt-3">
+            <div class="bg-base-300 m-0 flex inline-flex h-8 w-full p-0">
+                <!-- <button
+                    class="h-50 btn btn-secondary w-full text-lg"
+                    hx-get="templates/out_of_scrapes_popup.html"
+                    hx-swap="outerHTML"
+                    hx-trigger="click"
+                    hx-target="#out_of_scrapes_popup"
+                > -->
+                <!-- trying to implement a spinning icon whilst program is scraping- not currently functional -->
+                <button
+                    class="h-50 btn btn-secondary w-full text-lg"
+                    hx-get="static/resources/loading_spinner.html"
+                    hx-swap="innerHTML"
+                    hx-trigger="click"
+                    hx-target="this"
+                >
+                    <div class="w-5" hx-get="static/resources/plus.html" hx-swap="innerHTML" hx-target="this" hx-trigger="load"></div>
+                    Scrape New Engagments
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- <p class="absolute bottom-2 py-4">Press ESC key or click on ✕ button to close</p> -->
+    <form method="dialog" class="modal-backdrop">
+        <button class="cursor-default delete-modal"><button>
+    </form>
+</div>

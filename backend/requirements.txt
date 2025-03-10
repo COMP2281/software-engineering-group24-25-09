@@ -1,0 +1,14 @@
+requests~=2.32.3
+bs4~=0.0.2
+beautifulsoup4~=4.12.3
+ollama~=0.4.2
+google-api-python-client~=2.154.0
+python-dotenv~=1.0.1
+httpx~=0.27.2
+uvicorn~=0.34.0
+fastapi~=0.115.8
+RapidFuzz~=3.12.1
+starlette~=0.45.3
+jinja2~=3.1.6
+python-multipart~=0.0.20
+python-pptx~=1.0.2

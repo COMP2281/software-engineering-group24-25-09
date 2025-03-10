@@ -3,3 +3,45 @@
 @tailwind utilities;
 
 @import "https://www.nerdfonts.com/assets/css/webfont.css";
+
+::-webkit-scrollbar {
+    width: 7px;
+    height: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0);
+}
+
+::-webkit-scrollbar-track:hover {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+::-webkit-scrollbar-thumb:active {
+    background: #444;
+}
+
+::-webkit-scrollbar-corner {
+    background: rgba(0, 0, 0, 0);
+}
+
+* {
+    scrollbar-color: unset;
+}
+
+*:hover {
+    scrollbar-color: unset;
+}
+
+html {
+  scrollbar-gutter: auto !important;
+}

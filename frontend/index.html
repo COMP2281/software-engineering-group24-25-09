@@ -3,79 +3,98 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
         <title>HTML 5 Boilerplate</title>
-        <link href="./tailwind/output.css" rel="stylesheet" />
-        <link href="./resources/customCSS.css" rel="stylesheet" />
+        <link href="./static/tailwind/output.css" rel="stylesheet" />
+        <!-- <link href="./resources/customCSS.css" rel="stylesheet" /> -->
         <script src="https://unpkg.com/htmx.org@2.0.3"></script>
-        <script src="https://unpkg.com/hyperscript.org@0.9.13"></script>
+        <!-- <link rel="stylesheet" href="./test.css" /> -->
     </head>
 
-    <body>
-        <!-- Navbar Div -->
-        <header class="h-26 sticky top-0 flex-col">
-            <div class="navbar h-12 w-full bg-base-300 p-3 drop-shadow">
-                <div class="join w-64 flex-none justify-start bg-base-200">
-                    <input
-                        type="text"
-                        placeholder="Durham University"
-                        class="input join-item input-ghost flex w-0 grow overflow-hidden border-0 focus:outline-none"
-                    />
+    <body class="overflow-hidden">
+        <div class="flex h-screen flex-col overflow-hidden">
+            <!-- Navbar Div -->
+            <header class="sticky top-0 flex-col">
+                <div class="navbar h-12 w-full bg-base-300 p-3 drop-shadow">
+                    <div class="join w-64 flex-none justify-start bg-base-200">
+                        <input
+                            type="search"
+                            placeholder="Durham University"
+                            class="form-control input join-item input-ghost flex w-0 grow overflow-hidden border-0 focus:outline-none"
+                            hx-post="/search_slides"
+                            hx-trigger="input changed delay:500ms, search"
+                            hx-target="#slides"
+                            name="search_text"
+                            hx-include="[name='search_text']"
+                        />
+
+                        <div
+                            class="join-item w-10 flex-none self-center px-3 opacity-70"
+                            hx-get="static/resources/search.html"
+                            hx-swap="innerHTML"
+                            hx-trigger="load"
+                        ></div>
+                    </div>
 
                     <div
-                        class="join-item w-10 flex-none self-center px-3 opacity-70"
-                        hx-get="resources/search.html"
+                        class="flex h-full w-full flex-row justify-center"
+                        hx-get="static/resources/logo.html"
                         hx-swap="innerHTML"
                         hx-trigger="load"
                     ></div>
-                </div>
 
+                    <div class="w-64 flex-none justify-end">
+                        <label class="btn btn-ghost swap swap-rotate mx-3 h-full w-10 p-1 text-xl">
+                            <input type="checkbox" name="theme-controller" value="corporate" class="theme-controller" />
+                            <div
+                                class="swap-off h-full w-full"
+                                hx-get="static/resources/moon.html"
+                                hx-swap="innerHTML"
+                                hx-trigger="load"
+                            ></div>
+                            <div
+                                class="swap-on h-full w-full"
+                                hx-get="static/resources/sun.html"
+                                hx-swap="innerHTML"
+                                hx-trigger="load"
+                            ></div>
+                        </label>
+
+                        <button
+                            class="btn btn-secondary flex-none px-3"
+                            hx-get="static/new_slide_modal.html"
+                            hx-swap="innerHTML"
+                            hx-trigger="click"
+                            hx-target="#new_slide_modal"
+                        >
+                            <div
+                                class="w-5"
+                                hx-get="static/resources/plus.html"
+                                hx-swap="innerHTML"
+                                hx-target="this"
+                                hx-trigger="load"
+                            ></div>
+                            New Slide
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Listing engagements modal -->
+            <section id="new_slide_modal"></section>
+            <!-- For when out of scrapes button appears -->
+            <dialog id="out_of_scrapes_popup"></dialog>
+            <!-- Create new slide modal -->
+            <dialog id="create_new_slide"></dialog>
+
+            <div class="flex-1 overflow-y-scroll p-3">
                 <div
-                    class="flex h-full w-full flex-row justify-center"
-                    hx-get="resources/ibm_logo.html"
+                    class="grid h-max gap-5 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+                    id="slides"
+                    hx-get="slides"
                     hx-swap="innerHTML"
                     hx-trigger="load"
                 ></div>
-
-                <div class="w-64 flex-none justify-end">
-                    <label class="btn btn-ghost swap swap-rotate mx-3 h-full w-10 p-1 text-xl">
-                        <input type="checkbox" name="theme-controller" value="corporate" class="theme-controller" />
-                        <div class="swap-off h-full w-full" hx-get="resources/moon.html" hx-swap="innerHTML" hx-trigger="load"></div>
-                        <div class="swap-on h-full w-full" hx-get="resources/sun.html" hx-swap="innerHTML" hx-trigger="load"></div>
-                    </label>
-
-                    <button
-                        class="btn btn-secondary flex-none px-3"
-                        hx-get="templates/new_slide_modal.html"
-                        hx-swap="outerHTML"
-                        hx-trigger="click"
-                        hx-target="#new_slide_modal"
-                    >
-                        <div class="w-5" hx-get="resources/plus.html" hx-swap="innerHTML" hx-target="this" hx-trigger="load"></div>
-                        New Slide
-                    </button>
-                </div>
             </div>
-        </header>
-
-        <!-- Listing engagements modal -->
-        <dialog id="new_slide_modal"></dialog>
-        <!-- For when out of scrapes button appears -->
-        <dialog id="out_of_scrapes_popup"></dialog>
-        <!-- Create new slide modal -->
-        <dialog id="create_new_slide"></dialog>
-        
-        <div class="grid gap-5 p-3 md:grid-cols-2 lg:grid-cols-3">
-            <button class="btn btn-ghost h-60 rounded bg-base-200 text-xl">CONTENT</button>
-            <button class="btn btn-ghost h-60 rounded bg-base-200 text-xl">CONTENT</button>
-            <button class="btn btn-ghost h-60 rounded bg-base-200 text-xl">CONTENT</button>
-            <button class="btn btn-ghost h-60 rounded bg-base-200 text-xl">CONTENT</button>
-            <button class="btn btn-ghost h-60 rounded bg-base-200 text-xl">CONTENT</button>
-            <button class="btn btn-ghost h-60 rounded bg-base-200 text-xl">CONTENT</button>
-            <button class="btn btn-ghost h-60 rounded bg-base-200 text-xl">CONTENT</button>
-            <button class="btn btn-ghost h-60 rounded bg-base-200 text-xl">CONTENT</button>
-            <button class="btn btn-ghost h-60 rounded bg-base-200 text-xl">CONTENT</button>
-            <button class="btn btn-ghost h-60 rounded bg-base-200 text-xl">CONTENT</button>
         </div>
     </body>
 </html>

@@ -1,6 +1,6 @@
 import re
-from backend.engagements.llm import LLM
-from backend.engagements.pages import Page
+from engagements.llm import LLM
+from engagements.pages import Page
 
 
 class EngagementData:
@@ -24,7 +24,8 @@ class EngagementData:
         :param page: Page.
         """
         self.source_urls = {page.get_url()}
-        self.slug = self.title_to_slug(llm.title(page))
+        self.title = llm.title(page)
+        self.slug = self.title_to_slug(self.title)
 
     def get_slug(self) -> str:
         """
@@ -33,6 +34,13 @@ class EngagementData:
         """
         return self.slug
 
+    def get_title(self) -> str:
+        """
+        Get the title of the engagement.
+        :return: Title.
+        """
+        return self.title
+
     def get_source_urls(self) -> set[str]:
         """
         Get all URLs for the engagement sources.
@@ -40,7 +48,7 @@ class EngagementData:
         """
         return self.source_urls
 
-    def add_source_url(self, url : str) -> None:
+    def add_source_url(self, url: str) -> None:
         """
         Add a new source URL to the engagement.
         :param url: Source URL.

@@ -1,7 +1,6 @@
 prompts = [
-    '"IBM" interacts with "university" article UK Ireland',
+    '"IBM" interacts with "University" article UK Ireland',
     '"IBM" "university" project UK Ireland',
     '"ibm" job fair UK Ireland',
-    '"ibm" "university" lecture UK Ireland',
-    'ibm university partnership UK',
+    '"ibm" "University" lecture UK Ireland'
 ]

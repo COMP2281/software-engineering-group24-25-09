@@ -106,15 +106,12 @@ async def search_slides(request: Request, search_text: Annotated[str, Form()] = 
         slide["selected"] = (
             selectedSlideIndices.index(i) if i in selectedSlideIndices else False
         )
-    print(selectedSlideIndices)
-    print(slide_dicts)
     searched = fuzzy_search(search_text, slide_dicts, keys=["title"])
-    print(searched)
 
     return templates.TemplateResponse(
         request=request,
         name="slide_previews.html",
-        context={"slides": searched},
+        context={"slides": searched, "export_visible": len(selectedSlideIndices) != 0},
     )
 
 

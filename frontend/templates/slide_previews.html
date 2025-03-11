@@ -1,35 +1,35 @@
 {% for slide in slides %}
-<button
-    class="btn btn-ghost {% if slide.selected is not false %} ring-secondary ring-2 {% endif %} relative m-0 aspect-video h-full w-full rounded border-0 bg-[url(/static/SlideBackground.jpg)] bg-cover reload-slides"
-    hx-post="select_slide/{{ loop.index0 }}"
-    hx-swap="none"
->
-    {% if slide.selected is not false %}
-    <div
-        class="bg-secondary text-secondary-content absolute left-0 top-0 flex h-7 w-7 items-center justify-center rounded-br p-0 pb-1 pr-1"
+    <button
+        class="btn btn-ghost {% if slide.selected is not false %}ring-secondary ring-2{% endif %} reload-slides no-animation relative m-0 aspect-video h-full w-full rounded border-0 bg-[url(/static/SlideBackground.jpg)] bg-cover"
+        hx-post="select_slide/{{ loop.index0 }}"
+        hx-swap="none"
     >
-        {{ slide.selected + 1 }}
-    </div>
-    {% endif %}
-    <svg class="h-full w-full object-cover" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
-        <text x="4%" y="14%" font-size="500%" fill="white" font-family="Arial">{{ slide.title }}</text>
-
-        <!-- Subtitle Text -->
-        <text x="4%" y="21%" font-size="200%" fill="white" font-family="Arial">Content would be here Why bullet points</text>
-
-        <!-- Floating Dice Images -->
-        <!-- <image href="dice1.png" x="70%" y="21%" width="8%" height="8%" /> -->
-        <!-- <image href="dice2.png" x="74%" y="27%" width="8%" height="8%" /> -->
-        <!-- <image href="dice3.png" x="78%" y="33%" width="8%" height="8%" /> -->
-
-        <!-- People Involved Section -->
-        <text x="74%" y="55%" font-size="220%" fill="white" font-family="Arial">People involved:</text>
-        <text x="76%" y="60%" font-size="220%" fill="white" font-family="Arial">- God</text>
-        <text x="76%" y="65%" font-size="220%" fill="white" font-family="Arial">- John</text>
-        <text x="76%" y="70%" font-size="220%" fill="white" font-family="Arial">- Jesus</text>
-
-        <!-- IBM Logo -->
-        <!-- <image href="ibm_logo.png" x="86%" y="90%" width="10%" height="5%"/> -->
-    </svg>
-</button>
+        {% if slide.selected is not false %}
+            <div
+                class="bg-secondary text-secondary-content absolute left-0 top-0 flex h-7 w-7 items-center justify-center rounded-br p-0 pb-1 pr-1"
+            >
+                {{ slide.selected + 1 }}
+            </div>
+        {% endif %}
+        <svg
+            class="h-full w-full object-cover"
+            viewBox="0 0 1280 720"
+            preserveAspectRatio="xMidYMid meet"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+            <text x="4%" y="14%" font-size="500%" fill="white" font-family="Arial">{{ slide.title }}</text>
+            <text x="4%" y="21%" font-size="200%" fill="white" font-family="Arial">Content would be here Why bullet points</text>
+            <text x="74%" y="55%" font-size="220%" fill="white" font-family="Arial">People involved:</text>
+            <text x="76%" y="60%" font-size="220%" fill="white" font-family="Arial">- God</text>
+            <text x="76%" y="65%" font-size="220%" fill="white" font-family="Arial">- John</text>
+            <text x="76%" y="70%" font-size="220%" fill="white" font-family="Arial">- Jesus</text>
+        </svg>
+    </button>
 {% endfor %}
+
+{% if export_visible is true %}
+    <button class="btn btn-secondary fixed bottom-5 right-5">
+        <div class="w-5" hx-get="static/resources/download.html" hx-trigger="load" hx-swap="innerHTML"></div>
+        Export
+    </button>
+{% endif %}

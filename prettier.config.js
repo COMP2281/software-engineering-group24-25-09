@@ -9,7 +9,15 @@ const config = {
     useTabs: false,
     bracketSpacing: true,
     jsxBracketSameLine: false,
-    plugins: ["prettier-plugin-tailwindcss"]
+    plugins: ["prettier-plugin-tailwindcss", "prettier-plugin-jinja-template"],
+    overrides: [
+        {
+            "files": ["*.html"],
+            "options": {
+                "parser": "jinja-template"
+            }
+        }
+    ],
 }
 
 export default config

@@ -12,6 +12,6 @@ If the program cannot find an engagement, then it will suggest alternatives to t
 
 ## Scraping engagements
 
-To scrape engagements, click "Scrape Engagements". 
+To scrape engagements, click "Scrape Engagements". Once the web scraper has run, new engagements will appear.
 
 We suggest running this every time you start the program, but no more than once per day. This is to ensure that you do not use too many API credits for the Google Search API that the web scraper uses.

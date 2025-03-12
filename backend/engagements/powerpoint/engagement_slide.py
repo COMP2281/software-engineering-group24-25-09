@@ -1,7 +1,7 @@
 from copy import deepcopy
 from pptx.shapes.autoshape import Shape
 from pptx.slide import Slide
-from typing import cast, Callable
+from typing import cast, Callable, Self
 from engagements.powerpoint.shape_type import ShapeType
 
 
@@ -22,20 +22,24 @@ class EngagementSlide:
 
         return set_text_shape
 
-    def reset(self, template: Slide) -> None:
+    def reset(self, template: Slide) -> Self:
         self.slide = deepcopy(template)
         self.set_text_shape = self._create_set_text_shape(template)
+        return self
 
     def __init__(self, template: Slide) -> None:
         self.slide: Slide | None = None
         self.set_text_shape: Callable[[ShapeType, str], None] | None = None
         self.reset(template)
 
-    def set_title(self, title: str) -> None:
+    def set_title(self, title: str) -> Self:
         self.set_text_shape(ShapeType.TITLE, title)
+        return self
 
-    def set_summary(self, summary: str) -> None:
+    def set_summary(self, summary: str) -> Self:
         self.set_text_shape(ShapeType.SUMMARY, summary)
+        return self
 
-    def set_employees(self, employees: str) -> None:
+    def set_employees(self, employees: str) -> Self:
         self.set_text_shape(ShapeType.EMPLOYEES, employees)
+        return self

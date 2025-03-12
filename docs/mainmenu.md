@@ -20,6 +20,10 @@ The program includes two colour schemes, dark (default) and light.
 
 Pressing the moon (or sun) icon changes the colour scheme.
 
-[Should we add a feature that automatically determines the Windows colour scheme and change the default theme automatically, or is this unnecessary?]
+## Selecting slides for a presentation
 
-# 
+To select slides for a presentation, simply click the slides you want to use in your presentation in order. When a slide is selected, a slide number appears.
+
+## Exporting a presentation
+
+When slides are selected, an "Export" button appears. Click "Export" and you will be able to save the presentation in a `.pptx` file.

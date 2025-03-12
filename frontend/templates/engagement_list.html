@@ -1,6 +1,6 @@
 {% for engagement in engagements %}
     <button
-        class="h-30 btn btn-ghost bg-base-200 engagement delete-modal reload-slides mt-2 w-full rounded text-lg"
+        class="h-32 btn bg-base-200 engagement delete-modal reload-slides mt-2 w-full rounded text-lg text-ellipsis"
         hx-post="new_engagement/{{ engagement.slug }}"
         hx-swap="none"
     >

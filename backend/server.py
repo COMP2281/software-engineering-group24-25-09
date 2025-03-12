@@ -1,4 +1,4 @@
-from fastapi import UploadFile, FastAPI, Request, Form
+from fastapi import FastAPI, Request, Form
 import sys
 from rapidfuzz import fuzz
 from typing import Annotated
@@ -127,6 +127,7 @@ async def serve_engagement_list(
     ]
 
     searched = fuzzy_search(engagement_search_text, engagements, keys=["title"])
+    print(searched)
 
     return templates.TemplateResponse(
         request=request,

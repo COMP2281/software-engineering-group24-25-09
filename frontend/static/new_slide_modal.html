@@ -1,11 +1,11 @@
 <div
-    class="modal modal-open overflow-hidden"
+    class="modal modal-open overflow-hidden h-full"
     id="modal_content"
     hx-get=""
     hx-swap="delete"
     hx-trigger="click[event.target.matches('.delete-modal')]"
 >
-    <div class="modal-box flex flex-col overflow-hidden p-1">
+    <div class="modal-box flex flex-col w-3/4 h-full overflow-hidden p-1" style="max-width:none;">
         <div class="flex h-full flex-col overflow-hidden">
             <div class="sticky top-0">
                 <div class="bg-base-100 m-0 flex inline-flex h-8 w-full">
@@ -18,6 +18,7 @@
                             hx-post="/search_engagements"
                             hx-trigger="input changed delay:500ms, search"
                             hx-target="#engagements"
+                            hx-swap="innerHTML"
                             name="engagement_search_text"
                             hx-include="[name='engagement_search_text']"
                         />
@@ -40,7 +41,7 @@
             </div>
 
             <div class="flex-1 overflow-y-scroll" id="engagements">
-                <div hx-get="engagements" hx-swap="outerHTML" hx-trigger="load" hx-target="this"></div>
+                <div hx-get="engagements" hx-swap="innerHTML" hx-trigger="load" hx-target="this"></div>
             </div>
         </div>
 

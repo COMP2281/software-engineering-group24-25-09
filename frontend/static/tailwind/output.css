@@ -1953,6 +1953,10 @@ html {
   height: 3rem;
 }
 
+.h-16 {
+  height: 4rem;
+}
+
 .h-7 {
   height: 1.75rem;
 }
@@ -2072,6 +2076,10 @@ html {
 
 .overflow-y-scroll {
   overflow-y: scroll;
+}
+
+.text-ellipsis {
+  text-overflow: ellipsis;
 }
 
 .rounded {

@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request, Form
+from fastapi import UploadFile, FastAPI, Request, Form
 import sys
 from rapidfuzz import fuzz
 from typing import Annotated
@@ -146,6 +146,11 @@ async def select_slide(request: Request, index: int):
         selectedSlideIndices.remove(index)
     else:
         selectedSlideIndices.append(index)
+
+
+@app.post("/export", response_class=FileResponse)
+async def export(request: Request):
+    pass
 
 
 if __name__ == "__main__":

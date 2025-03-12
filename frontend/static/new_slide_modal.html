@@ -58,10 +58,10 @@
                 <!-- trying to implement a spinning icon whilst program is scraping- not currently functional -->
                 <button
                     class="h-50 btn btn-secondary w-full text-lg"
-                    hx-get="static/resources/loading_spinner.html"
+                    hx-get="/update_engagements"
                     hx-swap="innerHTML"
                     hx-trigger="click"
-                    hx-target="this"
+                    hx-target="#engagements"
                 >
                     <div class="w-5" hx-get="static/resources/plus.html" hx-swap="innerHTML" hx-target="this" hx-trigger="load"></div>
                     Scrape New Engagments

@@ -5,3 +5,4 @@ class ShapeType(Enum):
     TITLE = "TITLE"
     SUMMARY = "SUMMARY"
     EMPLOYEES = "EMPLOYEES"
+    IMAGE = "IMAGE"

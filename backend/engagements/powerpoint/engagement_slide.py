@@ -1,8 +1,8 @@
 from typing import cast, Self
 from bs4 import BeautifulSoup
 from pptx.shapes.placeholder import LayoutPlaceholder
-from pptx.slide import Slide, SlideLayout
-from engagements.powerpoint.shape_type import ShapeType
+from pptx.slide import SlideLayout
+from engagements.powerpoint.placeholder_type import PlaceholderType
 
 
 class EngagementSlide:
@@ -12,10 +12,10 @@ class EngagementSlide:
             raise Exception("Missing layout")
         for placeholder in self.layout.placeholders:
             placeholder: LayoutPlaceholder
-            if placeholder.has_text_frame and placeholder.text in ShapeType:
-                self.placeholders[cast(ShapeType, ShapeType[placeholder.text])] = (
-                    placeholder.placeholder_format.idx
-                )
+            if placeholder.has_text_frame and placeholder.text in PlaceholderType:
+                self.placeholders[
+                    cast(PlaceholderType, PlaceholderType[placeholder.text])
+                ] = placeholder.placeholder_format.idx
 
     def reset(self, layout: SlideLayout) -> Self:
         self.layout = layout
@@ -23,9 +23,13 @@ class EngagementSlide:
         return self
 
     def __init__(self, layout: SlideLayout) -> None:
-        self.layout: Slide | None = None
-        self.placeholders: dict[ShapeType, int] = {}
+        self.layout: SlideLayout | None = None
+        self.placeholders: dict[PlaceholderType, int] = {}
+        self.placeholder_values: dict[PlaceholderType, any]
         self.reset(layout)
+
+    def get_layout(self) -> SlideLayout:
+        return self.layout
 
     @property
     def title(self) -> str:

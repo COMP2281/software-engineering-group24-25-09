@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class ShapeType(Enum):
+class PlaceholderType(Enum):
     TITLE = "TITLE"
     SUMMARY = "SUMMARY"
     EMPLOYEES = "EMPLOYEES"

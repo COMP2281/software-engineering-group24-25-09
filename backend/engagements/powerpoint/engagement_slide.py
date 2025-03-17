@@ -2,7 +2,7 @@ from typing import cast, Self
 from bs4 import BeautifulSoup
 from pptx.shapes.placeholder import LayoutPlaceholder
 from pptx.slide import SlideLayout
-from engagements.powerpoint.placeholder_type import PlaceholderType
+from engagements.powerpoint.types import PlaceholderType, PlaceholderDataType
 
 
 class EngagementSlide:
@@ -25,7 +25,7 @@ class EngagementSlide:
     def __init__(self, layout: SlideLayout) -> None:
         self.layout: SlideLayout | None = None
         self.placeholders: dict[PlaceholderType, int] = {}
-        self.placeholder_values: dict[PlaceholderType, any]
+        self.placeholder_values: dict[PlaceholderType, PlaceholderDataType]
         self.reset(layout)
 
     def get_layout(self) -> SlideLayout:

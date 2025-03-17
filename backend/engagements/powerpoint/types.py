@@ -1,4 +1,5 @@
 from enum import Enum
+from typing import TypeAlias
 
 
 class PlaceholderType(Enum):
@@ -6,3 +7,6 @@ class PlaceholderType(Enum):
     SUMMARY = "SUMMARY"
     EMPLOYEES = "EMPLOYEES"
     IMAGE = "IMAGE"
+
+
+PlaceholderDataType: TypeAlias = str | list[str]

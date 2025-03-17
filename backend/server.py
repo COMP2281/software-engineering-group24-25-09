@@ -1,4 +1,4 @@
-from fastapi import UploadFile, FastAPI, Request, Form
+from fastapi import FastAPI, Request, Form
 import sys
 from rapidfuzz import fuzz
 from typing import Annotated
@@ -127,6 +127,7 @@ async def serve_engagement_list(
     ]
 
     searched = fuzzy_search(engagement_search_text, engagements, keys=["title"])
+    print(searched)
 
     return templates.TemplateResponse(
         request=request,
@@ -151,6 +152,19 @@ async def select_slide(request: Request, index: int):
 @app.post("/export", response_class=FileResponse)
 async def export(request: Request):
     pass
+
+
+@app.get("/update_engagements", response_class=HTMLResponse)
+async def update_engagements(request: Request):
+    for url in urls:
+        print(f"Adding {url}")
+        try:
+            engagement_manager.create_engagement_from_url(URL(url))
+        except CannotCrawlException as e:
+            print(e)
+        except GetPageException as e:
+            print(e)
+    return await serve_engagement_list(request, "")
 
 
 if __name__ == "__main__":

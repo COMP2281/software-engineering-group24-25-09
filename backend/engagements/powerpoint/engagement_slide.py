@@ -1,45 +1,77 @@
-from copy import deepcopy
-from pptx.shapes.autoshape import Shape
-from pptx.slide import Slide
-from typing import cast, Callable, Self
+from typing import cast, Self
+from bs4 import BeautifulSoup
+from pptx.shapes.placeholder import LayoutPlaceholder
+from pptx.slide import Slide, SlideLayout
 from engagements.powerpoint.shape_type import ShapeType
 
 
 class EngagementSlide:
-    @staticmethod
-    def _create_set_text_shape(template: Slide) -> Callable[[ShapeType, str], None]:
-        text_shapes = {}
-        for shape in template.shapes:
-            shape: Shape
-            if shape.has_text_frame and shape.text in ShapeType:
-                shape_type = cast(ShapeType, ShapeType[shape.text])
-                text_shapes[shape_type] = shape
+    def _set_placeholders(self):
+        self.placeholders = {}
+        if not self.layout:
+            raise Exception("Missing layout")
+        for placeholder in self.layout.placeholders:
+            placeholder: LayoutPlaceholder
+            if placeholder.has_text_frame and placeholder.text in ShapeType:
+                self.placeholders[cast(ShapeType, ShapeType[placeholder.text])] = (
+                    placeholder.placeholder_format.idx
+                )
 
-        def set_text_shape(shape_type: ShapeType, value: str):
-            if shape_type not in text_shapes:
-                return
-            text_shapes[shape_type].text = value
-
-        return set_text_shape
-
-    def reset(self, template: Slide) -> Self:
-        self.slide = deepcopy(template)
-        self.set_text_shape = self._create_set_text_shape(template)
+    def reset(self, layout: SlideLayout) -> Self:
+        self.layout = layout
+        self._set_placeholders()
         return self
 
-    def __init__(self, template: Slide) -> None:
-        self.slide: Slide | None = None
-        self.set_text_shape: Callable[[ShapeType, str], None] | None = None
-        self.reset(template)
+    def __init__(self, layout: SlideLayout) -> None:
+        self.layout: Slide | None = None
+        self.placeholders: dict[ShapeType, int] = {}
+        self.reset(layout)
+
+    @property
+    def title(self) -> str:
+        return self.title
+
+    @title.setter
+    def title(self, title: str) -> None:
+        self.title = title
+
+    @property
+    def summary(self) -> list[str]:
+        return self.summary
+
+    @summary.setter
+    def summary(self, summary: list[str]) -> None:
+        self.summary = summary
+
+    @property
+    def employees(self) -> list[str]:
+        return self.employees
+
+    @employees.setter
+    def employees(self, employees: list[str]) -> None:
+        self.employees = employees
+
+    @property
+    def image(self) -> str:
+        return self.image
+
+    @image.setter
+    def image(self, image: BeautifulSoup) -> None:
+        # TODO: handle srcset attribute
+        self.image = image["src"]
 
     def set_title(self, title: str) -> Self:
-        self.set_text_shape(ShapeType.TITLE, title)
+        self.title = title
         return self
 
-    def set_summary(self, summary: str) -> Self:
-        self.set_text_shape(ShapeType.SUMMARY, summary)
+    def set_summary(self, summary: list[str]) -> Self:
+        self.summary = summary
         return self
 
-    def set_employees(self, employees: str) -> Self:
-        self.set_text_shape(ShapeType.EMPLOYEES, employees)
+    def set_employees(self, employees: list[str]) -> Self:
+        self.employees = employees
+        return self
+
+    def set_image(self, image: BeautifulSoup) -> Self:
+        self.image = image
         return self

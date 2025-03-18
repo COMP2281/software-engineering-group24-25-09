@@ -6,6 +6,7 @@ from starlette.responses import FileResponse
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 import uvicorn
+from data.prompts import prompts
 from data.urls import urls
 from fastapi.templating import Jinja2Templates
 from engagements import (
@@ -16,12 +17,14 @@ from engagements import (
     CannotCrawlException,
     SlideshowBuilder,
     EngagementSlide,
+    Search,
 )
-from config import ollama_host, ollama_port, ollama_model
+from config import ollama_host, ollama_port, ollama_model, google_api_key, google_cse_id
 
 frontend_dir = sys.argv[1]
 
 llm = LLM(ollama_host, ollama_port, ollama_model)
+search = Search(google_api_key, google_cse_id, "./data")
 engagement_manager = EngagementManager(llm, "./data")
 slideshow_builder = SlideshowBuilder("./data")
 for url in urls:
@@ -170,10 +173,11 @@ async def export(request: Request):
 
 @app.get("/update_engagements", response_class=HTMLResponse)
 async def update_engagements(request: Request):
+    urls = search.search(prompts[0])
     for url in urls:
         print(f"Adding {url}")
         try:
-            engagement_manager.create_engagement_from_url(URL(url))
+            engagement_manager.create_engagement_from_url(url)
         except CannotCrawlException as e:
             print(e)
         except GetPageException as e:

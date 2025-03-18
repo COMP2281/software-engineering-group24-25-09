@@ -40,7 +40,7 @@
 
 {% if export_visible is true %}
     <a href="/export" download="/export.pptx">
-        <button class="btn btn-secondary fixed bottom-5 right-5" hx-get="/export" hx-swap="none">
+        <button class="btn btn-secondary fixed bottom-5 right-5">
             <div class="w-5" hx-get="static/resources/download.html" hx-trigger="load" hx-swap="innerHTML"></div>
             Export
         </button>

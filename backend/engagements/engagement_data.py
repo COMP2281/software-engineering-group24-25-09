@@ -1,6 +1,7 @@
 import re
 from engagements.llm import LLM
 from engagements.pages import Page
+from engagements.slideshow import EngagementSlide
 
 
 class EngagementData:
@@ -26,6 +27,7 @@ class EngagementData:
         self.source_urls = {page.get_url()}
         self.title = llm.title(page)
         self.slug = self.title_to_slug(self.title)
+        self.slide = None
 
     def get_slug(self) -> str:
         """
@@ -54,3 +56,10 @@ class EngagementData:
         :param url: Source URL.
         """
         self.source_urls.add(url)
+
+    def add_slide(self, slide: EngagementSlide) -> None:
+        """
+        Add a slide to the engagement.
+        :param slide: Slide.
+        """
+        self.slide = slide

@@ -3,6 +3,7 @@ from engagements.engagement_data import EngagementData
 from engagements.engagement_data_manager import EngagementDataManager
 from engagements.pages import Page, PageManager
 from bs4 import BeautifulSoup
+from engagements.slideshow import EngagementSlide
 
 
 class Engagement:
@@ -121,3 +122,14 @@ class Engagement:
         for page in self.get_sources():
             employees = employees.union(self.llm.employees(page))
         return employees
+
+    def generate_slide(self) -> None:
+        slide = (
+            EngagementSlide()
+            .set_title(self.get_title())
+            .set_summary(self.get_summary())
+            .set_employees(list(self.get_employees()))
+            .set_image(self.get_images()[(len(self.get_images()) - 1) // 2])
+        )
+        self.data.add_slide(slide)
+        self.engagement_data_manager.save_data()

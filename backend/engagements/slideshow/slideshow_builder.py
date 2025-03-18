@@ -1,8 +1,8 @@
 import os
 from pptx import Presentation
 from pptx.slide import Slides
-from engagements.powerpoint.engagement_slide import EngagementSlide
-from engagements.powerpoint.placeholder_type import add_to_slide
+from engagements.slideshow.engagement_slide import EngagementSlide
+from engagements.slideshow.placeholder_type import add_to_slide
 
 
 class SlideshowBuilder:

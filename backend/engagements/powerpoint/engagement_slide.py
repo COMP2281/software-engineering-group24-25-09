@@ -6,45 +6,40 @@ from engagements.powerpoint.types import PlaceholderType, PlaceholderDataType
 class EngagementSlide:
     def __init__(self) -> None:
         self.layout_index = 0
-        self.placeholders: dict[PlaceholderType, int] = {}
-        self.placeholder_values: dict[PlaceholderType, PlaceholderDataType] = {}
+        self.values: dict[PlaceholderType, PlaceholderDataType] = {}
 
     @property
     def title(self) -> str | None:
-        return self.placeholder_values.get(PlaceholderType.TITLE)
+        return self.values.get(PlaceholderType.TITLE)
 
     @title.setter
     def title(self, title: str) -> None:
-        if PlaceholderType.TITLE in self.placeholders:
-            self.placeholder_values[PlaceholderType.TITLE] = title
+        self.values[PlaceholderType.TITLE] = title
 
     @property
     def summary(self) -> list[str] | None:
-        return self.placeholder_values.get(PlaceholderType.SUMMARY)
+        return self.values.get(PlaceholderType.SUMMARY)
 
     @summary.setter
     def summary(self, summary: list[str]) -> None:
-        if PlaceholderType.SUMMARY in self.placeholders:
-            self.placeholder_values[PlaceholderType.SUMMARY] = summary
+        self.values[PlaceholderType.SUMMARY] = summary
 
     @property
     def employees(self) -> list[str] | None:
-        return self.placeholder_values.get(PlaceholderType.EMPLOYEES)
+        return self.values.get(PlaceholderType.EMPLOYEES)
 
     @employees.setter
     def employees(self, employees: list[str]) -> None:
-        if PlaceholderType.EMPLOYEES in self.placeholders:
-            self.placeholder_values[PlaceholderType.EMPLOYEES] = employees
+        self.values[PlaceholderType.EMPLOYEES] = employees
 
     @property
     def image(self) -> str | None:
-        return self.placeholder_values.get(PlaceholderType.IMAGE)
+        return self.values.get(PlaceholderType.IMAGE)
 
     @image.setter
     def image(self, image: BeautifulSoup) -> None:
         # TODO: handle srcset attribute
-        if PlaceholderType.IMAGE in self.placeholders:
-            self.placeholder_values[PlaceholderType.IMAGE] = image["src"]
+        self.values[PlaceholderType.IMAGE] = image["src"]
 
     def set_title(self, title: str) -> Self:
         self.title = title

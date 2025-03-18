@@ -58,7 +58,7 @@ class SlideData:
         )
 
 
-slides: list[SlideData] = []
+slides: list[SlideData]
 selectedSlideIndices = []
 
 app = FastAPI()
@@ -169,6 +169,7 @@ async def export(request: Request):
         for i in selectedSlideIndices
     ]
     slideshow_builder.export(engagement_slides)
+    return FileResponse("./data/export.pptx")
 
 
 @app.get("/update_engagements", response_class=HTMLResponse)

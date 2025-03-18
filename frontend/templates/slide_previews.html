@@ -11,18 +11,29 @@
                 {{ slide.selected + 1 }}
             </div>
         {% endif %}
-        <svg
-            class="h-full w-full object-cover"
-            viewBox="0 0 1280 720"
-            preserveAspectRatio="xMidYMid meet"
-            xmlns="http://www.w3.org/2000/svg"
-        >
-            <text x="4%" y="14%" font-size="500%" fill="white" font-family="Arial">{{ slide.title }}</text>
-            <text x="4%" y="21%" font-size="200%" fill="white" font-family="Arial">Content would be here</text>
-            <text x="74%" y="55%" font-size="220%" fill="white" font-family="Arial">People involved:</text>
-            <text x="76%" y="60%" font-size="220%" fill="white" font-family="Arial">- Alice</text>
-            <text x="76%" y="65%" font-size="220%" fill="white" font-family="Arial">- Bob</text>
-            <text x="76%" y="70%" font-size="220%" fill="white" font-family="Arial">- Mallroy</text>
+        <svg class="h-full w-full object-cover" viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg">
+            <foreignObject x="0%" y="0%" class="node" width="1280" height="720">
+                <body xmlns="http://www.w3.org/1999/xhtml" style="font:Arial">
+                    <div style="text-align:left;font-size:32pt;padding-top:40px;padding-left:60px;padding-right:60px;line-height:1">
+                        {{ slide.title }}
+                    </div>
+                    <div style="text-align:left;font-size:24pt;position:fixed;top:250px;left:100px;right:500px;line-height:1">
+                        <ul style="list-style-type:disc;">
+                            {% for sentence in slide.summary %}
+                                <li style="padding-left:20px;padding-top:10px;">{{ sentence }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div style="text-align:left;font-size:16pt;position:fixed;top:450px;left:850px;right:20px;line-height:2">
+                        <ul style="list-style-type:disc;">
+                            {% for employee in slide.employees %}
+                                <li style="padding-left:20px">{{ employee }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </body>
+            </foreignObject>
+            <image x="68%" y="32%" width="29%" height="22%" preserveAspectRatio="xMidYMid slice" href="{{ slide.image }}"></image>
         </svg>
     </button>
 {% endfor %}

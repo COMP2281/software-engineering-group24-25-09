@@ -58,7 +58,7 @@ class SlideData:
         )
 
 
-slides: list[SlideData]
+slides: list[SlideData] = []
 selectedSlideIndices = []
 
 app = FastAPI()

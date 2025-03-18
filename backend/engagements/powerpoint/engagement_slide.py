@@ -1,6 +1,6 @@
 from typing import Self
 from bs4 import BeautifulSoup
-from engagements.powerpoint.types import PlaceholderType, PlaceholderDataType
+from engagements.powerpoint.placeholder_type import PlaceholderType, PlaceholderDataType
 
 
 class EngagementSlide:

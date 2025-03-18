@@ -61,6 +61,12 @@ class SlideData:
 slides: list[SlideData] = []
 selectedSlideIndices = []
 
+for engagement in engagement_manager.get_engagements().values():
+    slug = engagement.get_slug()
+    slide = engagement.get_slide()
+    if slide:
+        slides.append(SlideData(slug, slide))
+
 app = FastAPI()
 app.mount("/static", StaticFiles(directory=frontend_dir + "/static"), name="static")
 templates = Jinja2Templates(directory=frontend_dir + "/templates")

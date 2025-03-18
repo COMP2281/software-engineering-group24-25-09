@@ -63,3 +63,10 @@ class EngagementData:
         :param slide: Slide.
         """
         self.slide = slide
+
+    def get_slide(self) -> EngagementSlide:
+        """
+        Get the slide of the engagement.
+        :return: Slide.
+        """
+        return self.slide

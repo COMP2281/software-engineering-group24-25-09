@@ -133,3 +133,6 @@ class Engagement:
         )
         self.data.add_slide(slide)
         self.engagement_data_manager.save_data()
+
+    def get_slide(self) -> EngagementSlide:
+        return self.data.get_slide()

@@ -1,4 +1,3 @@
-from urllib.parse import urljoin
 from engagements.llm import LLM
 from engagements.engagement_data import EngagementData
 from engagements.engagement_data_manager import EngagementDataManager
@@ -92,19 +91,7 @@ class Engagement:
         Get the images from all pages. Each image has the "alt" attribute and either "src" or "srcset" attribute.
         :return: List of images.
         """
-        images = []
-        for url in self.get_source_urls():
-            new_images = self.get_page_manager().get_page(url).get_images()
-            for image in new_images:
-                image_url = image.get("src")
-                if image_url is not None:
-                    if not image_url.endswith((".png", ".jpg", ".jpeg")):
-                        continue
-                    if image_url.startswith("/"):
-                        image_url = urljoin(url, image_url)
-                    image["src"] = image_url
-                    images.append(image)
-        return images
+        return self.data.get_images()
 
     def get_title(self) -> str:
         """
@@ -113,7 +100,7 @@ class Engagement:
         """
         return self.data.get_title()
 
-    def get_summary(self) -> list[str]:
+    def create_summary(self) -> list[str]:
         """
         Get a summary of the engagement in short sentences.
         :return: List of sentences.
@@ -123,15 +110,15 @@ class Engagement:
             sentences += self.llm.summarise(page)
         return sentences
 
+    def get_summary(self) -> list[str]:
+        return self.data.get_summary()
+
     def get_employees(self) -> set[str]:
         """
         Get a list of employees involved in the engagement.
         :return: List of employees.
         """
-        employees = set()
-        for page in self.get_sources():
-            employees = employees.union(self.llm.employees(page))
-        return employees
+        return self.data.get_employees()
 
     def generate_slide(self) -> None:
         slide = (

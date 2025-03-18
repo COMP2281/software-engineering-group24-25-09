@@ -18,18 +18,18 @@
             xmlns="http://www.w3.org/2000/svg"
         >
             <text x="4%" y="14%" font-size="500%" fill="white" font-family="Arial">{{ slide.title }}</text>
-            <text x="4%" y="21%" font-size="200%" fill="white" font-family="Arial">Content would be here Why bullet points</text>
+            <text x="4%" y="21%" font-size="200%" fill="white" font-family="Arial">Content would be here</text>
             <text x="74%" y="55%" font-size="220%" fill="white" font-family="Arial">People involved:</text>
-            <text x="76%" y="60%" font-size="220%" fill="white" font-family="Arial">- God</text>
-            <text x="76%" y="65%" font-size="220%" fill="white" font-family="Arial">- John</text>
-            <text x="76%" y="70%" font-size="220%" fill="white" font-family="Arial">- Jesus</text>
+            <text x="76%" y="60%" font-size="220%" fill="white" font-family="Arial">- Alice</text>
+            <text x="76%" y="65%" font-size="220%" fill="white" font-family="Arial">- Bob</text>
+            <text x="76%" y="70%" font-size="220%" fill="white" font-family="Arial">- Mallroy</text>
         </svg>
     </button>
 {% endfor %}
 
 {% if export_visible is true %}
     <a href="/export" download="/export.pptx">
-        <button class="btn btn-secondary fixed bottom-5 right-5">
+        <button class="btn btn-secondary fixed bottom-5 right-5" hx-get="/export" hx-swap="none">
             <div class="w-5" hx-get="static/resources/download.html" hx-trigger="load" hx-swap="innerHTML"></div>
             Export
         </button>

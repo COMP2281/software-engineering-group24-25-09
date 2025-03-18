@@ -1,35 +1,21 @@
-from typing import cast, Self
+from typing import Self
 from bs4 import BeautifulSoup
-from pptx.shapes.placeholder import LayoutPlaceholder
-from pptx.slide import SlideLayout
 from engagements.powerpoint.types import PlaceholderType, PlaceholderDataType
 
 
 class EngagementSlide:
-    def _set_placeholders(self):
-        self.placeholders = {}
-        if not self.layout:
-            raise Exception("Missing layout")
-        for placeholder in self.layout.placeholders:
-            placeholder: LayoutPlaceholder
-            if placeholder.has_text_frame and placeholder.text in PlaceholderType:
-                self.placeholders[
-                    cast(PlaceholderType, PlaceholderType[placeholder.text])
-                ] = placeholder.placeholder_format.idx
-
-    def reset(self, layout: SlideLayout) -> Self:
-        self.layout = layout
-        self._set_placeholders()
-        return self
-
-    def __init__(self, layout: SlideLayout) -> None:
-        self.layout: SlideLayout | None = None
+    def __init__(self) -> None:
+        self.layout_index = 0
         self.placeholders: dict[PlaceholderType, int] = {}
         self.placeholder_values: dict[PlaceholderType, PlaceholderDataType] = {}
-        self.reset(layout)
 
-    def get_layout(self) -> SlideLayout:
-        return self.layout
+    @property
+    def layout_index(self) -> int:
+        return self.layout_index
+
+    @layout_index.setter
+    def layout_index(self, index: int) -> None:
+        self.layout_index = index
 
     @property
     def title(self) -> str | None:
@@ -82,4 +68,8 @@ class EngagementSlide:
 
     def set_image(self, image: BeautifulSoup) -> Self:
         self.image = image
+        return self
+
+    def set_layout_index(self, index: int) -> Self:
+        self.layout_index = index
         return self

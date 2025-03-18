@@ -14,6 +14,8 @@ from engagements import (
     EngagementManager,
     GetPageException,
     CannotCrawlException,
+    SlideshowBuilder,
+    EngagementSlide,
 )
 from config import ollama_host, ollama_port, ollama_model
 
@@ -21,6 +23,7 @@ frontend_dir = sys.argv[1]
 
 llm = LLM(ollama_host, ollama_port, ollama_model)
 engagement_manager = EngagementManager(llm, "./data")
+slideshow_builder = SlideshowBuilder("./data")
 for url in urls:
     print(f"Adding {url}")
     try:
@@ -30,16 +33,17 @@ for url in urls:
     except GetPageException as e:
         print(e)
 
-
-slides = []
-selectedSlideIndices = []
 selectionCount = 1
 
 
 class SlideData:
-    def __init__(self, title):
+    def __init__(self, slug: str, slide: EngagementSlide):
         global selectionCount
-        self.title = title
+        self.slug = slug
+        self.title = slide.title
+        self.summary = slide.summary
+        self.employees = slide.employees
+        self.image = slide.image
         self.selected = selectionCount
         selectionCount += 1
 
@@ -50,6 +54,9 @@ class SlideData:
             if not name.startswith("__")
         )
 
+
+slides: list[SlideData] = []
+selectedSlideIndices = []
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory=frontend_dir + "/static"), name="static")
@@ -138,7 +145,10 @@ async def serve_engagement_list(
 
 @app.post("/new_engagement/{slug}")
 async def create_engagement(request: Request, slug: str):
-    slides.append(SlideData(engagement_manager.get_engagement(slug).get_title()))
+    engagement = engagement_manager.get_engagement(slug)
+    engagement.generate_slide()
+    print(engagement.get_slide())
+    slides.append(SlideData(slug, engagement.get_slide()))
 
 
 @app.post("/select_slide/{index}")
@@ -149,9 +159,13 @@ async def select_slide(request: Request, index: int):
         selectedSlideIndices.append(index)
 
 
-@app.post("/export", response_class=FileResponse)
+@app.get("/export", response_class=FileResponse)
 async def export(request: Request):
-    pass
+    engagement_slides = [
+        engagement_manager.get_engagement(slides[i].slug).get_slide()
+        for i in selectedSlideIndices
+    ]
+    slideshow_builder.export(engagement_slides)
 
 
 @app.get("/update_engagements", response_class=HTMLResponse)

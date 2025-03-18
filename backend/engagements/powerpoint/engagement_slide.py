@@ -10,14 +10,6 @@ class EngagementSlide:
         self.placeholder_values: dict[PlaceholderType, PlaceholderDataType] = {}
 
     @property
-    def layout_index(self) -> int:
-        return self.layout_index
-
-    @layout_index.setter
-    def layout_index(self, index: int) -> None:
-        self.layout_index = index
-
-    @property
     def title(self) -> str | None:
         return self.placeholder_values.get(PlaceholderType.TITLE)
 

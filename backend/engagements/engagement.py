@@ -1,3 +1,4 @@
+from urllib.parse import urljoin
 from engagements.llm import LLM
 from engagements.engagement_data import EngagementData
 from engagements.engagement_data_manager import EngagementDataManager
@@ -93,7 +94,16 @@ class Engagement:
         """
         images = []
         for url in self.get_source_urls():
-            images += self.get_page_manager().get_page(url).get_images()
+            new_images = self.get_page_manager().get_page(url).get_images()
+            for image in new_images:
+                image_url = image.get("src")
+                if image_url is not None:
+                    if not image_url.endswith((".png", ".jpg", ".jpeg")):
+                        continue
+                    if image_url.startswith("/"):
+                        image_url = urljoin(url, image_url)
+                    image["src"] = image_url
+                    images.append(image)
         return images
 
     def get_title(self) -> str:
@@ -129,8 +139,12 @@ class Engagement:
             .set_title(self.get_title())
             .set_summary(self.get_summary())
             .set_employees(list(self.get_employees()))
-            .set_image(self.get_images()[(len(self.get_images()) - 1) // 2])
         )
+        images = self.get_images()
+        print(images)
+        if len(images) > 0:
+            slide.set_image(images[0])
+
         self.data.add_slide(slide)
         self.engagement_data_manager.save_data()
 

@@ -14,17 +14,17 @@
         <svg class="h-full w-full object-cover" viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg">
             <foreignObject x="0%" y="0%" class="node" width="1280" height="720">
                 <body xmlns="http://www.w3.org/1999/xhtml" style="font:Arial">
-                    <div style="text-align:left;font-size:32pt;padding-top:40px;padding-left:60px;padding-right:60px;line-height:1">
+                    <div style="text-align:left;font-size:32pt;padding-top:40px;padding-left:60px;padding-right:60px;line-height:1;color:white">
                         {{ slide.title }}
                     </div>
-                    <div style="text-align:left;font-size:24pt;position:fixed;top:250px;left:100px;right:500px;line-height:1">
+                    <div style="text-align:left;font-size:24pt;position:fixed;top:250px;left:100px;right:500px;line-height:1;color:white">
                         <ul style="list-style-type:disc;">
                             {% for sentence in slide.summary %}
                                 <li style="padding-left:20px;padding-top:10px;">{{ sentence }}</li>
                             {% endfor %}
                         </ul>
                     </div>
-                    <div style="text-align:left;font-size:16pt;position:fixed;top:450px;left:850px;right:20px;line-height:2">
+                    <div style="text-align:left;font-size:16pt;position:fixed;top:450px;left:850px;right:20px;line-height:2;color:white">
                         <ul style="list-style-type:disc;">
                             {% for employee in slide.employees %}
                                 <li style="padding-left:20px">{{ employee }}</li>
